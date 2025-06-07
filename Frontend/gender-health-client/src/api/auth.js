@@ -1,11 +1,18 @@
-import axios from "axios";
+import api from "./axios";
 
-const API_BASE = "http://localhost:8080/api/auth";
+const BASE = "/api/auth";
 
-export const register = (data) => {
-  return axios.post(`${API_BASE}/register`, data);
-};
+export const register = (payload) =>
+  api.post(`${BASE}/register`, payload);
 
-export const login = (data) => {
-  return axios.post(`${API_BASE}/login`, data);
-};
+export const login = (payload) =>
+  api.post(`${BASE}/login`, payload);
+
+export const googleLogin = (token) =>
+  api.post(`${BASE}/oauth/google`, { token });
+
+export const sendResetLink = (email) =>
+  api.post(`${BASE}/forgot-password`, { email });
+
+export const resetPassword = (body) =>
+  api.post(`${BASE}/reset-password`, body);

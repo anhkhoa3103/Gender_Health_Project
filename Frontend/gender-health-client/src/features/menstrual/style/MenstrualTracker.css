@@ -1,0 +1,245 @@
+body {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    color: #000;
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+/* Container bố cục */
+
+.tracker-container {
+    display: flex;           
+    flex-direction: column;
+    gap: 3rem;
+    padding: 2rem;
+    font-family: 'Helvetica Neue', sans-serif;
+    background: #fff;
+    color: #000;
+    width: 100vw;
+}
+
+.top-section {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, auto);
+    grid-template-areas:
+        "one two three"
+        "four five six";
+    gap: 2rem;
+    width: 100%;
+}
+
+
+
+.form-section   { max-width: none;  grid-area: one;}
+.circle-section { max-width: none; display: flex; flex-direction: column; align-items: center;  grid-area: two; }
+.calendar-section { max-width: none;  grid-area: three; }
+.bloodchart-section{ max-width: none;  grid-area: four; }
+.painchart-section { max-width: none;  grid-area: five; }
+.cyclechart-section { max-width: none;  grid-area: six; }
+
+/* Calendar */
+.calendar-section {
+    flex: 1;
+}
+
+.DayPicker {
+    border: 1px solid #000;
+    border-radius: 12px;
+    padding: 1rem;
+    background-color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    font-family: 'Helvetica Neue', sans-serif;
+}
+
+.DayPicker-Caption {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: #000;
+}
+
+.DayPicker-Weekday {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #000;
+}
+
+.DayPicker-Day {
+    border-radius: 6px;
+    padding: 0.4rem 0.6rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    color: #000;
+}
+
+.DayPicker-Day:hover {
+    background-color: #eee;
+}
+
+.DayPicker-Day--period {
+    background-color: #e74c3c !important;
+    color: white !important;
+}
+
+.DayPicker-Day--fertile {
+    background-color: #3498db !important;
+    color: white !important;
+}
+
+.DayPicker-Day--ovulation {
+    background-color: #2ecc71 !important;
+    color: white !important;
+}
+
+/* Form */
+.form-section {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    max-width: 100%;
+    color: #000;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    scale: 0.95;
+}
+
+.form-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.2rem;
+    gap: 1rem;
+    flex-wrap: nowrap;
+}
+
+.form-label {
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+    gap: 10px;
+    color: #000;
+    width: 40%;
+    font-size: 15px;
+    white-space: nowrap;
+}
+
+.form-control {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    flex-wrap: nowrap; /* 🔧 Ngăn không cho xuống dòng */
+    width: 60%;
+}
+
+
+.form-control input[type="number"],
+.form-control select,
+.form-control textarea {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #000;
+    font-size: 14px;
+    width: 100%;
+    max-width: 200px;
+}
+
+/* .form-control textarea {
+    height: 60px;
+    resize: vertical;
+} */
+
+.form-control option {
+    color: black;
+    background: white;
+}
+
+.level-icon {
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.3;
+    transition: 0.2s ease;
+}
+
+.level-icon.active {
+    opacity: 1;
+}
+
+.save-button {
+    background-color: #2ecc71;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.save-button:hover {
+    background-color: #27ae60;
+}
+
+/* Circle section */
+.circle-section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    position: relative;
+}
+
+.cycle-label {
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.cycle-center-text {
+    fill: #333;
+    font-size: 14px;
+    text-anchor: middle;
+    dominant-baseline: middle;
+}
+
+.cycle-period {
+    fill: #e74c3c !important;
+}
+
+.cycle-fertile {
+    fill: #3498db !important;
+}
+
+.cycle-ovulation {
+    fill: #2ecc71 !important;
+}
+
+.cycle-neutral {
+    fill: #ccc;
+}
+
+.cycle-dot {
+    r: 10;
+    fill: #2ecc71;
+    stroke: #fff;
+    stroke-width: 3;
+    cursor: grab;
+}
+
+.cycle-base {
+    fill: #ffffff;
+    stroke: #ddd;
+    stroke-width: 2;
+}

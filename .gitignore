@@ -1,0 +1,39 @@
+
+# === BACKEND (Spring Boot - Maven) ===
+/target/
+*.class
+*.jar
+*.war
+*.log
+*.iml
+/.idea/
+/*.iws
+/.classpath
+/.project
+/.settings/
+.mvn/
+
+# IntelliJ
+.idea/
+*.iml
+
+# Application config (allow keeping example)
+/src/main/resources/application.properties
+!/src/main/resources/application-example.properties
+
+# === FRONTEND (React) ===
+node_modules/
+build/
+dist/
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+
+# VSCode
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

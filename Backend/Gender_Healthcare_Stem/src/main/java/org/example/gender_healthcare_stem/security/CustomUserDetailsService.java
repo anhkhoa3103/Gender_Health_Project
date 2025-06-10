@@ -1,4 +1,3 @@
-// src/main/java/org/example/gender_healthcare_stem/security/CustomUserDetailsService.java
 package org.example.gender_healthcare_stem.security;
 
 import lombok.RequiredArgsConstructor;
@@ -9,16 +8,17 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
-
     private final UserRepository repo;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email)
+            throws UsernameNotFoundException {
         return repo.findByEmail(email)
-                .map(u -> User.withUsername(u.getEmail())
-                        .password(u.getPasswordHash())
-                        .authorities(u.getRole())   // map role → GrantedAuthority
+                .map(user -> User.withUsername(user.getEmail())
+                        .password(user.getPasswordHash())
+                        .authorities(user.getRole())
                         .build())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+                .orElseThrow(() -> new UsernameNotFoundException(
+                        "User not found: " + email));
     }
 }

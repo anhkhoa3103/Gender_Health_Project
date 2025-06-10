@@ -1,7 +1,7 @@
 package org.example.gender_healthcare_stem.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gender_healthcare_stem.repository.UserRepository;
+import org.example.gender_healthcare_stem.security.CustomUserDetailsService;
 import org.example.gender_healthcare_stem.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,8 +10,6 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,57 +23,67 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
+    // Chỉ inject đúng 2 bean: jwtAuthFilter và customUserDetailsService
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final UserDetailsService userDetailsService;
+    private final CustomUserDetailsService customUserDetailsService;
 
-    /* ---------- filter chain ---------- */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                // Disable CSRF cho REST API
                 .csrf(csrf -> csrf.disable())
+                // CORS config
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                .sessionManagement(sm ->
-                        sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Stateless session
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                // Phân quyền endpoint
                 .authorizeHttpRequests(auth -> auth
+                        // Cho phép OPTIONS (CORS pre-flight)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        // Cho phép public APIs (login/register)
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/api/menstrual/cycle-history/**").permitAll()
+                        // Nếu có swagger
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // Bất kỳ request nào còn lại phải xác thực
                         .anyRequest().authenticated()
                 )
+                // Thiết lập AuthenticationProvider
                 .authenticationProvider(authenticationProvider())
+                // Chèn JWT filter trước UsernamePasswordAuthenticationFilter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    /* ---------- DAO auth provider ---------- */
+    /** Bean để Spring Security dùng DAO Authentication */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        // Lấy user từ customUserDetailsService
+        provider.setUserDetailsService(customUserDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
-        provider.setUserDetailsService(userDetailsService);
         return provider;
     }
 
-    /* ---------- Password encoder ---------- */
+    /** Mã hóa mật khẩu */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /* ---------- CORS ---------- */
+    /** Cấu hình CORS global */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(List.of("http://localhost:3000"));
-        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);
 
-        UrlBasedCorsConfigurationSource src = new UrlBasedCorsConfigurationSource();
-        src.registerCorsConfiguration("/**", cfg);
-        return src;
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", cfg);
+        return source;
     }
-
 }

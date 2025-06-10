@@ -11,15 +11,21 @@ import java.util.Optional;
 
 public interface MenstrualCycleRepository extends JpaRepository<MenstrualCycle, Long> {
     List<MenstrualCycle> findByCustomerIdAndCycleDateBetween(Integer customerId, LocalDate start, LocalDate end);
+
     MenstrualCycle findByCustomerIdAndCycleDate(Integer customerId, LocalDate date);
+
     Optional<MenstrualCycle> findByCustomerIdAndCycleDate(int customerId, LocalDate cycleDate);
+
     @Query(value = """
-    SELECT start_date, period_days, cycle_days 
-    FROM cycle_history_view
-    WHERE customer_id = :customerId
-    ORDER BY start_date DESC
-    LIMIT 3
-    """, nativeQuery = true)
+                  SELECT
+                    start_date   AS startDate,
+                    CAST(period_days AS INTEGER)  AS periodDays,
+                    CAST(cycle_days AS INTEGER)   AS cycleDays
+                  FROM cycle_history_view
+                  WHERE customer_id = :customerId
+                  ORDER BY start_date DESC
+                  LIMIT 3
+            """, nativeQuery = true)
     List<CycleHistoryDTO> findRecentCycles(int customerId);
 
 }

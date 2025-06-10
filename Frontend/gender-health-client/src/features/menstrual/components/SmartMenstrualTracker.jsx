@@ -18,7 +18,8 @@ const center = 150;
 const moods = ['Vui vẻ', 'Mệt mỏi', 'Buồn', 'Tức giận', 'Lo lắng'];
 const flows = ['Ít', 'Trung bình', 'Nhiều'];
 
-const SmartMenstrualTracker = ({ customerId }) => {
+const SmartMenstrualTracker = () => {
+    const { userId } = useParams();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const today = new Date();
     const initialMonthKey = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
@@ -30,14 +31,14 @@ const SmartMenstrualTracker = ({ customerId }) => {
     const [currentDayIndex, setCurrentDayIndex] = useState(0);
 
     useEffect(() => {
-        if (!customerId) return;
+        if (!userId) return;
 
         const loadInitialData = async () => {
             const today = new Date();
             const mk = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
 
             try {
-                const res = await getCyclesByMonth(customerId, today.getFullYear(), today.getMonth() + 1);
+                const res = await getCyclesByMonth(userId, today.getFullYear(), today.getMonth() + 1);
                 const updated = {};
                 const cycleDates = [];
 
@@ -68,7 +69,7 @@ const SmartMenstrualTracker = ({ customerId }) => {
         };
 
         loadInitialData();
-    }, [customerId]);
+    }, [userId]);
 
 
     const getMonthKey = (date) => `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
@@ -222,7 +223,7 @@ const SmartMenstrualTracker = ({ customerId }) => {
 
 
     const handleSave = async () => {
-        if (!customerId) return;
+        if (!userId) return;
         const entries = Object.entries(dayData[monthKey] || {}).map(([key, entry]) => ({
             cycleDate: key,
             hasPeriod: entry.hasPeriod || false,
@@ -237,12 +238,12 @@ const SmartMenstrualTracker = ({ customerId }) => {
         }));
 
         try {
-            await saveBulkCycles(customerId, entries);
+            await saveBulkCycles(userId, entries);
 
             alert("✅ Đã lưu thành công!");
 
             const [year, month] = monthKey.split('-').map(Number);
-            const res = await getCyclesByMonth(customerId, year, month);
+            const res = await getCyclesByMonth(userId, year, month);
 
             const updated = {};
             const cycleDates = [];
@@ -614,8 +615,8 @@ const SmartMenstrualTracker = ({ customerId }) => {
 
                                     if (!dayData[mk]) {
                                         try {
-                                            if (!customerId) return;
-                                            const res = await getCyclesByMonth(customerId, month.getFullYear(), month.getMonth() + 1);
+                                            if (!userId) return;
+                                            const res = await getCyclesByMonth(userId, month.getFullYear(), month.getMonth() + 1);
 
                                             const updated = {};
                                             const cycleDates = [];

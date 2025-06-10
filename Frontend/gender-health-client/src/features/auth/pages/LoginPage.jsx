@@ -20,8 +20,9 @@ function LoginPage() {
         "http://localhost:8080/api/auth/login",
         form
       );
-      localStorage.setItem("token", data.token);          // tuỳ cơ chế
-      navigate(`/menstrual/${data.id}`);                  // 👉 chuyển trang
+      localStorage.setItem("token", data.token);
+      localStorage.setItem('userId', data.userId);
+      navigate(`/menstrual/${data.userId}`);  // ✅ Đúng field
     } catch (err) {
       alert("Login failed");
     }
@@ -35,11 +36,13 @@ function LoginPage() {
         { token: cred.credential }
       );
       localStorage.setItem("token", data.token);
-      navigate(`/menstrual/${data.id}`);
+      localStorage.setItem("userId", data.userId);
+      navigate(`/menstrual/${data.userId}`);  // ✅ Đúng field
     } catch (err) {
       alert("Google login failed");
     }
   };
+
 
   /* -------------------- UI -------------------- */
   return (

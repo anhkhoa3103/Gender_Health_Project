@@ -23,7 +23,8 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest req) {
-        return ResponseEntity.ok(authService.login(req));
+        LoginResponse resp = authService.login(req);
+        return ResponseEntity.ok(resp);
     }
 
     @PostMapping("/oauth/google")

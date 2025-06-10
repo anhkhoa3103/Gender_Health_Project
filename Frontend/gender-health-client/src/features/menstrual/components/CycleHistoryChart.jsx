@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getCycleHistory } from '../../../api/menstrualApi';
 import { Line } from 'react-chartjs-2';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
     Chart as ChartJS,
@@ -14,14 +15,15 @@ import {
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
 
-const CycleHistoryChart = ({customerId }) => {
+const CycleHistoryChart = () => {
+    const { userId } = useParams();
     const [cycleHistory, setCycleHistory] = useState([]);
 
     useEffect(() => {
-         if (!customerId) return;
+         if (!userId) return;
         const fetchData = async () => {
             try {
-                const res = await getCycleHistory(customerId);
+                const res = await getCycleHistory(userId);
                 console.log('res.data =', res.data);
                 setCycleHistory(res.data.reverse());
             } catch (err) {
@@ -29,7 +31,7 @@ const CycleHistoryChart = ({customerId }) => {
             }
         };
         fetchData();
-    }, [customerId]);
+    }, [userId]);
 
 
     const labels = cycleHistory.map((entry, i) =>

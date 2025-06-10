@@ -7,7 +7,7 @@ import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage";
 import MenstrualTracker from "./features/menstrual/pages/MenstrualTracker";
 
-import HomePage from "./features/auth/pages/HomePage";
+import HomePage from "./features/home/pages/HomePage";
 
 
 function App() {

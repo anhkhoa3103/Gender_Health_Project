@@ -1,8 +1,8 @@
 package org.example.gender_healthcare_stem.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gender_healthcare_stem.security.CustomUserDetailsService;
-import org.example.gender_healthcare_stem.security.JwtAuthenticationFilter;
+import org.example.gender_healthcare_stem.auth.security.CustomUserDetailsService;
+import org.example.gender_healthcare_stem.auth.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

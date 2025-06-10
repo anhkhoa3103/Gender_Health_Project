@@ -37,7 +37,7 @@ function LoginPage() {
       );
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
-      navigate(`/menstrual/${data.userId}`);  // ✅ Đúng field
+      navigate(`/home`);  // ✅ Đúng field
     } catch (err) {
       alert("Google login failed");
     }

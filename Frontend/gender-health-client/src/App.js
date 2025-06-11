@@ -6,7 +6,7 @@ import Register from "./features/auth/pages/RegisterPage";
 import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage";
 import MenstrualTracker from "./features/menstrual/pages/MenstrualTracker";
-
+import LogoutPage from "./features/auth/pages/LogoutPage";
 import HomePage from "./features/home/pages/HomePage";
 
 
@@ -16,13 +16,14 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Auth */}
-          <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           <Route path="/reset-password" element={<ResetPasswordPage />} />
+          <Route path="/logout" element={<LogoutPage />} />
 
           {/* Pages */}
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/" element={<HomePage />} />
 
            {/* Menstrual tracking */}
            <Route path="/menstrual/:userId" element={<MenstrualTracker />} />

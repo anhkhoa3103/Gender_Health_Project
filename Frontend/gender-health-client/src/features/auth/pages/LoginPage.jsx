@@ -22,10 +22,15 @@ function LoginPage() {
       );
       localStorage.setItem("token", data.token);
       localStorage.setItem('userId', data.userId);
-      navigate(`/menstrual/${data.userId}`);  // ✅ Đúng field
+      navigate(`/`);  // ✅ Đúng field
     } catch (err) {
-      alert("Login failed");
+      if (err.response && err.response.data && err.response.data.message) {
+        alert(err.response.data.message);
+      } else {
+        alert("Login failed");
+      }
     }
+
   };
 
   /* -------------------- login (Google) -------------------- */

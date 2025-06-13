@@ -1,4 +1,3 @@
-// SecurityConfig.java
 package org.example.gender_healthcare_stem.config;
 
 import lombok.RequiredArgsConstructor;
@@ -26,14 +25,9 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final JwtService jwtService;
-    private final UserRepository userRepository;
-    private final CustomUserDetailsService customUserDetailsService;
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtService, userRepository);
-    }
+    private final JwtAuthenticationFilter jwtAuthFilter;  // Inject từ bean bên ngoài
+    private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,14 +37,21 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+
+                        // Các API công khai (public APIs)
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/auth/oauth/google").permitAll()
+                        .requestMatchers("/api/feedback/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/menstrual/cycle-history/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/customer/consultation/**").permitAll()  // Cho phép lấy available slots
+
+                        // Swagger UI (nếu có)
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+
+                        // Các API còn lại yêu cầu xác thực
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
@@ -71,7 +72,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:3000"));
+        cfg.setAllowedOrigins(List.of("http://localhost:3000")); // Cho phép React frontend
         cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);

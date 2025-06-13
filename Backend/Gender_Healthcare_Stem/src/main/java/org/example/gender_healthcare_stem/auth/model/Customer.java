@@ -29,5 +29,8 @@ public class Customer {
     private String address;
 
 
+    public Long getCustomerId() {
+        return null;
+    }
 }
 

@@ -22,6 +22,9 @@ const Homepage = () => {
     }
   };
 
+  const handleClickConsultation = () => {
+  navigate("/consultation");
+};
 
   return (
     <>
@@ -36,7 +39,11 @@ const Homepage = () => {
           </h2>
 
           <div className="service-cards">
-            <div className="service-card">
+            <div
+  className="service-card"
+  onClick={handleClickConsultation}
+  style={{ cursor: "pointer" }}
+>
               <div className="icon consultation-icon" />
               <h3>Consultation Booking</h3>
               <p>

@@ -1,16 +1,37 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const LogoutPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Xóa token và các thông tin đăng nhập
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
+    const logout = async () => {
+      try {
+        // Gọi API logout (nếu backend có hỗ trợ)
+        await axios.post(
+          "http://localhost:8080/api/auth/logout",
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+      } catch (err) {
+        // Có thể lỗi nhưng vẫn tiếp tục
+        console.error("Logout API error", err);
+      }
 
-    // Chuyển hướng về trang login (hoặc home)
-    navigate("/login", { replace: true });
+      // Xóa localStorage token và userId
+      localStorage.removeItem("token");
+      localStorage.removeItem("userId");
+
+      // Chuyển hướng về login
+      navigate("/login", { replace: true });
+    };
+
+    logout();
   }, [navigate]);
 
   return (

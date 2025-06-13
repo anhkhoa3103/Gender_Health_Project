@@ -1,8 +1,11 @@
+// SecurityConfig.java
 package org.example.gender_healthcare_stem.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.gender_healthcare_stem.auth.repository.UserRepository;
 import org.example.gender_healthcare_stem.auth.security.CustomUserDetailsService;
 import org.example.gender_healthcare_stem.auth.security.JwtAuthenticationFilter;
+import org.example.gender_healthcare_stem.auth.security.JwtService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -23,62 +26,53 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    // Chỉ inject đúng 2 bean: jwtAuthFilter và customUserDetailsService
-    private final JwtAuthenticationFilter jwtAuthFilter;
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
     private final CustomUserDetailsService customUserDetailsService;
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtService, userRepository);
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // Disable CSRF cho REST API
                 .csrf(csrf -> csrf.disable())
-                // CORS config
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-                // Stateless session
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                // Phân quyền endpoint
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Cho phép OPTIONS (CORS pre-flight)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Cho phép public APIs (login/register)
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/menstrual/cycle-history/**").permitAll()
-                        // Nếu có swagger
+                        .requestMatchers("/api/auth/oauth/google").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/menstrual/cycle-history/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        // Bất kỳ request nào còn lại phải xác thực
                         .anyRequest().authenticated()
                 )
-                // Thiết lập AuthenticationProvider
                 .authenticationProvider(authenticationProvider())
-                // Chèn JWT filter trước UsernamePasswordAuthenticationFilter
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    /** Bean để Spring Security dùng DAO Authentication */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        // Lấy user từ customUserDetailsService
         provider.setUserDetailsService(customUserDetailsService);
         provider.setPasswordEncoder(passwordEncoder());
         return provider;
     }
 
-    /** Mã hóa mật khẩu */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /** Cấu hình CORS global */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(List.of("http://localhost:3000"));
-        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);
 

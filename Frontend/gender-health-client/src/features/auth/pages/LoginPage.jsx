@@ -42,7 +42,7 @@ function LoginPage() {
       );
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
-      navigate(`/home`);  // ✅ Đúng field
+      navigate(`/`);  // ✅ Đúng field
     } catch (err) {
       alert("Google login failed");
     }

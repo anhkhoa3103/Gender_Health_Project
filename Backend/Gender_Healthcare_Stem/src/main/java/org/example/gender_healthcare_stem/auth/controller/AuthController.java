@@ -1,5 +1,6 @@
 package org.example.gender_healthcare_stem.auth.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.example.gender_healthcare_stem.auth.dto.*;
 import org.example.gender_healthcare_stem.auth.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,5 +43,16 @@ public class AuthController {
     public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
         return ResponseEntity.ok(authService.resetPassword(request));
     }
-    
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest request) {
+        // Nếu có session, invalidate nó
+        request.getSession(false).invalidate();
+
+        // Hoặc thêm token vào blacklist nếu bạn có triển khai
+
+        return ResponseEntity.ok("Logout successful");
+    }
+
+
 }

@@ -7,6 +7,7 @@ const LogoutPage = () => {
   useEffect(() => {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    // Nếu bạn dùng cookie hoặc session, xóa ở đây
 
     navigate("/login", { replace: true });
   }, [navigate]);

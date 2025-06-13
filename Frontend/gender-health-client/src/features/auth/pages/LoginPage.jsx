@@ -21,8 +21,8 @@ function LoginPage() {
         form
       );
       localStorage.setItem("token", data.token);
-      localStorage.setItem('userId', data.userId);
-      navigate(`/`);  // ✅ Đúng field
+      localStorage.setItem("userId", data.userId);
+      navigate(`/`);  // Chuyển về trang chính sau login thành công
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {
         alert(err.response.data.message);
@@ -30,29 +30,29 @@ function LoginPage() {
         alert("Login failed");
       }
     }
-
   };
 
   /* -------------------- login (Google) -------------------- */
-  const handleGoogleLogin = async (cred) => {
+  const handleGoogleLogin = async (credentialResponse) => {
     try {
       const { data } = await axios.post(
         "http://localhost:8080/api/auth/oauth/google",
-        { token: cred.credential }
+        { token: credentialResponse.credential }
       );
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
-      navigate(`/home`);  // ✅ Đúng field
+      navigate(`/`);
     } catch (err) {
       alert("Google login failed");
     }
   };
 
-
   /* -------------------- UI -------------------- */
   return (
     <div className="login-container">
-      <div className="login-left"><div className="image-placeholder" /></div>
+      <div className="login-left">
+        <div className="image-placeholder" />
+      </div>
 
       <div className="login-right">
         <h2 className="system-title">Gender Health System</h2>

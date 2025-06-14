@@ -8,7 +8,11 @@ import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage";
 import MenstrualTracker from "./features/menstrual/pages/MenstrualTracker";
 import LogoutPage from "./features/auth/pages/LogoutPage";
 import HomePage from "./features/home/pages/HomePage";
-
+import Layout from "./layouts/layout";
+import Payments from "./pages/Payments";
+import Packages from "./pages/Packages";
+import PaymentConfirm from "./pages/PaymentConfirm";
+import PaymentPage from "./pages/PaymentPage";
 
 function App() {
   return (
@@ -23,10 +27,16 @@ function App() {
           <Route path="/logout" element={<LogoutPage />} />
 
           {/* Pages */}
-          <Route path="/" element={<HomePage />} />
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
+            <Route path="/payments" element={<Payments />} />
+            <Route path="/package" element={<Packages />} />
+            <Route path="/payment-confirm" element={<PaymentConfirm/>}/>
+            <Route path="/PaymentPage" element={<PaymentPage/>}/>
+          </Route>
 
-           {/* Menstrual tracking */}
-           <Route path="/menstrual/:userId" element={<MenstrualTracker />} />
+          {/* Menstrual tracking */}
+          <Route path="/menstrual/:userId" element={<MenstrualTracker />} />
         </Routes>
       </BrowserRouter>
     </GoogleOAuthProvider>

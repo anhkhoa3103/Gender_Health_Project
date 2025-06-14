@@ -17,12 +17,13 @@ function LoginPage() {
     e.preventDefault();
     try {
       const { data } = await axios.post(
-        "http://localhost:8080/api/auth/login",
+        "http://localhost:8081/api/auth/login",
         form
       );
       localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.userId);
-      navigate(`/`);  // Chuyển về trang chính sau login thành công
+      localStorage.setItem('userId', data.userId);
+      localStorage.setItem('user', JSON.stringify(data));
+      navigate(`/`);  // ✅ Đúng field
     } catch (err) {
       if (err.response && err.response.data && err.response.data.message) {
         alert(err.response.data.message);
@@ -30,29 +31,29 @@ function LoginPage() {
         alert("Login failed");
       }
     }
+
   };
 
   /* -------------------- login (Google) -------------------- */
-  const handleGoogleLogin = async (credentialResponse) => {
+  const handleGoogleLogin = async (cred) => {
     try {
       const { data } = await axios.post(
         "http://localhost:8080/api/auth/oauth/google",
-        { token: credentialResponse.credential }
+        { token: cred.credential }
       );
       localStorage.setItem("token", data.token);
       localStorage.setItem("userId", data.userId);
-      navigate(`/`);
+      navigate(`/home`);  // ✅ Đúng field
     } catch (err) {
       alert("Google login failed");
     }
   };
 
+
   /* -------------------- UI -------------------- */
   return (
     <div className="login-container">
-      <div className="login-left">
-        <div className="image-placeholder" />
-      </div>
+      <div className="login-left"><div className="image-placeholder" /></div>
 
       <div className="login-right">
         <h2 className="system-title">Gender Health System</h2>

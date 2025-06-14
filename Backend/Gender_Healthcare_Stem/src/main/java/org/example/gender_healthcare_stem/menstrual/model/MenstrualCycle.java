@@ -50,7 +50,7 @@ public class MenstrualCycle {
     @Column(name = "note")
     private String note;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt = LocalDateTime.now();
+    // @Column(name = "created_at")
+    // private LocalDateTime createdAt = LocalDateTime.now();
 }
 

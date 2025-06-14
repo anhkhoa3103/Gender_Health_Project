@@ -23,6 +23,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     // Chỉ inject đúng 2 bean: jwtAuthFilter và customUserDetailsService
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final CustomUserDetailsService customUserDetailsService;
@@ -35,19 +36,21 @@ public class SecurityConfig {
                 // CORS config
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 // Stateless session
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session
+                        -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 // Phân quyền endpoint
                 .authorizeHttpRequests(auth -> auth
-                        // Cho phép OPTIONS (CORS pre-flight)
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        // Cho phép public APIs (login/register)
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/api/menstrual/cycle-history/**").permitAll()
-                        // Nếu có swagger
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        // Bất kỳ request nào còn lại phải xác thực
-                        .anyRequest().authenticated()
+                // Cho phép OPTIONS (CORS pre-flight)
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                // Cho phép public APIs (login/register)
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/menstrual/cycle-history/**").permitAll()
+                // Nếu có swagger
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                // Bất kỳ request nào còn lại phải xác thực
+                .anyRequest().authenticated()
                 )
                 // Thiết lập AuthenticationProvider
                 .authenticationProvider(authenticationProvider())
@@ -57,7 +60,9 @@ public class SecurityConfig {
         return http.build();
     }
 
-    /** Bean để Spring Security dùng DAO Authentication */
+    /**
+     * Bean để Spring Security dùng DAO Authentication
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
@@ -67,18 +72,22 @@ public class SecurityConfig {
         return provider;
     }
 
-    /** Mã hóa mật khẩu */
+    /**
+     * Mã hóa mật khẩu
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
-    /** Cấu hình CORS global */
+    /**
+     * Cấu hình CORS global
+     */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
         cfg.setAllowedOrigins(List.of("http://localhost:3000"));
-        cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);
 

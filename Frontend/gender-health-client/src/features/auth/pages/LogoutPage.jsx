@@ -5,10 +5,11 @@ const LogoutPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Xóa token và các thông tin đăng nhập
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
-    // Nếu bạn dùng cookie hoặc session, xóa ở đây
 
+    // Chuyển hướng về trang login (hoặc home)
     navigate("/login", { replace: true });
   }, [navigate]);
 

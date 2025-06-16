@@ -1,10 +1,8 @@
 package org.example.gender_healthcare_stem.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gender_healthcare_stem.auth.repository.UserRepository;
-import org.example.gender_healthcare_stem.auth.security.CustomUserDetailsService;
 import org.example.gender_healthcare_stem.auth.security.JwtAuthenticationFilter;
-import org.example.gender_healthcare_stem.auth.security.JwtService;
+import org.example.gender_healthcare_stem.auth.security.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -25,8 +23,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-
-    private final JwtAuthenticationFilter jwtAuthFilter;  // Inject từ bean bên ngoài
+    private final JwtAuthenticationFilter jwtAuthFilter;
     private final CustomUserDetailsService customUserDetailsService;
 
     @Bean
@@ -37,17 +34,14 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-
-                        // Các API công khai (public APIs)
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/auth/oauth/google").permitAll()
                         .requestMatchers("/api/feedback/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/menstrual/cycle-history/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/customer/consultation/**").permitAll()  // Cho phép lấy available slots
-
-                        // Swagger UI (nếu có)
+                        .requestMatchers(HttpMethod.GET, "/api/consultation/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/consultants/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/appointments/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-
-                        // Các API còn lại yêu cầu xác thực
                         .anyRequest().authenticated()
                 )
                 .authenticationProvider(authenticationProvider())
@@ -72,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:3000")); // Cho phép React frontend
+        cfg.setAllowedOrigins(List.of("http://localhost:3000")); // React frontend
         cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         cfg.setAllowedHeaders(List.of("*"));
         cfg.setAllowCredentials(true);

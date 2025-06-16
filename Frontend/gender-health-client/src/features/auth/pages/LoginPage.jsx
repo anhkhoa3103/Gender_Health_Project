@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../../api/axios";  // chắc bạn đã có file này config axios
 import { GoogleLogin } from "@react-oauth/google";
+import { AuthContext } from "../../../context/AuthContext"; // context quản lý auth
 import "../styles/LoginPage.css";
 
 function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
   /* -------------------- helpers -------------------- */
   const handleChange = (e) =>
@@ -16,43 +18,39 @@ function LoginPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post(
-        "http://localhost:8080/api/auth/login",
-        form
-      );
-      localStorage.setItem("token", data.token);
-      localStorage.setItem('userId', data.userId);
-      navigate(`/`);  // ✅ Đúng field
+      const res = await api.post("/api/auth/login", {
+        email: form.email,
+        password: form.password,
+      });
+      const token = res.data.token; // backend trả token field token
+      login(token);
+      navigate("/"); // chuyển trang sau login thành công
     } catch (err) {
-      if (err.response && err.response.data && err.response.data.message) {
-        alert(err.response.data.message);
-      } else {
-        alert("Login failed");
-      }
+      alert("Login failed");
+      console.error(err);
     }
-
   };
 
   /* -------------------- login (Google) -------------------- */
   const handleGoogleLogin = async (cred) => {
     try {
-      const { data } = await axios.post(
-        "http://localhost:8080/api/auth/oauth/google",
-        { token: cred.credential }
-      );
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("userId", data.userId);
-      navigate(`/`);  // ✅ Đúng field
+      const { data } = await api.post("/api/auth/oauth/google", {
+        token: cred.credential,
+      });
+      login(data.token); // gọi login context luôn
+      navigate("/"); // chuyển trang
     } catch (err) {
       alert("Google login failed");
+      console.error(err);
     }
   };
-
 
   /* -------------------- UI -------------------- */
   return (
     <div className="login-container">
-      <div className="login-left"><div className="image-placeholder" /></div>
+      <div className="login-left">
+        <div className="image-placeholder" />
+      </div>
 
       <div className="login-right">
         <h2 className="system-title">Gender Health System</h2>
@@ -82,7 +80,9 @@ function LoginPage() {
           </p>
 
           <div className="form-options">
-            <label><input type="checkbox" /> Remember me</label>
+            <label>
+              <input type="checkbox" /> Remember me
+            </label>
             <span
               className="forgot-link"
               onClick={() => navigate("/forgot-password")}
@@ -91,7 +91,9 @@ function LoginPage() {
             </span>
           </div>
 
-          <button type="submit" className="login-button">Log In</button>
+          <button type="submit" className="login-button">
+            Log In
+          </button>
         </form>
 
         <div className="google-login-wrapper">

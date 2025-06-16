@@ -1,0 +1,190 @@
+.about-session {
+  display: flex;
+  max-width: 1000px;
+  width: 100%;
+  margin: 60px auto;
+  padding: 0 20px;
+  gap: 40px;
+  align-items: center;
+  flex-direction: column;
+}
+
+.about-info {
+    display: flex;
+    width: 100%;
+    height: 600px;
+}
+
+.about-left {
+  flex: 1;
+  height: 600px;
+}
+
+.about-title {
+  font-weight: 800;
+  font-size: 45px;
+  line-height: 1.3;
+  color: #121433;
+  margin-bottom: 20px;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #6ee2f5, #6454f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.about-desc {
+  color: #b9bbc7;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 480px;
+  margin-bottom: 30px;
+}
+
+.about-button {
+  background: linear-gradient(to right, #6ee2f5, #6454f0);
+  color: white;
+  font-weight: 600;
+  padding: 12px 32px;
+  border: none;
+  border-radius: 40px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(100, 84, 240, 0.6);
+  transition: background 0.3s ease;
+  margin-bottom: 40px;
+}
+
+.about-button:hover {
+  background: linear-gradient(to right, #58c9eb, #4a3ccc);
+}
+
+.stats {
+  display: flex;
+  gap: 40px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.stat-number {
+  font-weight: 800;
+  font-size: 28px;
+  color: #121433;
+  position: relative;
+}
+
+.plus {
+  color: #6ee2f5;
+  font-weight: 900;
+  margin-left: 3px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: #b9bbc7;
+  margin-top: 6px;
+}
+
+/* About right side (gradient rectangle with round top corners) */
+.about-right {
+  flex: 1;
+  height: 600px;
+  border-radius: 180px 180px 0 0;
+  background-image: url('C:\Users\ejeja\Code\Gender_Health_System\Frontend\gender-health-client\src\features\img\doctormain.png');
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 25px rgba(100, 84, 240, 0.5);
+}
+
+/* Medical Team */
+
+.team-title {
+  font-weight: 800;
+  font-size: 35px;
+  margin-top: 60px;
+  margin-bottom: 10px;
+  color: #22223d;
+}
+
+.gradient-text {
+  background: linear-gradient(to right, #6ee2f5, #6454f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+}
+
+.team-desc {
+  font-size: 16px;
+  color: #6f7287;
+  max-width: 700px;
+  margin-bottom: 40px;
+}
+
+.team-list {
+  display: flex;
+  gap: 30px;
+  flex-wrap: nowrap; /* Nếu muốn cuộn ngang thay vì xuống dòng */
+  justify-content: flex-start;
+}
+
+.team-card {
+  background: white;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 20px;
+  width: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.team-img-placeholder {
+  width: 100%;
+  height: 130px;
+  background-color: #a6d2f7;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.team-name {
+  color: #6454f0;
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-size: 18px;
+}
+
+.team-role {
+  font-size: 14px;
+  color: #6f7287;
+  margin-bottom: 12px;
+}
+
+.team-desc-text {
+  font-size: 14px;
+  color: #3b3f52;
+  margin-bottom: 16px;
+  line-height: 1.4;
+}
+
+.team-button {
+  background: linear-gradient(to right, #6ee2f5, #6454f0);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: stretch;
+  transition: background 0.3s ease;
+}
+
+.team-button:hover {
+  background: linear-gradient(to right, #58c9eb, #4a3ccc);
+}

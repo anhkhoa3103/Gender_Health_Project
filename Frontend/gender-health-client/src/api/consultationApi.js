@@ -1,0 +1,19 @@
+import api from "./axios";
+
+const BASE_CONSULTANTS = "/api/consultants";
+const BASE_CONSULTATION = "/api/consultation";
+const BASE_APPOINTMENTS = "/api/appointments";
+
+/** Lấy danh sách consultants */
+export const getConsultants = () => api.get(`${BASE_CONSULTANTS}/getall`);
+
+/** Lấy các slot có sẵn */
+export const getAvailableSlots = (consultantId, date) =>
+  api.get(`${BASE_CONSULTATION}/available-workslots`, { params: { consultantId, date } });
+
+/** Lấy tất cả slot */
+export const getAllSlot = () => api.get(`${BASE_CONSULTATION}/slots`);
+
+/** Tạo lịch hẹn mới */
+export const createAppointment = (data) =>
+  api.post(BASE_APPOINTMENTS, data);

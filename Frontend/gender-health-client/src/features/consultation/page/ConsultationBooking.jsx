@@ -1,23 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Users, Download, Clock, CheckCircle, Shield, User, Award, Globe } from 'lucide-react';
-
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { getConsultants, getAllSlot, getAvailableSlots } from "../../../api/consultationApi";
+import HeaderSession from "../../components/Header";
+import FooterSession from "../../home/sessions/FooterSession";
+import "../style/ConsultationBooking.css"
+import "../style/Last.css"
 
-import "../style/ConsultationBooking.css";
-import "../style/Last.css";
-
-const HealthcareWebsite = () => {
+const HealthcareWebsite_consultation = () => {
   const [animatedCards, setAnimatedCards] = useState(false);
-    const [stats, setStats] = useState(null); // Thêm state cho stats
-  const [allFeedbacks, setAllFeedbacks] = useState([]); // Thêm state cho allFeedbacks
+  const [stats, setStats] = useState(null);
+  const [allFeedbacks, setAllFeedbacks] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [consultants, setConsultants] = useState([]);
+  const [allSlots, setAllSlots] = useState([]);
+  const [availableSlots, setAvailableSlots] = useState([]);
+  const [selectedConsultant, setSelectedConsultant] = useState(null);
+
+
   const [feedbacks, setFeedbacks] = useState([
     { customerName: "Sarah Johnson", comment: "Excellent service and very professional staff!", rating: 5 },
     { customerName: "Mike Chen", comment: "Great consultation experience, highly recommended.", rating: 4 },
     { customerName: "Emma Davis", comment: "Very helpful and understanding consultants.", rating: 5 }
   ]);
+
+  // State quản lý tháng/năm hiện tại cho lịch
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth()); // 0-based
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimatedCards(true);
@@ -25,338 +37,358 @@ const HealthcareWebsite = () => {
     return () => clearTimeout(timer);
   }, []);
 
-   useEffect(() => {
-  const fetchData = async () => {
-    try {
-      // Gọi tuần tự các API
-      const feedbacksResponse = await fetch("http://localhost:8080/api/feedback/consultant/4/with-names");
-      const feedbacksData = await feedbacksResponse.json();
-      setFeedbacks(feedbacksData);
+  // Lấy danh sách consultants từ backend
+  useEffect(() => {
+    getConsultants()
+      .then(res => setConsultants(res.data))
+      .catch(console.error);
+  }, []);
 
-      const statsResponse = await fetch("http://localhost:8080/api/feedback/consultant/4/rating-summary");
-      const statsData = await statsResponse.json();
-      setStats(statsData);
+  // Lấy tất cả slot từ backend
+  useEffect(() => {
+    getAllSlot()
+      .then(res => setAllSlots(res.data))
+      .catch(console.error);
+  }, []);
 
-      const allResponse = await fetch("http://localhost:8080/api/feedback/with-names");
-      const allData = await allResponse.json();
-      setAllFeedbacks(allData);
-
-    } catch (error) {
-      console.error("Failed to fetch data:", error);
-      // Xử lý fallback
+  // Mặc định chọn consultant đầu tiên nếu chưa chọn
+  useEffect(() => {
+    if (consultants.length > 0 && !selectedConsultant) {
+      setSelectedConsultant(consultants[0]);
     }
+  }, [consultants, selectedConsultant]);
+
+  // Khi consultant hoặc ngày thay đổi, lấy các slot available từ backend
+  useEffect(() => {
+    if (selectedConsultant && selectedDate !== null) {
+      const isoDate = formatDateISO(currentYear, currentMonth, selectedDate);
+      getAvailableSlots(selectedConsultant.userId, isoDate)
+        .then(res => {
+          const availableSlotIds = res.data.map(ws => ws.slotId);
+          setAvailableSlots(availableSlotIds);
+          setSelectedTime(null); // reset giờ chọn khi ngày hoặc consultant đổi
+        })
+        .catch(console.error);
+    } else {
+      setAvailableSlots([]);
+      setSelectedTime(null);
+    }
+  }, [selectedConsultant, selectedDate, currentMonth, currentYear]);
+
+
+  // Format ngày sang yyyy-MM-dd
+  const formatDateISO = (year, month, day) => {
+    const mm = (month + 1).toString().padStart(2, '0');
+    const dd = day.toString().padStart(2, '0');
+    return `${year}-${mm}-${dd}`;
   };
 
-  fetchData();
-}, []);
-
-  const navigate = useNavigate();
-
-  const consultants = [
-    { name: "Jennifer Green", rating: "4.8 (150 Reviews)", image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=100&h=100&fit=crop&crop=face" },
-    { name: "Jack Williams", rating: "4.9 (250 Reviews)", image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=100&h=100&fit=crop&crop=face" },
-    { name: "Priti Malik", rating: "4.8 (180 Reviews)", image: "https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=100&h=100&fit=crop&crop=face" }
-  ];
-
-  const stats1 = [
-    { value: "12+", label: "Years Experience", color: "stat-card-pink" },
-    { value: "120+", label: "Active Country", color: "stat-card-blue" },
-    { value: "15+", label: "Specialized Consultants", color: "stat-card-green" }
-  ];
-
-  const stats2 = [
-    { value: "31 hours", label: "Professional Training", color: "stat-card-light-blue" },
-    { value: "203 hours", label: "Counseling Practice", color: "stat-card-light-purple" },
-    { value: "58 hours", label: "Counseling Supervisor", color: "stat-card-light-green" }
-  ];
-
-
-
-  
-  const generateCalendar = () => {
+  // Tạo lịch theo tháng và năm hiện tại
+  const generateCalendar = (year, month) => {
     const days = ['Mo', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su'];
     const dates = [];
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
-    const currentYear = currentDate.getFullYear();
-    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-    
+    const daysInMonth = new Date(year, month + 1, 0).getDate();
+
     for (let i = 1; i <= daysInMonth; i++) {
       dates.push(i);
     }
     return { days, dates };
   };
 
-  const timeSlots = [
-    '9:00', '9:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30', '1:00', '1:30', '2:00', '2:30'
-  ];
+  const { days, dates } = generateCalendar(currentYear, currentMonth);
 
-   const { days, dates } = generateCalendar();
+  // Hàm format thời gian "HH:mm:ss" => "HH:mm"
+  const formatTime = (time) => time.slice(0, 5);
 
+  // Nút chuyển tháng trước
+  const handlePrevMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentYear(currentYear - 1);
+      setCurrentMonth(11);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+    setSelectedDate(null); // reset ngày chọn khi đổi tháng
+  };
+
+  // Nút chuyển tháng kế tiếp
+  const handleNextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentYear(currentYear + 1);
+      setCurrentMonth(0);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+    setSelectedDate(null); // reset ngày chọn khi đổi tháng
+  };
+
+  // Chọn ngày
   const handleDateSelect = (date) => {
     setSelectedDate(date);
   };
 
+  // Chọn giờ
   const handleTimeSelect = (time) => {
     setSelectedTime(time);
   };
 
+  // Đặt lịch demo (alert)
   const handleBooking = () => {
     if (selectedDate && selectedTime) {
-      alert(`Appointment booked for ${selectedDate} at ${selectedTime}`);
+      alert(`Appointment booked for ${selectedDate} ${monthNames[currentMonth]} ${currentYear} at ${selectedTime}`);
     } else {
       alert('Please select both date and time');
     }
   };
 
+  const handleContinue = () => {
+    if (!selectedDate || !selectedTime || !selectedConsultant) {
+      alert('Please select consultant, date and time before continuing');
+      return;
+    }
+
+    // Tạo object data để truyền sang BookAppointment
+    const appointmentData = {
+      consultant: selectedConsultant,
+      date: selectedDate,
+      time: selectedTime,
+      year: currentYear,
+      month: currentMonth
+    };
+
+    navigate('/bookappointment', { state: appointmentData });
+  }
+
+  // Tên các tháng
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  // Chọn consultant
+  const handleSelectConsultant = (consultant) => {
+    setSelectedConsultant(consultant);
+  };
 
   return (
-    <div className="app">
-      {/* Header */}
-      <header className="header">
-        <div className="header-container">
-          <div className="logo">
-            <div className="logo-icon">G</div>
-            <span className="logo-text">Gender Healthcare System</span>
+    <>
+      <div className="heder-section">
+        <HeaderSession />
+      </div>
+
+      <div className="app_consultation">
+        {/* Hero Section */}
+        <section className="hero-section_consultation">
+          <div className="hero-header_consultation">
+            <p className="hero-subtitle_consultation">We are here to help you</p>
+            <h1 className="hero-title_consultation">
+              Gender Healthcare System for SWP Project{' '}
+              <span className="hero-title-highlight_consultation">We Are Ready to Help Your Health Problems</span>
+            </h1>
           </div>
-          <nav className="nav">
-            <a href="#">Home</a>
-            <a href="#">About Us</a>
-            <a href="#">Service</a>
-            <a href="#">Blog</a>
-            <a href="#">Contact Us</a>
-          </nav>
-          <button className="login-btn">Log Out</button>
-        </div>
-      </header>
 
-      {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-header">
-          <p className="hero-subtitle">We are here to help you</p>
-          <h1 className="hero-title">
-            Gender Healthcare System for SWP Project{' '}
-            <span className="hero-title-highlight">We Are Ready to Help Your Health Problems</span>
-          </h1>
-        </div>
+          <div className="hero-content_consultation">
+            {/* Left Content */}
+            <div className="left-content_consultation">
+              <div className="floating-shapes_consultation">
+                <div className="shape_consultation shape-1_consultation"></div>
+                <div className="shape_consultation shape-2_consultation"></div>
+                <div className="shape_consultation shape-3_consultation"></div>
+              </div>
 
-        <div className="hero-content">
-          {/* Left Content */}
-          <div className="left-content">
-            <div className="floating-shapes">
-              <div className="shape shape-1"></div>
-              <div className="shape shape-2"></div>
-              <div className="shape shape-3"></div>
+              <div>
+                <span className="consultant-label_consultation">CONSULTANT</span>
+                <h2 className="main-title_consultation">
+                  Get Smart Solution<br />
+                  For Your Health
+                </h2>
+                <p className="main-description_consultation">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                </p>
+                <button
+                  className="cta-button_consultation"
+                  onClick={() => navigate("/bookappointment")}
+                >
+                  Book Appointment
+                </button>
+              </div>
+
+              {/* Consultant Cards - hiển thị từ dữ liệu backend */}
+              <div className="consultants-grid_consultation">
+                {consultants.length > 0 ? (
+                  consultants.map((consultant) => (
+                    <div
+                      key={consultant.userId}
+                      className={`consultant-card_consultation ${animatedCards ? 'animated_consultation' : ''} ${selectedConsultant?.userId === consultant.userId ? 'selected_consultation' : ''}`}
+                      onClick={() => handleSelectConsultant(consultant)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      <img
+                        src={consultant.avatar || 'https://via.placeholder.com/100'}
+                        alt="avatar"
+                        className="consultant-image_consultation"
+                      />
+                      <div className="consultant-info_consultation">
+                        <h4>{consultant.name}</h4>
+                        <p>{consultant.specialization}</p>
+                        <p>{consultant.qualification}</p>
+                        <p>{consultant.experiencedYears} years experience</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p>Loading consultants...</p>
+                )}
+              </div>
             </div>
 
-            <div>
-              <span className="consultant-label">CONSULTANT</span>
-              <h2 className="main-title">
-                Get Smart Solution<br />
-                For Your Health
-              </h2>
-              <p className="main-description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
-              <button
-            className="cta-button"
-            onClick={() => navigate("/bookappointment")}
-          >
-            Book Appointment
-          </button>
-            </div>
-
-            {/* Consultant Cards */}
-            {[0, 1, 2].map((rowIndex) => (
-              <div key={rowIndex} className="consultants-grid">
-                {consultants.map((consultant, index) => (
-                  <div 
-                    key={`${rowIndex}-${index}`} 
-                    className={`consultant-card ${animatedCards ? 'animated' : ''}`}
-                    style={{ transitionDelay: `${(rowIndex * 3 + index) * 0.1}s` }}
-                  >
-                    <img 
-                      src={consultant.image} 
-                      alt={consultant.name}
-                      className="consultant-image"
+            {/* Right Content */}
+            <div className="right-content_consultation">
+              {selectedConsultant ? (
+                <>
+                  <div className="hero-image-container_consultation">
+                    <img
+                      src={selectedConsultant.avatar || 'https://via.placeholder.com/400x500'}
+                      alt={selectedConsultant.name}
+                      className="hero-image_consultation"
                     />
-                    <div className="consultant-info">
-                      <h4>{consultant.name}</h4>
-                      <p>{consultant.rating}</p>
+                    <h3 className="hero-name_consultation">{selectedConsultant.name}</h3>
+                    <div className="hero-rating_consultation">★★★★★</div>
+                  </div>
+
+                  {/* Các thông tin chi tiết khác */}
+                  <div className="stats-grid_consultation">
+                    <div className="stat-card_consultation stat-card-pink_consultation">
+                      <div className="stat-value_consultation">{selectedConsultant.experiencedYears}+</div>
+                      <div className="stat-label_consultation">Years Experience</div>
+                    </div>
+                    <div className="stat-card_consultation stat-card-blue_consultation">
+                      <div className="stat-value_consultation">{selectedConsultant.specialization}</div>
+                      <div className="stat-label_consultation">Specialization</div>
+                    </div>
+                    <div className="stat-card_consultation stat-card-green_consultation">
+                      <div className="stat-value_consultation">{selectedConsultant.qualification}</div>
+                      <div className="stat-label_consultation">Qualification</div>
                     </div>
                   </div>
-                ))}
-              </div>
-            ))}
-          </div>
-
-          {/* Right Content */}
-          <div className="right-content">
-            <div className="hero-image-container">
-              <img 
-                src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=500&fit=crop&crop=face" 
-                alt="John Cena" 
-                className="hero-image"
-              />
-              <h3 className="hero-name">John Cena</h3>
-              <div className="hero-rating">★★★★★</div>
-            </div>
-
-            {/* Stats Cards */}
-            <div className="stats-grid">
-              {stats1.map((stat, index) => (
-                <div key={index} className={`stat-card ${stat.color}`}>
-                  <div className="stat-value">{stat.value}</div>
-                  <div className="stat-label">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-
-            <div className="stats-grid">
-              {stats2.map((stat, index) => (
-                <div key={index} className={`stat-card ${stat.color}`}>
-                  <div className="stat-value">{stat.value}</div>
-                  <div className="stat-label">{stat.label}</div>
-                </div>
-              ))}
+                </>
+              ) : (
+                <p>Please select a consultant</p>
+              )}
             </div>
           </div>
-        </div>
-        
-        <div>
-          <button
-            className="cta-button"
-            onClick={() => navigate("/appointments")}
-          >
-            HistoryBooking
-          </button>
-        </div>
-      </section>
-       {/* John Cena Profile Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-gray-900 mb-8">John Cena</h2>
-          <div className="bg-blue-50 p-8 rounded-lg">
-            <div className="flex items-start space-x-4 mb-8">
-              <div className="w-2 h-16 bg-blue-500 rounded-full"></div>
-              <p className="text-gray-700 italic text-left">
-                "The passion for Human Resource Management, Human Development, and the journey of people is what drives me to support career orientation in which I choose to create a team from excitement in career guidance. Team believes that the world of careers will be more beautiful in the future if we have time, dedicate ourselves to continuous growth and values for society from our careers. Therefore, Team really wants to accompany young people in the journey of self-discovery, life discovery and creating a satisfactory career."
-              </p>
-            </div>
+
+          <div>
+            <button
+              className="cta-button_consultation"
+              onClick={() => navigate("/appointments")}
+            >
+              HistoryBooking
+            </button>
           </div>
-        </div>
-      </section>
+        </section>
 
-     
-
-     
-
-      {/* Booking Section */}
-      <section className="py-16 bg-gray-50">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            {/* Choose a Date */}
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Choose a Date</h3>
-              <div className="bg-white rounded-lg p-6 border">
-                <div className="flex justify-between items-center mb-4">
-                  <h4 className="font-semibold text-gray-900">August 2024</h4>
-                </div>
-                <div className="grid grid-cols-7 gap-2 mb-4">
-                  {days.map((day, index) => (
-                    <div key={index} className="text-center text-sm font-medium text-gray-500 py-2">
-                      {day}
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-7 gap-2">
-                  {dates.map((date, index) => (
+        {/* Booking Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="bg-white rounded-2xl shadow-lg p-8">
+              {/* Choose a Date */}
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Choose a Date</h3>
+                <div className="bg-white rounded-lg p-6 border">
+                  <div className="flex justify-between items-center mb-4">
                     <button
-                      key={index}
-                      onClick={() => handleDateSelect(date)}
-                      className={`p-2 text-sm rounded-lg transition-colors ${
-                        selectedDate === date
+                      onClick={handlePrevMonth}
+                      className="px-3 py-1 rounded hover:bg-gray-100"
+                      aria-label="Previous Month"
+                    >
+                      &lt;
+                    </button>
+                    <h4 className="font-semibold text-gray-900">
+                      {monthNames[currentMonth]} {currentYear}
+                    </h4>
+                    <button
+                      onClick={handleNextMonth}
+                      className="px-3 py-1 rounded hover:bg-gray-100"
+                      aria-label="Next Month"
+                    >
+                      &gt;
+                    </button>
+                  </div>
+                  <div className="grid grid-cols-7 gap-2 mb-4">
+                    {days.map((day, index) => (
+                      <div key={index} className="text-center text-sm font-medium text-gray-500 py-2">
+                        {day}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="grid grid-cols-7 gap-2">
+                    {dates.map((date, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleDateSelect(date)}
+                        className={`p-2 text-sm rounded-lg transition-colors ${selectedDate === date
                           ? 'bg-blue-600 text-white'
                           : 'hover:bg-gray-100 text-gray-700'
-                      }`}
-                    >
-                      {date}
-                    </button>
-                  ))}
+                          }`}
+                      >
+                        {date}
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Pick a Time */}
-            <div className="mb-8">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Pick a time</h3>
-              <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
-                {timeSlots.map((time, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleTimeSelect(time)}
-                    className={`p-3 text-sm rounded-lg border transition-colors ${
-                      selectedTime === time
-                        ? 'bg-blue-600 text-white border-blue-600'
-                        : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
-                    }`}
-                  >
-                    {time}
-                  </button>
-                ))}
+              {/* Pick a Time */}
+              <div className="mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Pick a time</h3>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-3">
+                  {allSlots.length === 0 ? (
+                    <p>Loading slots...</p>
+                  ) : (
+                    allSlots.map((slot) => {
+                      const isAvailable = availableSlots.includes(slot.slotId);
+                      return (
+                        <button
+                          key={slot.slotId}
+                          disabled={!isAvailable}
+                          onClick={() => isAvailable && handleTimeSelect(formatTime(slot.startTime))}
+                          className={`p-3 text-sm rounded-lg border transition-colors ${selectedTime === formatTime(slot.startTime)
+                            ? 'bg-blue-600 text-white border-blue-600'
+                            : isAvailable
+                              ? 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
+                              : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                            }`}
+                        >
+                          {formatTime(slot.startTime)}
+                        </button>
+                      );
+                    })
+                  )}
+                </div>
+              </div>
+
+              {/* Booking Buttons */}
+              <div className="flex justify-center space-x-4">
+                <button className="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                  Back
+                </button>
+                <button
+                  onClick={handleContinue}
+                  className="px-8 py-3 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
+                >
+                  Continue
+                </button>
               </div>
             </div>
-
-            {/* Booking Buttons */}
-            <div className="flex justify-center space-x-4">
-              <button className="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
-                Back
-              </button>
-              <button 
-  onClick={() => navigate("/bookingsuccess")}  // Đã sửa từ "/bookingsucces" thành "/bookingsuccess"
-  className="px-8 py-3 bg-teal-500 text-white rounded-lg hover:bg-teal-600 transition-colors"
->
-  Continue
-</button>
-            </div>
           </div>
-        </div>
-      </section>
-      {/* Footer */}
-      <footer className="bg-gray-800 text-white py-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          
-          <p className="text-gray-400">© 2024 Gender Healthcare System. All rights reserved.</p>
-        </div>
-        
-      </footer>
-      <div className="rating-summary-section">
-  <h3>Consultant Rating Summary</h3>
-  {stats ? (
-    <div className="rating-details">
-      <div className="rating-average">
-        <span className="rating-value">{stats.averageRating.toFixed(1)}</span>
-        <div className="stars">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <span 
-              key={star} 
-              className={star <= Math.round(stats.averageRating) ? 'filled' : ''}
-            >
-              ★
-            </span>
-          ))}
-        </div>
+        </section>
       </div>
-      <div className="feedback-count">
-        Based on {stats.feedbackCount} reviews
+      <div className="footer-section">
+        <FooterSession />
       </div>
-    </div>
-  ) : (
-    <p>Loading rating data...</p>
-  )}
-</div>
-    </div>
+    </>
   );
 };
 
-export default HealthcareWebsite;
+export default HealthcareWebsite_consultation;

@@ -8,6 +8,9 @@ export const register = (payload) =>
 export const login = (payload) =>
   api.post(`${BASE}/login`, payload);
 
+export const logout = () =>
+  api.post(`${BASE}/logout`);
+
 export const googleLogin = (token) =>
   api.post(`${BASE}/oauth/google`, { token });
 

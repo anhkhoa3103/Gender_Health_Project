@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import "../style/Appoinments.css";
+import "../style/Appoinments.css"
+
 
 
 const services = [
@@ -51,48 +52,33 @@ const services = [
   },
 ];
 
-export default function Appointments() {
+export default function Appointments_consultation() {
   const navigate = useNavigate();
   return (
-    <div className="dashboard">
-      <header>
-        <div className="location">📍 Location</div>
-        <div className="account-btn">My Account</div>
-      </header>
-      <h1>
-        <span className="blue">Gender Healthcare</span> <span className="purple">System</span>
-        <span className="project">for SWP Project</span>
-      </h1>
-      <nav>
-        <a href="#">Home</a>
-        <a href="#">About Us</a>
-        <a className="active" href="#">Service</a>
-        <a href="#">Blog</a>
-        <a href="#">Contact Us</a>
-      </nav>
-      <div className="stats">
+    <div className="dashboard_consultation">
+      <div className="stats_consultation">
         <div>
-          <div className="icon">👥</div>
+          <div className="icon_consultation">👥</div>
           <div>Total services</div>
-          <div className="stat-value">5</div>
+          <div className="stat-value_consultation">5</div>
         </div>
         <div>
-          <div className="icon">👤</div>
+          <div className="icon_consultation">👤</div>
           <div>Total hours of use</div>
-          <div className="stat-value">1.75</div>
+          <div className="stat-value_consultation">1.75</div>
         </div>
         <div>
-          <div className="icon">💻</div>
+          <div className="icon_consultation">💻</div>
           <div>Total amount spent</div>
-          <div className="stat-value">$290</div>
+          <div className="stat-value_consultation">$290</div>
         </div>
       </div>
-      <div className="service-table">
-        <div className="table-header">
-          <button className="filter-btn">⚲</button>
-          <input className="search" placeholder="Search..." />
+      <div className="service-table_consultation">
+        <div className="table-header_consultation">
+          <button className="filter-btn_consultation">⚲</button>
+          <input className="search_consultation" placeholder="Search..." />
         </div>
-        <table>
+        <table className="consultation">
           <thead>
             <tr>
               <th>ID</th>
@@ -108,27 +94,31 @@ export default function Appointments() {
           </thead>
           <tbody>
             {services.map((s) => (
-              <tr key={s.id}>
+              <tr key={s.id} className="consultation">
                 <td>{s.id}</td>
                 <td>{s.name}</td>
                 <td>{s.desc}</td>
-<td>{s.type}</td>
+                <td>{s.type}</td>
                 <td>{s.time}</td>
                 <td>{s.price}</td>
                 <td>
-                  <img className="avatar" src={s.consultant.img} alt="" />
+                  <img
+                    className="avatar_consultation"
+                    src={s.consultant.img}
+                    alt=""
+                  />
                   {s.consultant.name}
                 </td>
                 <td>
-                  <button className="detail-btn">DETAIL</button>
+                  <button className="detail-btn_consultation">DETAIL</button>
                 </td>
                 <td>
                   <button
-            className="cta-button"
-            onClick={() => navigate("/feedback")}
-          >
-            Feeback
-          </button>
+                    className="cta-button_consultation"
+                    onClick={() => navigate("/feedback")}
+                  >
+                    Feeback
+                  </button>
                 </td>
               </tr>
             ))}

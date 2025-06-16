@@ -1,12 +1,11 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import "../style/BookingSuccess.css";
 import { CheckCircle } from 'react-feather';
+import "../style/BookingSuccess.css"
 
-const BookingSuccess = () => {
+const BookingSuccess_consultation = () => {
   const navigate = useNavigate();
 
-  // Dummy data - bạn có thể thay bằng dữ liệu từ state hoặc API
   const bookingData = {
     id: 1,
     name: "John Cena",
@@ -17,27 +16,15 @@ const BookingSuccess = () => {
   };
 
   return (
-    <div className="booking-success-container">
-      <header className="success-header">
-        <h1>Gender Healthcare System</h1>
-        <p>for SMP Project</p>
-        <nav className="nav-menu">
-          <a href="#">Name</a>
-          <a href="#">About Us</a>
-          <a href="#">Services</a>
-          <a href="#">Blog</a>
-          <a href="#">Contact Us</a>
-        </nav>
-      </header>
-
-      <div className="success-content">
-        <div className="success-message">
-          <CheckCircle size={48} className="success-icon" />
+    <div className="booking-success-container_consultation">
+      <div className="success-content_consultation">
+        <div className="success-message_consultation">
+          <CheckCircle size={48} className="success-icon_consultation" />
           <h2>Booking Successful</h2>
         </div>
 
-        <div className="booking-details">
-          <table className="booking-table">
+        <div className="booking-details_consultation">
+          <table className="booking-table_consultation">
             <thead>
               <tr>
                 <th>S.NO</th>
@@ -53,16 +40,17 @@ const BookingSuccess = () => {
                 <td>{bookingData.name}</td>
                 <td>{bookingData.service}</td>
                 <td>{bookingData.date} {bookingData.time}</td>
-                <td className={`status ${bookingData.status.toLowerCase()}`}>
+                <td className={`status_consultation ${bookingData.status.toLowerCase()}`}>
                   {bookingData.status}
                 </td>
                 <td style={{ textAlign: 'center', backgroundColor: 'red', borderRadius: '15px' }}>
-                    <button style={{ backgroundColor: 'red', color: 'white', borderRadius: '15px' }}
-                        onClick={() => navigate('/consultation')}
-                        className="book-again-btn"
-                    >
-                       Cancel
-                    </button>
+                  <button 
+                    style={{ backgroundColor: 'red', color: 'white', borderRadius: '15px' }}
+                    onClick={() => navigate('/consultation')}
+                    className="book-again-btn_consultation"
+                  >
+                    Cancel
+                  </button>
                 </td>
               </tr>
             </tbody>
@@ -71,7 +59,7 @@ const BookingSuccess = () => {
 
         <button 
           onClick={() => navigate('/appointments')}
-          className="view-appointment-btn"
+          className="view-appointment-btn_consultation"
         >
           View your appointment
         </button>
@@ -80,4 +68,4 @@ const BookingSuccess = () => {
   );
 };
 
-export default BookingSuccess;
+export default BookingSuccess_consultation;

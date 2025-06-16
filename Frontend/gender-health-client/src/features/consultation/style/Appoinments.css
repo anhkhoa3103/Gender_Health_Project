@@ -1,26 +1,8 @@
-.dashboard {
+.dashboard_consultation {
   font-family: 'Segoe UI', Arial, sans-serif;
   background: #f8fbff;
   min-height: 100vh;
   padding-bottom: 40px;
-}
-header {
-  display: flex;
-  justify-content: space-between;
-  padding: 16px 32px 0 32px;
-  align-items: center;
-}
-.location {
-  color: #888;
-  font-size: 16px;
-}
-.account-btn {
-  background: #aef0ff;
-  color: #fff;
-  border-radius: 20px;
-  padding: 8px 20px;
-  font-weight: 500;
-  cursor: pointer;
 }
 h1 {
   text-align: center;
@@ -28,33 +10,16 @@ h1 {
   font-size: 2.2rem;
   font-weight: 700;
 }
-.blue { color: #7ed6df; }
-.purple { color: #a29bfe; }
-.project {
+.blue_consultation { color: #7ed6df; }
+.purple_consultation { color: #a29bfe; }
+.project_consultation {
   display: block;
   font-size: 1rem;
   color: #b2bec3;
   font-weight: 400;
 }
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 32px;
-  margin-bottom: 24px;
-}
-nav a {
-  color: #222;
-  text-decoration: none;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 6px;
-  transition: background 0.2s;
-}
-nav a.active, nav a:hover {
-  background: #aef0ff;
-  color: #fff;
-}
-.stats {
+
+.stats_consultation {
   display: flex;
   justify-content: center;
   gap: 60px;
@@ -65,20 +30,20 @@ nav a.active, nav a:hover {
   padding: 32px 0;
   max-width: 900px;
 }
-.stats > div {
+.stats_consultation > div {
   text-align: center;
   min-width: 180px;
 }
-.icon {
+.icon_consultation {
   font-size: 2.2rem;
   margin-bottom: 8px;
 }
-.stat-value {
+.stat-value_consultation {
   font-size: 1.7rem;
   font-weight: 700;
   margin-top: 4px;
 }
-.service-table {
+.service-table_consultation {
   background: #fff;
   border-radius: 18px;
   box-shadow: 0 2px 16px #e3eafc;
@@ -86,12 +51,12 @@ nav a.active, nav a:hover {
   margin: 0 auto;
   padding: 24px 24px 32px 24px;
 }
-.table-header {
+.table-header_consultation {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
 }
-.filter-btn {
+.filter-btn_consultation {
   background: #f2f6fa;
   border: none;
   font-size: 1.2rem;
@@ -100,7 +65,7 @@ nav a.active, nav a:hover {
   margin-right: 12px;
   cursor: pointer;
 }
-.search {
+.search_consultation {
   flex: 1;
   padding: 8px 16px;
   border-radius: 8px;
@@ -108,7 +73,7 @@ nav a.active, nav a:hover {
   background: #f2f6fa;
   font-size: 1rem;
 }
-table {
+table_consultation {
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
@@ -126,7 +91,7 @@ th {
 tr:not(:last-child) {
   border-bottom: 1px solid #f2f6fa;
 }
-.avatar {
+.avatar_consultation {
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -134,7 +99,7 @@ tr:not(:last-child) {
   margin-right: 8px;
   vertical-align: middle;
 }
-.detail-btn {
+.detail-btn_consultation {
   background: #27ae60;
   color: #fff;
   border: none;
@@ -144,10 +109,10 @@ tr:not(:last-child) {
   cursor: pointer;
   transition: background 0.2s;
 }
-.detail-btn:hover {
+.detail-btn_consultation:hover {
   background: #219150;
 }
-.feedback-btn {
+.feedback-btn_consultation {
   background: #aef0ff;
   color: #fff;
   border: none;
@@ -157,6 +122,6 @@ tr:not(:last-child) {
   cursor: pointer;
   transition: background 0.2s;
 }
-.feedback-btn:hover {
+.feedback-btn_consultation:hover {
   background: #7ed6df;
 }

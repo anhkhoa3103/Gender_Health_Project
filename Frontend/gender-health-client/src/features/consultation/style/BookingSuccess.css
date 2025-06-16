@@ -1,45 +1,28 @@
-/* BookingSuccess.css */
-.booking-success-container {
+/* BookingSuccess_consultation.css */
+.booking-success-container_consultation {
   max-width: 1000px;
   margin: 0 auto;
   padding: 2rem;
   font-family: 'Arial', sans-serif;
 }
 
-.success-header {
+.success-header_consultation {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.success-header h1 {
+.success-header_consultation h1 {
   font-size: 2rem;
   color: #333;
   margin-bottom: 0.5rem;
 }
 
-.success-header p {
+.success-header_consultation p {
   color: #666;
   margin-bottom: 1.5rem;
 }
 
-.nav-menu {
-  display: flex;
-  justify-content: center;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.nav-menu a {
-  color: #4f46e5;
-  text-decoration: none;
-  font-weight: 500;
-}
-
-.nav-menu a:hover {
-  text-decoration: underline;
-}
-
-.success-content {
+.success-content_consultation {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -47,49 +30,49 @@
   text-align: center;
 }
 
-.success-message {
+.success-message_consultation {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-bottom: 2rem;
 }
 
-.success-icon {
+.success-icon_consultation {
   color: #10b981;
   margin-bottom: 1rem;
 }
 
-.success-message h2 {
+.success-message_consultation h2 {
   font-size: 1.5rem;
   color: #333;
   margin: 0;
 }
 
-.booking-details {
+.booking-details_consultation {
   margin: 2rem 0;
   overflow-x: auto;
 }
 
-.booking-table {
+.booking-table_consultation {
   width: 100%;
   border-collapse: collapse;
   margin: 0 auto;
 }
 
-.booking-table th, 
-.booking-table td {
+.booking-table_consultation th, 
+.booking-table_consultation td {
   padding: 0.75rem 1rem;
   text-align: left;
   border-bottom: 1px solid #eee;
 }
 
-.booking-table th {
+.booking-table_consultation th {
   background-color: #f9fafb;
   font-weight: 600;
   color: #4b5563;
 }
 
-.status {
+.status_consultation {
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
@@ -97,17 +80,17 @@
   text-transform: uppercase;
 }
 
-.status.done {
+.status_consultation.done {
   background-color: #d1fae5;
   color: #065f46;
 }
 
-.status.pending {
+.status_consultation.pending {
   background-color: #fef3c7;
   color: #92400e;
 }
 
-.view-appointment-btn {
+.view-appointment-btn_consultation {
   display: inline-block;
   padding: 0.75rem 1.5rem;
   background-color: #4f46e5;
@@ -120,7 +103,7 @@
   transition: background-color 0.3s;
 }
 
-.view-appointment-btn:hover {
+.view-appointment-btn_consultation:hover {
   background-color: #4338ca;
 }
 
@@ -131,7 +114,7 @@
     gap: 1rem;
   }
   
-  .booking-table {
+  .booking-table_consultation {
     display: block;
   }
 }

@@ -30,7 +30,7 @@ function RegisterPage() {
     try {
       const res = await axios.post("http://localhost:8080/api/auth/register", form);
       alert(res.data);
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       alert("Đăng ký thất bại");
     }
@@ -84,7 +84,7 @@ function RegisterPage() {
 
         <hr />
         <p className="login-link">
-          Đã có tài khoản? <span onClick={() => navigate("/")}>Quay lại đăng nhập</span>
+          Đã có tài khoản? <span onClick={() => navigate("/login")}>Quay lại đăng nhập</span>
         </p>
       </div>
     </div>

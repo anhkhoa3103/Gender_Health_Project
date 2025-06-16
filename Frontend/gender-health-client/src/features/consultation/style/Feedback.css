@@ -1,5 +1,5 @@
-/* Feedback.css */
-.feedback-container {
+/* Feedback_consultation.css */
+.feedback-container_consultation {
   max-width: 800px;
   margin: 0 auto;
   padding: 2rem;
@@ -7,86 +7,86 @@
   color: #333;
 }
 
-.feedback-header {
+.feedback-header_consultation {
   text-align: center;
   margin-bottom: 2rem;
 }
 
-.feedback-header h1 {
+.feedback-header_consultation h1 {
   font-size: 2rem;
   margin-bottom: 0.5rem;
   color: #4f46e5;
 }
 
-.feedback-header p {
+.feedback-header_consultation p {
   color: #666;
 }
 
-.feedback-content {
+.feedback-content_consultation {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   padding: 2rem;
 }
 
-.feedback-thanks {
+.feedback-thanks_consultation {
   text-align: center;
   margin-bottom: 1.5rem;
 }
 
-.feedback-thanks h2 {
+.feedback-thanks_consultation h2 {
   font-size: 1.5rem;
   color: #333;
 }
 
-.feedback-subtitle {
+.feedback-subtitle_consultation {
   font-size: 1rem;
   color: #666;
   font-style: italic;
 }
 
-.divider {
+.divider_consultation {
   height: 1px;
   background-color: #eee;
   margin: 1.5rem 0;
 }
 
-.feedback-contact h3 {
+.feedback-contact_consultation h3 {
   font-size: 1.25rem;
   margin-bottom: 1rem;
   color: #4f46e5;
 }
 
-.contact-description {
+.contact-description_consultation {
   color: #666;
   line-height: 1.6;
 }
 
-.feedback-details {
+.feedback-details_consultation {
   margin: 1.5rem 0;
 }
 
-.detail-item {
+.detail-item_consultation {
   display: flex;
   margin-bottom: 1rem;
   align-items: center;
 }
 
-.detail-item.message-box {
+.detail-item_consultation.message-box_consultation {
   align-items: flex-start;
 }
 
-.detail-label {
+.detail-label_consultation {
   font-weight: 600;
   width: 120px;
   color: #444;
 }
 
-.detail-value {
+.detail-value_consultation {
   flex: 1;
 }
 
-.feedback-textarea {
+.feedback-textarea_consultation {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid #ddd;
@@ -96,14 +96,14 @@
   font-family: inherit;
 }
 
-.feedback-buttons {
+.feedback-buttons_consultation {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
   margin-top: 2rem;
 }
 
-.cancel-btn, .submit-btn {
+.cancel-btn_consultation, .submit-btn_consultation {
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 4px;
@@ -112,41 +112,41 @@
   transition: all 0.3s;
 }
 
-.cancel-btn {
+.cancel-btn_consultation {
   background-color: #fee2e2;
   color: #dc2626;
 }
 
-.cancel-btn:hover {
+.cancel-btn_consultation:hover {
   background-color: #fecaca;
 }
 
-.submit-btn {
+.submit-btn_consultation {
   background-color: #4f46e5;
   color: white;
 }
 
-.submit-btn:hover {
+.submit-btn_consultation:hover {
   background-color: #4338ca;
 }
 
-.feedback-footer {
+.feedback-footer_consultation {
   display: flex;
   justify-content: space-between;
   margin-top: 2rem;
 }
 
-.office-info {
+.office-info_consultation {
   flex: 1;
 }
 
-.office-info h4 {
+.office-info_consultation h4 {
   font-size: 1rem;
   margin-bottom: 0.5rem;
   color: #444;
 }
 
-.office-info p {
+.office-info_consultation p {
   color: #666;
   margin: 0.25rem 0;
   font-size: 0.9rem;
@@ -154,21 +154,21 @@
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .feedback-footer {
+  .feedback-footer_consultation {
     flex-direction: column;
     gap: 1.5rem;
   }
   
-  .feedback-buttons {
+  .feedback-buttons_consultation {
     justify-content: center;
   }
   
-  .detail-item {
+  .detail-item_consultation {
     flex-direction: column;
     align-items: flex-start;
   }
   
-  .detail-label {
+  .detail-label_consultation {
     margin-bottom: 0.25rem;
     width: auto;
   }

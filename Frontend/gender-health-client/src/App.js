@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { AuthProvider } from "./context/AuthContext";
+
 
 // Auth
 import Login from "./features/auth/pages/LoginPage";
@@ -24,7 +26,7 @@ import Feedback from './features/consultation/page/Feedback';
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId="866435222285-ifhi75knei1ai0450jlph4ui9s2slmu4.apps.googleusercontent.com">
+    <AuthProvider>
       <BrowserRouter>
         <Routes>
           {/* Auth routes */}
@@ -48,7 +50,7 @@ function App() {
           <Route path="/feedback" element={<Feedback />} />
         </Routes>
       </BrowserRouter>
-    </GoogleOAuthProvider>
+    </AuthProvider>
   );
 }
 

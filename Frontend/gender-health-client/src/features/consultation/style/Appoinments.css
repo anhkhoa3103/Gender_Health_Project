@@ -1,127 +1,96 @@
-.dashboard_consultation {
-  font-family: 'Segoe UI', Arial, sans-serif;
-  background: #f8fbff;
+.booking-success-container_hisconsultation {
+  padding: 40px;
+  background-color: #f9f9f9;
   min-height: 100vh;
-  padding-bottom: 40px;
-}
-h1 {
-  text-align: center;
-  margin: 24px 0 8px 0;
-  font-size: 2.2rem;
-  font-weight: 700;
-}
-.blue_consultation { color: #7ed6df; }
-.purple_consultation { color: #a29bfe; }
-.project_consultation {
-  display: block;
-  font-size: 1rem;
-  color: #b2bec3;
-  font-weight: 400;
+  margin-top: 200px;
 }
 
-.stats_consultation {
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  margin: 0 auto 32px auto;
-  background: #fff;
-  border-radius: 24px;
-  box-shadow: 0 2px 16px #e3eafc;
-  padding: 32px 0;
-  max-width: 900px;
-}
-.stats_consultation > div {
-  text-align: center;
-  min-width: 180px;
-}
-.icon_consultation {
-  font-size: 2.2rem;
-  margin-bottom: 8px;
-}
-.stat-value_consultation {
-  font-size: 1.7rem;
-  font-weight: 700;
-  margin-top: 4px;
-}
-.service-table_consultation {
-  background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 2px 16px #e3eafc;
-  max-width: 1100px;
+.success-content_hisconsultation {
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 24px 24px 32px 24px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.05);
+  padding: 30px;
 }
-.table-header_consultation {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
+
+.success-message_hisconsultation {
+  text-align: center;
+  margin-bottom: 20px;
 }
-.filter-btn_consultation {
-  background: #f2f6fa;
-  border: none;
-  font-size: 1.2rem;
-  border-radius: 8px;
-  padding: 8px 12px;
-  margin-right: 12px;
-  cursor: pointer;
+
+.success-icon_hisconsultation {
+  color: #10b981;
 }
-.search_consultation {
-  flex: 1;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid #e3eafc;
-  background: #f2f6fa;
-  font-size: 1rem;
+
+.booking-details_hisconsultation {
+  overflow-x: auto;
 }
-table_consultation {
+
+.booking-table_hisconsultation {
   width: 100%;
   border-collapse: collapse;
-  font-size: 1rem;
+  font-size: 15px;
+  margin-top: 20px;
 }
-th, td {
-  padding: 12px 8px;
-  text-align: left;
+
+.booking-table_hisconsultation th,
+.booking-table_hisconsultation td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
 }
-th {
-  color: #888;
-  font-weight: 600;
-  font-size: 0.98rem;
-  border-bottom: 2px solid #f2f6fa;
+
+.booking-table_hisconsultation th {
+  background-color: #f4f6fa;
+  color: #333;
 }
-tr:not(:last-child) {
-  border-bottom: 1px solid #f2f6fa;
+
+.status_hisconsultation.pending {
+  color: #f59e0b;
+  font-weight: bold;
 }
-.avatar_consultation {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 8px;
-  vertical-align: middle;
+
+.status_hisconsultation.done {
+  color: #10b981;
+  font-weight: bold;
 }
-.detail-btn_consultation {
-  background: #27ae60;
-  color: #fff;
+
+.status_hisconsultation.cancelled {
+  color: #ef4444;
+  font-weight: bold;
+}
+
+.cancel-appointment-btn_hisconsultation {
+  background-color: #ef4444;
+  color: white;
   border: none;
-  border-radius: 18px;
-  padding: 8px 22px;
-  font-weight: 500;
+  border-radius: 8px;
+  padding: 8px 14px;
   cursor: pointer;
-  transition: background 0.2s;
 }
-.detail-btn_consultation:hover {
-  background: #219150;
-}
-.feedback-btn_consultation {
-  background: #aef0ff;
-  color: #fff;
+
+.feedback-btn_hisconsultation {
+  background-color: #3b82f6;
+  color: white;
   border: none;
-  border-radius: 18px;
-  padding: 8px 22px;
-  font-weight: 500;
+  border-radius: 8px;
+  padding: 8px 14px;
   cursor: pointer;
-  transition: background 0.2s;
 }
-.feedback-btn_consultation:hover {
-  background: #7ed6df;
+
+.view-appointment-btn_hisconsultation {
+  margin-top: 24px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.view-appointment-btn_hisconsultation:hover,
+.cancel-appointment-btn_hisconsultation:hover,
+.feedback-btn_hisconsultation:hover {
+  opacity: 0.9;
 }

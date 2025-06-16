@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
 import { getConsultants, getAllSlot, getAvailableSlots } from "../../../api/consultationApi";
 import HeaderSession from "../../components/Header";
 import FooterSession from "../../home/sessions/FooterSession";
 import "../style/ConsultationBooking.css"
 import "../style/Last.css"
+import { AuthContext } from '../../../context/AuthContext';
 
 const HealthcareWebsite_consultation = () => {
   const [animatedCards, setAnimatedCards] = useState(false);
@@ -16,6 +17,13 @@ const HealthcareWebsite_consultation = () => {
   const [allSlots, setAllSlots] = useState([]);
   const [availableSlots, setAvailableSlots] = useState([]);
   const [selectedConsultant, setSelectedConsultant] = useState(null);
+  const [selectedSlotId, setSelectedSlotId] = useState(null);
+  const { user } = useContext(AuthContext);
+  const userId = user?.id;
+  const [selectedWorkslotId, setSelectedWorkslotId] = useState(null);
+  const [availableWorkslots, setAvailableWorkslots] = useState([]);
+
+
 
 
   const [feedbacks, setFeedbacks] = useState([
@@ -64,8 +72,10 @@ const HealthcareWebsite_consultation = () => {
       const isoDate = formatDateISO(currentYear, currentMonth, selectedDate);
       getAvailableSlots(selectedConsultant.userId, isoDate)
         .then(res => {
-          const availableSlotIds = res.data.map(ws => ws.slotId);
+          const data = res.data;
+          const availableSlotIds = data.map(ws => ws.slotId);
           setAvailableSlots(availableSlotIds);
+          setAvailableWorkslots(data);
           setSelectedTime(null); // reset giờ chọn khi ngày hoặc consultant đổi
         })
         .catch(console.error);
@@ -152,6 +162,8 @@ const HealthcareWebsite_consultation = () => {
       consultant: selectedConsultant,
       date: selectedDate,
       time: selectedTime,
+      slotId: selectedSlotId,
+      workslotId: selectedWorkslotId,
       year: currentYear,
       month: currentMonth
     };
@@ -205,12 +217,6 @@ const HealthcareWebsite_consultation = () => {
                 <p className="main-description_consultation">
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                 </p>
-                <button
-                  className="cta-button_consultation"
-                  onClick={() => navigate("/bookappointment")}
-                >
-                  Book Appointment
-                </button>
               </div>
 
               {/* Consultant Cards - hiển thị từ dữ liệu backend */}
@@ -281,7 +287,7 @@ const HealthcareWebsite_consultation = () => {
           <div>
             <button
               className="cta-button_consultation"
-              onClick={() => navigate("/appointments")}
+              onClick={() => navigate(`/bookingsuccess/${userId}`)}
             >
               HistoryBooking
             </button>
@@ -352,7 +358,14 @@ const HealthcareWebsite_consultation = () => {
                         <button
                           key={slot.slotId}
                           disabled={!isAvailable}
-                          onClick={() => isAvailable && handleTimeSelect(formatTime(slot.startTime))}
+                          onClick={() => {
+                            if (isAvailable) {
+                              const ws = availableWorkslots.find(w => w.slotId === slot.slotId);
+                              handleTimeSelect(formatTime(slot.startTime));
+                              setSelectedSlotId(slot.slotId);
+                              setSelectedWorkslotId(ws?.workslotId);
+                            }
+                          }}
                           className={`p-3 text-sm rounded-lg border transition-colors ${selectedTime === formatTime(slot.startTime)
                             ? 'bg-blue-600 text-white border-blue-600'
                             : isAvailable

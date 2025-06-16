@@ -86,8 +86,24 @@
 }
 
 .status_consultation.pending {
-  background-color: #fef3c7;
   color: #92400e;
+}
+
+.cancel-appointment-btn_consultation {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background-color: red;
+  color: white;
+  border: none;
+  border-radius: 15px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.cancel-appointment-btn_consultation:hover {
+  background-color: #b91c1c;
 }
 
 .view-appointment-btn_consultation {

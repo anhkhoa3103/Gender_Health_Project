@@ -17,3 +17,12 @@ export const getAllSlot = () => api.get(`${BASE_CONSULTATION}/slots`);
 /** Tạo lịch hẹn mới */
 export const createAppointment = (data) =>
   api.post(BASE_APPOINTMENTS, data);
+
+/** Lấy lịch hẹn theo ID */
+export const getUserAppointments = (userId) =>
+  api.get(`${BASE_APPOINTMENTS}/user/${userId}`);
+
+
+/** Lấy lịch hẹn theo ID */
+export const cancelAppointment = (appointmentId) =>
+  api.put(`/api/appointments/${appointmentId}/cancel`);

@@ -35,6 +35,15 @@ const Homepage = () => {
       navigate("/consultation");
     }
   };
+  
+  const handleClickSTI = () => {
+    if (!userId) {
+      setShowLoginPrompt(true);
+    } else {
+      prompt("STI Testing is currently under development. Please check back later.");
+      // navigate("/sti");
+    }
+  };
 
 
   return (
@@ -79,7 +88,9 @@ const Homepage = () => {
                 </p>
               </div>
 
-              <div className="service-card sti-card">
+              <div className="service-card sti-card"
+              onClick={handleClickSTI}
+              style={{ cursor: "pointer" }}>
                 <div className="icon sti-icon" />
                 <h3>STI Testing</h3>
                 <p>

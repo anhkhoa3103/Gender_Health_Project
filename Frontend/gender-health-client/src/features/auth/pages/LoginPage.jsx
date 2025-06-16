@@ -100,6 +100,7 @@ function LoginPage() {
           <GoogleLogin
             onSuccess={handleGoogleLogin}
             onError={() => alert("Google Login Failed")}
+             useOneTap={false}
           />
         </div>
 

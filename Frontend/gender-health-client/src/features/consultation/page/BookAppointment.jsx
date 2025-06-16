@@ -11,7 +11,7 @@ const BookAppointment_consultation = () => {
   const navigate = useNavigate();
 
   // Lấy data từ state khi chuyển qua trang này
-  const { consultant, date, time, year, month } = location.state || {};
+  const { consultant, date, time, slotId, workslotId , year, month } = location.state || {};
   const { user } = useContext(AuthContext);
   const userId = user?.id;
 
@@ -40,13 +40,20 @@ const BookAppointment_consultation = () => {
     }
 
     const appointmentDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
+    console.log('customerId:', userId);
+    console.log('consultantId:', consultant.userId);
+    console.log('workslotId:', slotId);
 
+    if (!workslotId) {
+      alert("Invalid timeslot selected. Please go back and choose again.");
+      return;
+    }
     const appointmentPayload = {
       customerId: String(userId),
       consultantId: String(consultant.userId),
       appointmentDate,
       status: "PENDING",
-      workslotId: null, // set nếu có slot cụ thể
+      workslotId: workslotId,
       name: fullName.trim(),
       phoneNumber: phone.trim(),
       note: note.trim(),
@@ -57,7 +64,7 @@ const BookAppointment_consultation = () => {
     try {
       await createAppointment(appointmentPayload);
       alert('Booking successful!');
-      navigate('/');  // Chuyển về trang Home sau khi đặt lịch thành công
+      navigate('/bookingsuccess');  // Chuyển về trang Home sau khi đặt lịch thành công
     } catch (error) {
       console.error('Booking failed:', error);
       alert('Booking failed. Please try again later.');
@@ -76,6 +83,8 @@ const BookAppointment_consultation = () => {
         <p><strong>Consultant:</strong> {consultant.fullName || consultant.name}</p>
         <p><strong>Date:</strong> {date} {monthNames[month]} {year}</p>
         <p><strong>Time:</strong> {time}</p>
+        <p><strong>Workslot id:</strong> {workslotId}</p>
+        <p><strong>Slot id:</strong> {slotId}</p>
       </div>
 
       <form className="book-appointment-form_consultation" onSubmit={handleSubmit}>

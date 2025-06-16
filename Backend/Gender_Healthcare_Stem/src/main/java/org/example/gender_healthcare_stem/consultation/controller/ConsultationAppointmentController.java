@@ -30,5 +30,11 @@ public class ConsultationAppointmentController {
         ConsultationAppointment saved = appointmentService.saveAppointment(request);
         return ResponseEntity.ok(saved);
     }
+
+    @GetMapping("/user/{customerId}")
+    public ResponseEntity<List<ConsultationAppointment>> getAppointmentsByCustomer(@PathVariable Long customerId) {
+        List<ConsultationAppointment> appointments = appointmentService.findByCustomerId(customerId);
+        return ResponseEntity.ok(appointments);
+    }
 }
 

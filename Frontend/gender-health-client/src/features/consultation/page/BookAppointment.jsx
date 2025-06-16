@@ -1,8 +1,10 @@
 import api from '../../../api/axios';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { createAppointment } from '../../../api/consultationApi';
 import "../style/BookAppointment.css";
+import { AuthContext } from '../../../context/AuthContext';
+
 
 const BookAppointment_consultation = () => {
   const location = useLocation();
@@ -10,7 +12,8 @@ const BookAppointment_consultation = () => {
 
   // Lấy data từ state khi chuyển qua trang này
   const { consultant, date, time, year, month } = location.state || {};
-  const userId = localStorage.getItem("userId") || null;
+  const { user } = useContext(AuthContext);
+  const userId = user?.id;
 
   const [fullName, setFullName] = useState('');
   const [phone, setPhone] = useState('');

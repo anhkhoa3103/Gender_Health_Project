@@ -1,0 +1,58 @@
+.sidebar_management {
+  width: 240px;
+  background-color: #ffffff;
+  padding: 20px;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  height: 100vh;
+}
+
+.logo_management {
+  font-size: 22px;
+  margin-bottom: 30px;
+}
+
+.highlight_management {
+  color: #d45a4a;
+}
+
+.menu_management {
+  list-style: none;
+  padding: 0;
+  font-weight: 500;
+}
+
+.menu_management li {
+  padding: 10px 0;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.menu_management li:hover {
+  background-color: #f3f3f3;
+  padding-left: 5px;
+}
+
+.menu_management {
+  list-style: none;
+  padding: 0;
+  font-weight: 500;
+}
+
+.menu-item_management {
+  padding: 10px 0;
+  cursor: pointer;
+  padding-left: 10px;
+  border-radius: 6px;
+  transition: background 0.2s ease;
+}
+
+.menu-item_management:hover {
+  background-color: #f3f3f3;
+}
+
+.active_management {
+  background-color: #e0e7ff;
+  color: #333;
+  font-weight: bold;
+}
+

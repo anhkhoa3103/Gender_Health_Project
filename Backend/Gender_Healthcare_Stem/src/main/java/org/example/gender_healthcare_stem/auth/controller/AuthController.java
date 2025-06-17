@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -54,5 +55,16 @@ public class AuthController {
         return ResponseEntity.ok("Logout successful");
     }
 
+    @PostMapping("/login/management")
+    public ResponseEntity<?> loginManagement(@RequestBody LoginRequest req) {
+        LoginResponse resp = authService.login(req);
+
+        // Chỉ cho phép các role thuộc nhóm quản lý
+        if (!List.of("ADMIN", "STAFF", "CONSULTANT").contains(resp.getRole().toUpperCase())) {
+            return ResponseEntity.status(403).body("Bạn không có quyền truy cập khu vực quản lý.");
+        }
+
+        return ResponseEntity.ok(resp);
+    }
 
 }

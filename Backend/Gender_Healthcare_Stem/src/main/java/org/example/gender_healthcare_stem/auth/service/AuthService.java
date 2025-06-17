@@ -75,7 +75,7 @@ public class AuthService {
                 .map(u -> {
                     createCustomerIfAbsent(u);
 
-                    String jwt = jwtService.generate(u.getId());
+                    String jwt = jwtService.generate(u.getId(), u.getRole());
                     return new LoginResponse(u.getId(), u.getRole(), jwt);
                 })
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
@@ -119,7 +119,7 @@ public class AuthService {
             });
 
             createCustomerIfAbsent(user);
-            String jwt = jwtService.generate(user.getId());
+            String jwt = jwtService.generate(user.getId(), user.getRole());
             return new LoginResponse(user.getId(), user.getRole(), jwt);
 
         } catch (Exception e) {

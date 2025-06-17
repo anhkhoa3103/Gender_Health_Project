@@ -1,3 +1,5 @@
+// src/api/auth.js hoặc ./api/authApi.js
+
 import api from "./axios";
 
 const BASE = "/api/auth";
@@ -7,6 +9,9 @@ export const register = (payload) =>
 
 export const login = (payload) =>
   api.post(`${BASE}/login`, payload);
+
+export const loginManagement = (payload) =>
+  api.post(`${BASE}/login/management`, payload);
 
 export const logout = () =>
   api.post(`${BASE}/logout`);

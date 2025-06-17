@@ -10,21 +10,26 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    private static final long   EXP_MS = 1000 * 60 * 60 * 24;      // 24h
+    private static final long EXP_MS = 1000 * 60 * 60 * 24;      // 24h
     private static final String SECRET = "s3cretKey123456789012345678901234567890"; // ≥32 ký tự
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    /** Sinh token, subject = userId */
-    public String generate(Long userId) {
+    /**
+     * Sinh token, subject = userId
+     */
+    public String generate(Long userId, String role) {
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
+                .claim("role", role)  // ✅ thêm role vào payload
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXP_MS))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    /** Lấy userId từ token (null nếu lỗi) */
+    /**
+     * Lấy userId từ token (null nếu lỗi)
+     */
     public Long extractUserId(String token) {
         try {
             String sub = Jwts.parserBuilder().setSigningKey(key).build()
@@ -35,8 +40,24 @@ public class JwtService {
         }
     }
 
-    /** Kiểm tra hợp lệ & chưa hết hạn */
+    /**
+     * Kiểm tra hợp lệ & chưa hết hạn
+     */
     public boolean isValid(String token) {
         return extractUserId(token) != null;
     }
+
+    public String extractRole(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .get("role", String.class);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
 }

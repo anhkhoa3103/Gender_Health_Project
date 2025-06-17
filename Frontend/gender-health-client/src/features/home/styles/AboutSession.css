@@ -96,7 +96,7 @@
   flex: 1;
   height: 600px;
   border-radius: 180px 180px 0 0;
-  background-image: url('C:\Users\ejeja\Code\Gender_Health_System\Frontend\gender-health-client\src\features\img\doctormain.png');
+  background-image: url('../../img/doctormain.png'); /* Đổi absolute path thành relative path */
   background-size: cover;
   background-position: center;
   box-shadow: 0 0 25px rgba(100, 84, 240, 0.5);

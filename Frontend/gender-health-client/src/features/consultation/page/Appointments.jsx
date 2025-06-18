@@ -71,6 +71,7 @@ const Appointments = () => {
                   <th>Name</th>
                   <th>Date</th>
                   <th>Time</th>
+                  <th>Meet Link</th>
                   <th>Status</th>
                   <th>Action</th>
                 </tr>
@@ -82,6 +83,19 @@ const Appointments = () => {
                     <td>{a.name}</td>
                     <td>{a.appointmentDate}</td>
                     <td>{getSlotTime(a.workslotId)}</td>
+                    <td className="meet-link_consultation">
+                      {a.consultant?.meetLink ? (
+                        <a
+                          href={a.consultant.meetLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                        >
+                          Join
+                        </a>
+                      ) : (
+                        <span style={{ color: 'gray' }}>N/A</span>
+                      )}
+                    </td>
                     <td className={`status_hisconsultation ${a.status.toLowerCase()}`}>
                       {a.status}
                     </td>

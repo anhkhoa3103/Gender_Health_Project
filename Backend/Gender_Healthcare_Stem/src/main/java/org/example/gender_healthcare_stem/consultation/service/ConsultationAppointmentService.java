@@ -1,10 +1,13 @@
 package org.example.gender_healthcare_stem.consultation.service;
 
 import jakarta.transaction.Transactional;
+import org.example.gender_healthcare_stem.consultation.dto.ConsultationAppointmentDTO;
 import org.example.gender_healthcare_stem.consultation.dto.ConsultationAppointmentRequest;
 import org.example.gender_healthcare_stem.consultation.model.ConsultationAppointment;
+import org.example.gender_healthcare_stem.consultation.model.Slot;
 import org.example.gender_healthcare_stem.consultation.model.WorkSlot;
 import org.example.gender_healthcare_stem.consultation.repository.ConsultationAppointmentRepository;
+import org.example.gender_healthcare_stem.consultation.repository.SlotRepository;
 import org.example.gender_healthcare_stem.consultation.repository.WorkSlotRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,14 +18,17 @@ import java.util.Optional;
 public class ConsultationAppointmentService {
     private final ConsultationAppointmentRepository appointmentRepository;
     private final WorkSlotRepository workslotRepository;
+    private final SlotRepository slotRepository;
 
 
     public ConsultationAppointmentService(
             ConsultationAppointmentRepository appointmentRepository,
-            WorkSlotRepository workslotRepository
+            WorkSlotRepository workslotRepository,
+            SlotRepository slotRepository
     ) {
         this.appointmentRepository = appointmentRepository;
         this.workslotRepository = workslotRepository;
+        this.slotRepository = slotRepository;
     }
 
     public ConsultationAppointment save(ConsultationAppointment appointment) {
@@ -40,6 +46,33 @@ public class ConsultationAppointmentService {
     public List<ConsultationAppointment> findByCustomerId(Long customerId) {
         return appointmentRepository.findByCustomerId(customerId);
     }
+
+    public List<ConsultationAppointmentDTO> findByConsultantId(Long consultantId) {
+        List<ConsultationAppointment> appointments = appointmentRepository.findByConsultantId(consultantId);
+
+        return appointments.stream().map(appointment -> {
+            String timeRange = "";
+            if (appointment.getWorkslotId() != null) {
+                Optional<Slot> slotOpt = workslotRepository.findById(appointment.getWorkslotId())
+                        .flatMap(ws -> slotRepository.findById(ws.getSlotId()));
+                if (slotOpt.isPresent()) {
+                    Slot slot = slotOpt.get();
+                    timeRange = slot.getStartTime() + " - " + slot.getEndTime();
+                }
+            }
+
+            return ConsultationAppointmentDTO.builder()
+                    .consultationId(appointment.getConsultationId())
+                    .name(appointment.getName())
+                    .phoneNumber(appointment.getPhoneNumber())
+                    .appointmentDate(appointment.getAppointmentDate().toString())
+                    .timeRange(timeRange)
+                    .note(appointment.getNote())
+                    .status(appointment.getStatus())
+                    .build();
+        }).toList();
+    }
+
 
     @Transactional
     public ConsultationAppointment saveAppointment(ConsultationAppointmentRequest request) {

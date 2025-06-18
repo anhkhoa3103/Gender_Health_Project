@@ -31,6 +31,17 @@ import ManagementWelcome from "./features/admin/ManagementWelcome";
 import AdminDashboard from "./features/admin/AdminDashboard";
 import UserManagement from "./features/admin/UserManagerment";
 
+// Consultant
+import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
+import ConsultantAppointmentHistory from "./features/consultant/ConsultantAppointmentHistory";
+
+// Testing
+import Payments from "./features/testing/pages/Payments";
+import Packages from "./features/testing/pages/Packages";
+import PaymentSuccess from "./features/testing/pages/PaymentSuccess";
+import PaymentPageForPackage from "./features/testing/pages/PaymentsPackage";
+import StaffPage from "./features/testing/pages/staff";
+
 function App() {
   return (
     <AuthProvider>
@@ -56,6 +67,25 @@ function App() {
           <Route path="/bookappointment" element={<BookAppointment />} />
           <Route path="/bookingsuccess" element={<BookingSuccess />} />
           <Route path="/feedback" element={<Feedback />} />
+
+          {/* Testing routes */}
+          <Route path="/package" element={<Packages />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment" element={<Payments />} />
+          <Route path="/payment-package" element={<PaymentPageForPackage />} />
+          <Route path="/staff" element={<StaffPage />} />
+
+          {/* Consultant routes */}
+          <Route path="/consultant/workslots" element={
+            <RequireAuth allowedRoles={['consultant']}>
+              <WorkSlotPicker />
+            </RequireAuth>
+          } />
+          <Route path="/consultant/appointments" element={
+            <RequireAuth allowedRoles={['consultant']}>
+              <ConsultantAppointmentHistory />
+            </RequireAuth>
+          } />
 
           {/* Admin routes */}
           <Route path="/management/welcome" element={

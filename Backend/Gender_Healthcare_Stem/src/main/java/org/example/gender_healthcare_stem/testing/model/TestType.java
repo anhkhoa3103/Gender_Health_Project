@@ -1,4 +1,3 @@
-
 package org.example.gender_healthcare_stem.testing.model;
 
 import jakarta.persistence.*;

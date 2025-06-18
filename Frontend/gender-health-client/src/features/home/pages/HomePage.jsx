@@ -40,8 +40,7 @@ const Homepage = () => {
     if (!userId) {
       setShowLoginPrompt(true);
     } else {
-      prompt("STI Testing is currently under development. Please check back later.");
-      // navigate("/sti");
+      navigate("/package");
     }
   };
 

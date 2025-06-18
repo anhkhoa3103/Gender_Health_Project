@@ -287,7 +287,7 @@ const HealthcareWebsite_consultation = () => {
           <div>
             <button
               className="cta-button_consultation"
-              onClick={() => navigate(`/bookingsuccess/${userId}`)}
+              onClick={() => navigate('/appointments')}
             >
               HistoryBooking
             </button>

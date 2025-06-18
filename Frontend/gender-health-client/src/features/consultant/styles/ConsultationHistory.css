@@ -1,0 +1,28 @@
+.history-container_consultant {
+  padding: 20px;
+  background: #f9fafc;
+  border-radius: 8px;
+}
+
+.history-container_consultant h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.history-table_consultant {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.history-table_consultant th,
+.history-table_consultant td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.history-table_consultant th {
+  background-color: #f1f5f9;
+  font-weight: bold;
+}

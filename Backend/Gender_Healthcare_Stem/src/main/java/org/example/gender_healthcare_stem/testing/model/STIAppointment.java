@@ -21,7 +21,6 @@ public class STIAppointment {
     private Customer customer;
 
     @ManyToOne
-    @MapsId
     @JoinColumn(name = "staff_id") // references User.id
     private User staff;
 
@@ -29,7 +28,7 @@ public class STIAppointment {
     private String status; // "pending", "completed", etc. — could use enum wrapper
 
     @Column(name = "amount", nullable = false)
-    private BigDecimal amount;
+    private Double amount;
 
     // Getters and Setters
 
@@ -65,11 +64,12 @@ public class STIAppointment {
         this.status = status;
     }
 
-    public BigDecimal getAmount() {
+    public Double getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public void setAmount(Double amount) {
         this.amount = amount;
     }
 }
+

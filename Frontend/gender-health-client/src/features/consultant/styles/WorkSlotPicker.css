@@ -1,0 +1,62 @@
+/* Container chính */
+.workslot-container_consultantSlot {
+  padding: 24px;
+  max-width: 600px;
+  margin: auto;
+  background: #f8f9fb;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Tiêu đề */
+.workslot-title_consultantSlot {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: #333;
+  text-align: center;
+}
+
+/* Input ngày */
+.workslot-date_consultantSlot {
+  display: block;
+  margin-bottom: 20px;
+  padding: 8px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Slot list */
+.slot-list_consultantSlot {
+  margin-top: 20px;
+}
+
+/* Slot item */
+.slot-item_consultantSlot {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* Checkbox */
+.slot-checkbox_consultantSlot {
+  margin-right: 10px;
+}
+
+/* Nút lưu */
+.workslot-save_consultantSlot {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #4f8ef7;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.workslot-save_consultantSlot:hover {
+  background-color: #336ee0;
+}

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface ConsultationAppointmentRepository extends JpaRepository<ConsultationAppointment, Long> {
     List<ConsultationAppointment> findByCustomerId(Long customerId);
+
+    List<ConsultationAppointment> findByConsultantId(Long consultantId);
 }

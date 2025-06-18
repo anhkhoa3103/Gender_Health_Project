@@ -1,10 +1,7 @@
 package org.example.gender_healthcare_stem.testing.model;
 
 import jakarta.persistence.*;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-import org.example.gender_healthcare_stem.testing.model.TestType;
+
 @Entity
 @Table(name = "test_result_detail")
 public class TestResultDetail {

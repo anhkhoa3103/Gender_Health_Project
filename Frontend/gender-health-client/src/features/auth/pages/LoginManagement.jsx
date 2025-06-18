@@ -28,9 +28,9 @@ const LoginManagement = () => {
             if (role === "admin") {
                 navigate("/admin/dashboard");
             } else if (role === "staff") {
-                navigate("/management/welcome");
+                navigate("/consultant/workslots");
             } else if (role === "consultant") {
-                navigate("/management/welcome");
+                navigate("/consultant/workslots");
             } else {
                 setError("Không xác định được vai trò.");
             }

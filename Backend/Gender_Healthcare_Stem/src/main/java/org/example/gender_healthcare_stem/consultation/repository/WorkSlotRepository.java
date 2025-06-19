@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface WorkSlotRepository extends JpaRepository<WorkSlot, Long> {
     List<WorkSlot> findByConsultantIdAndWorkslotDateAndIsAvailableTrue(Long consultantId, LocalDate workslotDate);
+    List<WorkSlot> findByConsultantIdAndWorkslotDate(Long consultantId, LocalDate date);
 }

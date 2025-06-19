@@ -13,6 +13,7 @@ import org.example.gender_healthcare_stem.consultation.service.ConsultationAppoi
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,27 +39,56 @@ public class ConsultantController {
     }
 
     @PostMapping("/workslots")
-    public ResponseEntity<?> saveWorkSlots(@RequestBody WorkSlotRequest request) {
-        for (Long slotId : request.getSlotIds()) {
-            WorkSlot workSlot = WorkSlot.builder()
-                    .consultantId(request.getConsultantId())
-                    .workslotDate(request.getWorkslotDate())
-                    .slotId(slotId)
-                    .isAvailable(true)
-                    .createdAt(LocalDateTime.now())
-                    .updatedAt(LocalDateTime.now())
-                    .build();
+    public ResponseEntity<?> updateWorkSlots(@RequestBody WorkSlotRequest request) {
+        Long consultantId = request.getConsultantId();
+        LocalDate date = request.getWorkslotDate();
+        List<Long> newSlotIds = request.getSlotIds();
 
-            workSlotRepository.save(workSlot);
+        // Lấy tất cả workslots trong ngày của consultant
+        List<WorkSlot> existingSlots = workSlotRepository
+                .findByConsultantIdAndWorkslotDate(consultantId, date);
+
+        // Cập nhật trạng thái: slot nào được chọn thì rãnh, ngược lại không rãnh
+        for (WorkSlot ws : existingSlots) {
+            ws.setIsAvailable(newSlotIds.contains(ws.getSlotId()));
+            ws.setUpdatedAt(LocalDateTime.now());
         }
-        return ResponseEntity.ok("Lưu lịch thành công");
+
+        // Thêm mới các slot chưa tồn tại
+        for (Long slotId : newSlotIds) {
+            boolean exists = existingSlots.stream().anyMatch(ws -> ws.getSlotId().equals(slotId));
+            if (!exists) {
+                WorkSlot newSlot = WorkSlot.builder()
+                        .consultantId(consultantId)
+                        .slotId(slotId)
+                        .workslotDate(date)
+                        .isAvailable(true)
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build();
+                existingSlots.add(newSlot);
+            }
+        }
+
+        workSlotRepository.saveAll(existingSlots);
+        return ResponseEntity.ok("Cập nhật lịch làm việc thành công.");
     }
+
 
     @GetMapping("/appointments")
     public List<ConsultationAppointmentDTO> getAppointmentsForConsultant(@RequestParam Long consultantId) {
         return consultationAppointmentService.findByConsultantId(consultantId);
     }
 
+    @PutMapping("/appointments/{id}/complete")
+    public ResponseEntity<String> markAppointmentAsDone(@PathVariable Long id) {
+        boolean updated = consultationAppointmentService.markAsDone(id);
+        if (updated) {
+            return ResponseEntity.ok("Cập nhật trạng thái thành công.");
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
 }
 

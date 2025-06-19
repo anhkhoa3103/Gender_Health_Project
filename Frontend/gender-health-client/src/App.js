@@ -11,6 +11,7 @@ import ForgotPasswordPage from "./features/auth/pages/ForgotPasswordPage";
 import ResetPasswordPage from "./features/auth/pages/ResetPasswordPage";
 import LogoutPage from "./features/auth/pages/LogoutPage";
 import LoginManagement from "./features/auth/pages/LoginManagement";
+import LogoutManagement from "./features/auth/pages/LogoutManagement";
 
 // Home
 import HomePage from "./features/home/pages/HomePage";
@@ -54,6 +55,7 @@ function App() {
           <Route path="/reset-password" element={<ResetPasswordPage />} />
           <Route path="/logout" element={<LogoutPage />} />
           <Route path="/loginmanagement" element={<LoginManagement />} />
+          <Route path="/logoutmanagement" element={<LogoutManagement />} />
 
           {/* Main Page */}
           <Route path="/" element={<HomePage />} />

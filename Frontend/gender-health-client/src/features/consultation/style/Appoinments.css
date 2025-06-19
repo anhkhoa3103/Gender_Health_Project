@@ -94,3 +94,11 @@
 .feedback-btn_hisconsultation:hover {
   opacity: 0.9;
 }
+
+.feedback-section {
+  margin-top: 20px;
+  padding: 16px;
+  border-top: 1px solid #ddd;
+  background-color: #fafafa;
+  border-radius: 10px;
+}

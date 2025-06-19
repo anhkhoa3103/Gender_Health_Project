@@ -20,9 +20,8 @@ export const createAppointment = (data) =>
 
 /** Lấy lịch hẹn theo ID */
 export const getUserAppointments = (userId) =>
-  api.get(`${BASE_APPOINTMENTS}/user/${userId}`);
+  api.get(`${BASE_APPOINTMENTS}/user/${userId}/details`);
 
 
-/** Lấy lịch hẹn theo ID */
 export const cancelAppointment = (appointmentId) =>
   api.put(`/api/appointments/${appointmentId}/cancel`);

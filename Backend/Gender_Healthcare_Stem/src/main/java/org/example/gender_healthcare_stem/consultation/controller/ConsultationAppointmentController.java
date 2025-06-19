@@ -1,5 +1,6 @@
 package org.example.gender_healthcare_stem.consultation.controller;
 
+import org.example.gender_healthcare_stem.consultation.dto.ConsultationAppointmentDTO;
 import org.example.gender_healthcare_stem.consultation.dto.ConsultationAppointmentRequest;
 import org.example.gender_healthcare_stem.consultation.model.ConsultationAppointment;
 import org.example.gender_healthcare_stem.consultation.service.ConsultationAppointmentService;
@@ -36,5 +37,21 @@ public class ConsultationAppointmentController {
         List<ConsultationAppointment> appointments = appointmentService.findByCustomerId(customerId);
         return ResponseEntity.ok(appointments);
     }
+
+    @GetMapping("/user/{customerId}/details")
+    public ResponseEntity<List<ConsultationAppointmentDTO>> getAppointmentsWithDetails(@PathVariable Long customerId) {
+        return ResponseEntity.ok(appointmentService.getAppointmentsWithConsultantInfo(customerId));
+    }
+
+    @PutMapping("/{id}/cancel")
+    public ResponseEntity<Void> cancelAppointment(@PathVariable Long id) {
+        boolean result = appointmentService.cancelAppointment(id);
+        if (result) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }
 

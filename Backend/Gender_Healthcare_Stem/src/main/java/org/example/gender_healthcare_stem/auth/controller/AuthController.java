@@ -67,4 +67,16 @@ public class AuthController {
         return ResponseEntity.ok(resp);
     }
 
+    @PostMapping("/logout/management")
+    public ResponseEntity<?> logoutManagement(HttpServletRequest request) {
+        // Invalidate session nếu có
+        if (request.getSession(false) != null) {
+            request.getSession(false).invalidate();
+        }
+
+        // Nếu có sử dụng token blacklist thì thêm vào đây (tùy project)
+        return ResponseEntity.ok("Logout for management successful");
+    }
+
+
 }

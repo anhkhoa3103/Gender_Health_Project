@@ -76,7 +76,15 @@ public class AuthService {
                     createCustomerIfAbsent(u);
 
                     String jwt = jwtService.generate(u.getId(), u.getRole());
-                    return new LoginResponse(u.getId(), u.getRole(), jwt);
+                    return new LoginResponse(
+                            u.getId(),
+                            u.getRole(),
+                            jwt,
+                            u.getFullName(),
+                            u.getPhone(),
+                            u.getEmail(),            // ✅ thêm
+                            u.getAvatar()            // ✅ thêm
+                    );
                 })
                 .orElseThrow(() -> new RuntimeException("Invalid email or password"));
     }
@@ -120,7 +128,16 @@ public class AuthService {
 
             createCustomerIfAbsent(user);
             String jwt = jwtService.generate(user.getId(), user.getRole());
-            return new LoginResponse(user.getId(), user.getRole(), jwt);
+            return new LoginResponse(
+                    user.getId(),
+                    user.getRole(),
+                    jwt,
+                    user.getFullName(),
+                    user.getPhone(),
+                    user.getEmail(),            // ✅ thêm
+                    user.getAvatar()            // ✅ thêm
+            );
+
 
         } catch (Exception e) {
             System.out.println("Google Login failed: " + e.getMessage());

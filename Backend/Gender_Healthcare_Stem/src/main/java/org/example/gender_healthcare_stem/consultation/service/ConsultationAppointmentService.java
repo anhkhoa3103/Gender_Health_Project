@@ -11,6 +11,7 @@ import org.example.gender_healthcare_stem.consultation.repository.SlotRepository
 import org.example.gender_healthcare_stem.consultation.repository.WorkSlotRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -86,6 +87,7 @@ public class ConsultationAppointmentService {
         appointment.setPhoneNumber(request.getPhoneNumber());
         appointment.setNote(request.getNote());
         appointment.setStatus("PENDING");
+        appointment.setCreatedAt(LocalDateTime.now());
 
         ConsultationAppointment savedAppointment = appointmentRepository.save(appointment);
 
@@ -97,6 +99,73 @@ public class ConsultationAppointmentService {
         workslotRepository.save(slot);
 
         return savedAppointment;
+    }
+
+    public boolean markAsDone(Long id) {
+        return appointmentRepository.findById(id)
+                .map(appointment -> {
+                    appointment.setStatus("DONE");
+                    appointmentRepository.save(appointment);
+                    return true;
+                })
+                .orElse(false);
+    }
+
+    public List<ConsultationAppointmentDTO> getAppointmentsWithConsultantInfo(Long customerId) {
+        List<ConsultationAppointment> appointments = appointmentRepository.findByCustomerId(customerId);
+
+        return appointments.stream().map(appointment -> {
+            String timeRange = "";
+            String consultantName = "";
+            String meetLink = "";
+
+            if (appointment.getWorkslotId() != null) {
+                Optional<Slot> slotOpt = workslotRepository.findById(appointment.getWorkslotId())
+                        .flatMap(ws -> slotRepository.findById(ws.getSlotId()));
+                if (slotOpt.isPresent()) {
+                    Slot slot = slotOpt.get();
+                    timeRange = slot.getStartTime() + " - " + slot.getEndTime();
+                }
+            }
+
+            if (appointment.getConsultantId() != null) {
+                consultantName = appointment.getConsultant().getUser().getFullName();  // cần join consultant
+                meetLink = appointment.getConsultant().getGoogleMeetLinks();
+            }
+
+            return ConsultationAppointmentDTO.builder()
+                    .consultationId(appointment.getConsultationId())
+                    .consultantId(appointment.getConsultantId())
+                    .name(appointment.getName())
+                    .phoneNumber(appointment.getPhoneNumber())
+                    .appointmentDate(appointment.getAppointmentDate().toString())
+                    .timeRange(timeRange)
+                    .note(appointment.getNote())
+                    .status(appointment.getStatus())
+                    .consultantName(consultantName)
+                    .meetLink(meetLink)
+                    .build();
+        }).toList();
+    }
+
+    public boolean cancelAppointment(Long id) {
+        return appointmentRepository.findById(id)
+                .map(appointment -> {
+                    appointment.setStatus("CANCELLED");
+                    appointmentRepository.save(appointment);
+
+                    // mở lại slot nếu cần
+                    if (appointment.getWorkslotId() != null) {
+                        workslotRepository.findById(appointment.getWorkslotId())
+                                .ifPresent(ws -> {
+                                    ws.setIsAvailable(true);
+                                    workslotRepository.save(ws);
+                                });
+                    }
+
+                    return true;
+                })
+                .orElse(false);
     }
 
 }

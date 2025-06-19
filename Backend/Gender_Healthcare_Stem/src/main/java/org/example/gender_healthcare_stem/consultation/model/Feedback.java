@@ -17,6 +17,9 @@ public class Feedback {
     @Column(name = "customer_id")
     private Long customerId;
 
+    @Column(name = "consultation_id")
+    private Long consultationId;
+
     @Column(name = "consultant_id")
     private Long consultantId;
 

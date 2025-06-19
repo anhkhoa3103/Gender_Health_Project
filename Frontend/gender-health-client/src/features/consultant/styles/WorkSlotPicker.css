@@ -1,62 +1,214 @@
-/* Container chính */
-.workslot-container_consultantSlot {
-  padding: 24px;
-  max-width: 600px;
-  margin: auto;
-  background: #f8f9fb;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+/* Tổng thể chia layout 2 cột */
+.workslot_container {
+  display: flex;
+  height: 100vh;
 }
 
-/* Tiêu đề */
+/* Sidebar giữ nguyên kích thước, không bị co */
+.workslot_container > .sidebar {
+  width: 240px;
+  flex-shrink: 0;
+}
+
+/* Nội dung bên phải */
+.workslot-container_consultantSlot {
+  flex: 1;
+  padding: 30px;
+  background-color: #f7f9fc;
+  overflow-y: auto;
+}
+
 .workslot-title_consultantSlot {
   font-size: 24px;
   font-weight: bold;
-  margin-bottom: 16px;
-  color: #333;
-  text-align: center;
-}
-
-/* Input ngày */
-.workslot-date_consultantSlot {
-  display: block;
   margin-bottom: 20px;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
 }
 
-/* Slot list */
+/* Lịch kiểu lưới */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.calendar-day {
+  padding: 12px;
+  background-color: white;
+  border: 1px solid #ddd;
+  text-align: center;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+  background-color: #e0e7ff;
+}
+
+.calendar-day.selected {
+  background-color: #4f46e5;
+  color: white;
+}
+
+/* Slot section */
 .slot-list_consultantSlot {
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
-/* Slot item */
 .slot-item_consultantSlot {
   margin-bottom: 10px;
-  display: flex;
-  align-items: center;
 }
 
-/* Checkbox */
 .slot-checkbox_consultantSlot {
   margin-right: 10px;
 }
 
-/* Nút lưu */
-.workslot-save_consultantSlot {
-  margin-top: 20px;
-  padding: 10px 20px;
-  background-color: #4f8ef7;
+/* Buttons */
+.workslot-save_consultantSlot,
+.workslot-viewappointments_consultantSlot {
+  margin-top: 30px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #4f46e5;
   color: white;
   font-weight: bold;
-  border: none;
+  transition: background-color 0.2s ease;
+  margin-right: 10px;
+}
+
+.workslot-save_consultantSlot:hover,
+.workslot-viewappointments_consultantSlot:hover {
+  background-color: #4338ca;
+}
+
+/* Grid layout cho lịch + slot */
+.workslot-grid {
+  display: flex;
+  gap: 40px;
+  margin-top: 20px;
+  align-items: flex-start;
+}
+
+/* Slot list đẹp hơn */
+
+.slot-select-actions {
+  margin-bottom: 15px;
+  display: flex;
+  gap: 10px;
+}
+
+.select-all-button,
+.deselect-all-button {
+  padding: 8px 12px;
+  font-size: 13px;
+  background-color: #f3f4f6;
+  border: 1px solid #ccc;
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
 
-.workslot-save_consultantSlot:hover {
-  background-color: #336ee0;
+.slot-item_consultantSlot input[type="checkbox"]:checked + label {
+  font-weight: 600;
+  color: #4f46e5;
 }
+
+
+.select-all-button:hover {
+  background-color: #d1fae5;
+}
+
+.deselect-all-button:hover {
+  background-color: #fee2e2;
+}
+
+.slot-list_consultantSlot {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  min-width: 300px;
+}
+
+.slot-item_consultantSlot {
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.slot-item_consultantSlot label {
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.button-group {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+
+.calendar-wrapper {
+  max-width: 400px;
+  margin-bottom: 20px;
+  background-color: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.calendar-header button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendar-day-name {
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #555;
+}
+
+.calendar-empty {
+  height: 40px;
+}
+
+.calendar-day {
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f1f5f9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.calendar-day:hover {
+  background-color: #c7d2fe;
+}
+
+.calendar-day.selected {
+  background-color: #4f46e5;
+  color: white;
+}
+

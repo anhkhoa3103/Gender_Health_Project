@@ -1,90 +1,79 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import "../style/Feedback.css"
+import React, { useState, useEffect } from 'react';
+import { submitFeedback, updateFeedback } from '../../../api/feedbackApi';
+import '../style/Feedback.css';
 
+const FeedbackForm = ({ customerId, consultantId, consultationId, onSuccess, initialFeedback = null }) => {
+  const [rating, setRating] = useState(5);
+  const [comment, setComment] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
 
-const Feedback_consultation = () => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    if (initialFeedback) {
+      setRating(initialFeedback.rating);
+      setComment(initialFeedback.comment);
+      setIsEdit(true);
+    }
+  }, [initialFeedback]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      if (isEdit) {
+        await updateFeedback(initialFeedback.feedbackId, {
+          rating,
+          comment,
+          consultationId, 
+        });
+        alert("Feedback updated successfully!");
+      } else {
+        await submitFeedback({
+          customerId,
+          consultantId,
+          consultationId,
+          rating,
+          comment,
+        });
+        alert("Feedback submitted successfully!");
+      }
+      onSuccess?.();
+    } catch (error) {
+      console.error("Error submitting/updating feedback:", error);
+      alert("Failed to submit/update feedback.");
+    }
+  };
 
   return (
-    <div className="feedback-container_consultation">
-      <header className="feedback-header_consultation">
-        <h1>Gender Healthcare System</h1>
-        <p>for SWP Project</p>
-      </header>
+    <form className="feedback-form" onSubmit={handleSubmit}>
+      <h3 className="form-title">{isEdit ? "Edit Your Feedback" : "Submit Feedback"}</h3>
 
-      <main className="feedback-content_consultation">
-        <section className="feedback-thanks_consultation">
-          <h2>Thanks for your Feedback!</h2>
-          <p className="feedback-subtitle_consultation">Nice hearing from you!</p>
-        </section>
-
-        <div className="divider_consultation"></div>
-
-        <section className="feedback-contact_consultation">
-          <h3>Lets Get in Touch!</h3>
-          <p className="contact-description_consultation">
-            Are you satisfied or need support? Please send us your content via message or contact from below. 
-            We look forward to supporting you.
-          </p>
-        </section>
-
-        <div className="divider_consultation"></div>
-
-        <section className="feedback-details_consultation">
-          <div className="detail-item_consultation">
-            <span className="detail-label_consultation">Service ID:</span>
-            <span className="detail-value_consultation">1</span>
-          </div>
-          <div className="detail-item_consultation">
-            <span className="detail-label_consultation">Service Name:</span>
-            <span className="detail-value_consultation">General Check-up</span>
-          </div>
-          <div className="detail-item_consultation">
-            <span className="detail-label_consultation">Consultant:</span>
-            <span className="detail-value_consultation">Jock William</span>
-          </div>
-          <div className="detail-item_consultation message-box_consultation">
-            <span className="detail-label_consultation">Message:</span>
-            <textarea 
-              className="feedback-textarea_consultation" 
-              placeholder="Enter feedback here..."
-            ></textarea>
-          </div>
-        </section>
-
-        <div className="feedback-buttons_consultation">
-          <button 
-            className="cancel-btn_consultation"
-            onClick={() => navigate(-1)} // Quay lại trang trước
+      <label className="form-label">Rating:</label>
+      <div className="star-rating">
+        {[1, 2, 3, 4, 5].map((star) => (
+          <span
+            key={star}
+            className={star <= rating ? 'star filled' : 'star'}
+            onClick={() => setRating(star)}
           >
-            Cancel
-          </button>
-          <button className="submit-btn_consultation">
-            Submit
-          </button>
-        </div>
+            ★
+          </span>
+        ))}
+      </div>
 
-        <div className="divider_consultation"></div>
+      <label className="form-label">Comment:</label>
+      <textarea
+        className="form-textarea"
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
+        placeholder="Write your feedback..."
+        rows={4}
+      />
 
-        <footer className="feedback-footer_consultation">
-          <div className="office-info_consultation">
-            <h4>Head Office:</h4>
-            <p>+447473997191</p>
-            <p>sybexdesigns@gmail.com</p>
-            <p>2008 Boulevard Henri-Bourassa Est</p>
-          </div>
-          
-          <div className="office-info_consultation">
-            <h4>Branch Office:</h4>
-            <p>+447473997191</p>
-            <p>sybexdesigns@gmail.com</p>
-            <p>2008 Boulevard Henri-Bourassa Est</p>
-          </div>
-        </footer>
-      </main>
-    </div>
+      <button type="submit" className="submit-btn">
+        {isEdit ? "Update" : "Submit"}
+      </button>
+    </form>
   );
 };
 
-export default Feedback_consultation;
+export default FeedbackForm;

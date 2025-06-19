@@ -22,9 +22,19 @@ function LoginPage() {
         email: form.email,
         password: form.password,
       });
-      const token = res.data.token; // backend trả token field token
-      login(token);
-      navigate("/"); // chuyển trang sau login thành công
+
+      const token = res.data.token;
+
+      // 👇 Extract user info (fullName, phoneNumber, email, avatar...)
+      const userInfo = {
+        fullName: res.data.fullName,
+        phoneNumber: res.data.phoneNumber,
+        email: res.data.email,
+        avatar: res.data.avatar,
+      };
+
+      login(token, userInfo); // 👈 truyền cả userInfo
+      navigate("/");
     } catch (err) {
       alert("Login failed");
       console.error(err);
@@ -37,8 +47,17 @@ function LoginPage() {
       const { data } = await api.post("/api/auth/oauth/google", {
         token: cred.credential,
       });
-      login(data.token); // gọi login context luôn
-      navigate("/"); // chuyển trang
+
+      const token = data.token;
+      const userInfo = {
+        fullName: data.fullName,
+        phoneNumber: data.phoneNumber, // nếu backend có
+        email: data.email,
+        avatar: data.avatar,
+      };
+
+      login(token, userInfo);
+      navigate("/");
     } catch (err) {
       alert("Google login failed");
       console.error(err);
@@ -100,7 +119,7 @@ function LoginPage() {
           <GoogleLogin
             onSuccess={handleGoogleLogin}
             onError={() => alert("Google Login Failed")}
-             useOneTap={false}
+            useOneTap={false}
           />
         </div>
 

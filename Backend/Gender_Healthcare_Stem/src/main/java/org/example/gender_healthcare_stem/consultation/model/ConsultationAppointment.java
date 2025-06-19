@@ -2,7 +2,10 @@ package org.example.gender_healthcare_stem.consultation.model;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import org.example.gender_healthcare_stem.consultant.model.Consultant;
+
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -11,12 +14,16 @@ public class ConsultationAppointment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long consultationId;
-
+    @Column(name = "consultant_id")
     private Long consultantId;  // sửa từ String thành Long
     private Long customerId;    // sửa từ String thành Long
     private LocalDate appointmentDate;
     private String status;
     private Long workslotId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "consultant_id", referencedColumnName = "user_id", insertable = false, updatable = false)
+    private Consultant consultant;
 
     @Column(length = 100)
     private String name;
@@ -26,6 +33,14 @@ public class ConsultationAppointment {
 
     @Column(columnDefinition = "TEXT")
     private String note;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+
+    public Consultant getConsultant() {
+        return consultant;
+    }
 
     public Long getConsultationId() {
         return consultationId;

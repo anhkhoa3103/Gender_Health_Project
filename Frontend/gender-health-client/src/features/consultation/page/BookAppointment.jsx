@@ -11,12 +11,9 @@ const BookAppointment_consultation = () => {
   const navigate = useNavigate();
 
   // Lấy data từ state khi chuyển qua trang này
-  const { consultant, date, time, slotId, workslotId , year, month } = location.state || {};
+  const { consultant, date, time, slotId, workslotId, year, month } = location.state || {};
   const { user } = useContext(AuthContext);
   const userId = user?.id;
-
-  const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
   const [note, setNote] = useState('');
   const [message, setMessage] = useState('');
   const [loading, setLoading] = useState(false);
@@ -30,14 +27,13 @@ const BookAppointment_consultation = () => {
     "July", "August", "September", "October", "November", "December"
   ];
 
+  if (!user) {
+    return <p>Error: User not logged in. Please log in first.</p>;
+  }
+
   // Hàm xử lý submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!fullName.trim() || !phone.trim()) {
-      alert('Please fill in your full name and phone number.');
-      return;
-    }
 
     const appointmentDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(date).padStart(2, '0')}`;
     console.log('customerId:', userId);
@@ -54,8 +50,8 @@ const BookAppointment_consultation = () => {
       appointmentDate,
       status: "PENDING",
       workslotId: workslotId,
-      name: fullName.trim(),
-      phoneNumber: phone.trim(),
+      name: user?.fullName || '',
+      phoneNumber: user?.phoneNumber || '',
       note: note.trim(),
       message: message.trim(), // thêm message vào payload nếu backend hỗ trợ
     };
@@ -85,36 +81,12 @@ const BookAppointment_consultation = () => {
         <p><strong>Time:</strong> {time}</p>
         <p><strong>Workslot id:</strong> {workslotId}</p>
         <p><strong>Slot id:</strong> {slotId}</p>
+        <p><strong>Customer Name:</strong> {user?.fullName || 'N/A'}</p>
+        <p><strong>Customer Phone:</strong> {user?.phoneNumber || 'N/A'}</p>
       </div>
 
       <form className="book-appointment-form_consultation" onSubmit={handleSubmit}>
-        <div className="form-row_consultation">
-          <div className="form-column_consultation">
-            <label>Full Name</label>
-            <input
-              type="text"
-              className="form-input_consultation"
-              value={fullName}
-              onChange={e => setFullName(e.target.value)}
-              required
-              placeholder="Your full name"
-            />
-          </div>
-          <div className="form-column_consultation">
-            <label>Phone Number</label>
-            <div className="phone-input-container_consultation">
-              <span className="phone-prefix_consultation">+84</span>
-              <input
-                type="tel"
-                className="form-input_consultation phone-input_consultation"
-                value={phone}
-                onChange={e => setPhone(e.target.value)}
-                required
-                placeholder="Phone number"
-              />
-            </div>
-          </div>
-        </div>
+
 
         <div className="form-row_consultation">
           <div className="form-column_consultation full-width_consultation">

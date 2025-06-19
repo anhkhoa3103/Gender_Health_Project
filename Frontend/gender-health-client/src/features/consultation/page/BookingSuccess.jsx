@@ -9,6 +9,7 @@ const BookingSuccess = () => {
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
   const userId = user?.id;
+
   const [slots, setSlots] = useState([]);
   const [latestAppointment, setLatestAppointment] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -17,8 +18,9 @@ const BookingSuccess = () => {
     if (userId) {
       getUserAppointments(userId)
         .then(res => {
+          console.log("Appointments:", res.data);
           const sortedAppointments = res.data.sort(
-            (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+            (a, b) => b.consultationId - a.consultationId
           );
           setLatestAppointment(sortedAppointments[0]);
         })
@@ -33,20 +35,20 @@ const BookingSuccess = () => {
       .catch(err => console.error("Failed to load slots:", err));
   }, []);
 
-  const handleCancel = async () => {
+  const handleCancel = async (appointmentId) => {
+    const confirmed = window.confirm("Are you sure you want to cancel this appointment?");
+    if (!confirmed) return;
+
     try {
-      if (latestAppointment) {
-        await cancelAppointment(latestAppointment.id);
-        setLatestAppointment(prev => ({ ...prev, status: "CANCELLED" }));
-      }
+      await cancelAppointment(appointmentId);
+      navigate('/consultation');
     } catch (err) {
       console.error("Cancel failed:", err);
-      alert("Failed to cancel appointment");
     }
   };
 
-  const getSlotTime = (slotId) => {
-    const slot = slots.find(s => s.slotId === slotId);
+  const getSlotTime = (workslotId) => {
+    const slot = slots.find(s => s.slotId === workslotId);
     if (!slot) return "Unknown time";
     const start = slot.startTime?.slice(0, 5);
     const end = slot.endTime?.slice(0, 5);
@@ -71,33 +73,28 @@ const BookingSuccess = () => {
               <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Name</th>
-                  <th>Time</th>
+                  <th>Customer</th>
+                  <th>Consultant</th>
                   <th>Date</th>
+                  <th>Time</th>
                   <th>Status</th>
-                  <th>Action</th>
+                  <th>Meet</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>{latestAppointment.id}</td>
+                  <td>{latestAppointment.consultationId}</td>
                   <td>{latestAppointment.name}</td>
-                  <td>{getSlotTime(latestAppointment.workslotId)}</td>
+                  <td>{latestAppointment.consultantName || "N/A"}</td>
                   <td>{latestAppointment.appointmentDate}</td>
+                  <td>{latestAppointment.timeRange || getSlotTime(latestAppointment.workslotId)}</td>
                   <td className={`status_hisconsultation ${latestAppointment.status.toLowerCase()}`}>
                     {latestAppointment.status}
                   </td>
-                  <td style={{ textAlign: 'center' }}>
-                    {latestAppointment.status === "PENDING" ? (
-                      <button
-                        onClick={handleCancel}
-                        className="cancel-appointment-btn_hisconsultation"
-                      >
-                        Cancel
-                      </button>
-                    ) : (
-                      <span style={{ color: 'gray' }}>N/A</span>
-                    )}
+                  <td>
+                    {latestAppointment.meetLink ? (
+                      <a href={latestAppointment.meetLink} target="_blank" rel="noopener noreferrer">Join</a>
+                    ) : "N/A"}
                   </td>
                 </tr>
               </tbody>

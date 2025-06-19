@@ -9,6 +9,7 @@ import lombok.*;
 @Builder
 public class ConsultationAppointmentDTO {
     private Long consultationId;
+    private Long consultantId;
     private String name;
     private String phoneNumber;
     private String appointmentDate;
@@ -18,4 +19,5 @@ public class ConsultationAppointmentDTO {
     private String consultantName;
     private String meetLink;
 }
+
 

@@ -56,3 +56,18 @@
   font-weight: bold;
 }
 
+.logout-button_management {
+  margin-top: 30px;
+  padding: 10px;
+  background-color: #d45a4a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.logout-button_management:hover {
+  background-color: #b43f3f;
+}
+

@@ -31,6 +31,7 @@ import RequireAuth from "./routes/RequireAuth";
 import ManagementWelcome from "./features/admin/ManagementWelcome";
 import AdminDashboard from "./features/admin/AdminDashboard";
 import UserManagement from "./features/admin/UserManagerment";
+import ConsultantManagement from "./features/admin/ConsultantManagement";
 
 // Consultant
 import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
@@ -105,7 +106,11 @@ function App() {
               <UserManagement />
             </RequireAuth>
           } />
-
+          <Route path="/admin/consultants" element={
+            <RequireAuth allowedRoles={['admin']}>
+              <ConsultantManagement />
+            </RequireAuth>
+} />
           {/* Catch-all route */}
         </Routes>
 

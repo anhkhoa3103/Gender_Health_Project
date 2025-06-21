@@ -5,14 +5,15 @@ import axios from "axios";
 import AllUsers from "./user-tabs/AllUsers";
 import FindUser from "./user-tabs/FindUser";
 import UpdateUserTab from "./user-tabs/UpdateUserTab";
-import "./styles/UserManagement.css"; // Assuming you have a CSS file for styles
+import "./styles/UserManagement.css";
 
 const UserManagement = () => {
     const [tab, setTab] = useState("all");
     const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null); // user cần update
+    const [selectedUser, setSelectedUser] = useState(null);
 
-    useEffect(() => {
+    // Hàm fetch danh sách user
+    const fetchUsers = () => {
         const token = localStorage.getItem("managementToken");
         axios
             .get("http://localhost:8080/api/admin/users", {
@@ -20,10 +21,31 @@ const UserManagement = () => {
             })
             .then((res) => setUsers(res.data))
             .catch((err) => console.error("Error loading users:", err));
+    };
+
+    // Khi component mount
+    useEffect(() => {
+        fetchUsers();
     }, []);
-    console.log(localStorage.getItem("managementToken"));
-    console.log(localStorage.getItem("userId"));
-    console.log(localStorage.getItem("managementRole"));
+
+    // Hàm xoá người dùng
+    const handleDelete = (userId) => {
+        const token = localStorage.getItem("managementToken");
+        if (!window.confirm("Are you sure you want to delete this user?")) return;
+
+        axios
+            .delete(`http://localhost:8080/api/admin/users/${userId}`, {
+                headers: { Authorization: `Bearer ${token}` },
+            })
+            .then(() => {
+                alert("User deleted successfully");
+                fetchUsers(); // làm mới danh sách sau khi xoá
+            })
+            .catch((err) => {
+                console.error("Delete failed:", err);
+                alert("Delete failed!");
+            });
+    };
 
     return (
         <div className="container_admindashboard">
@@ -41,13 +63,29 @@ const UserManagement = () => {
 
                     {/* Tab content */}
                     {tab === "all" &&
-                        <AllUsers users={users} onUpdate={(user) => {
-                            setSelectedUser(user);
-                            setTab("update");
-                        }} />
+                        <AllUsers
+                            users={users}
+                            onUpdate={(user) => {
+                                setSelectedUser(user);
+                                setTab("update");
+                            }}
+                            onDelete={handleDelete}
+                        />
                     }
-                    {tab === "find" && <FindUser allUsers={users} />}
-                    {tab === "update" && <UpdateUserTab user={selectedUser} onUpdated={() => setTab("all")} />}
+
+                    {tab === "find" &&
+                        <FindUser allUsers={users} />
+                    }
+
+                    {tab === "update" &&
+                        <UpdateUserTab
+                            user={selectedUser}
+                            onUpdated={() => {
+                                fetchUsers();
+                                setTab("all");
+                            }}
+                        />
+                    }
                 </div>
             </div>
         </div>

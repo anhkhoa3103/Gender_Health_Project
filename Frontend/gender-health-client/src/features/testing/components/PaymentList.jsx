@@ -3,6 +3,7 @@ import { getPackagesAxios } from "../../../api/package";
 import { formatNumberWithDot } from "../helper/helper";
 import { useNavigate } from "react-router-dom";
 import TestTypeTable from "./TestTypeTable";
+import "../styles/Packages.css"; // Or your new Packages.css
 
 export default function PackageList() {
   const [packages, setPackages] = useState([]);
@@ -21,22 +22,19 @@ export default function PackageList() {
   }, []);
 
   return (
-    <div className="px-20 py-20">
-      <div className="grid grid-cols-3 gap-10">
+    <div className="package-list-container">
+      <div className="package-grid">
         {packages.map((pm, index) => (
-          <div
-            key={index}
-            className="rounded-md px-5 py-3 shadow-xl col-span-1"
-          >
-            <h2 className="text-2xl font-bold">{pm.packageName}</h2>
-            <p className="text-lg font-semibold mt-2">
+          <div key={index} className="package-card">
+            <h2>{pm.packageName}</h2>
+            <p className="package-price">
               Price: {formatNumberWithDot(pm.totalPrice || 0)} VNĐ
             </p>
             <button
               onClick={() =>
                 navigate("/payment-package", { state: { selectedPackage: pm } })
               }
-              className="mt-3 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              className="buy-btn"
             >
               Buy Now
             </button>

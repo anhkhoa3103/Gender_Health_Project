@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from "react-router-dom";
 import { getTestTypeAxios } from '../../../api/testtype';
 import { formatNumberWithDot } from '../helper/helper';
+import "../styles/TestType.css";
 
 export default function TestTypeTable({ SubmitPayment }) {
     const [testTypes, setTestTypes] = useState([]);
@@ -21,27 +22,23 @@ export default function TestTypeTable({ SubmitPayment }) {
         }
     };
 
-   const handleSubmit = () => {
-    if (selectedTypes.length === 0) {
-        alert("Please select at least one test type.");
-        return;
-    }
-    // Find the actual selected objects (not just IDs)
-    const selectedTestTypes = testTypes.filter(type => selectedTypes.includes(type.testId));
-
-    // Navigate to payment summary, passing selected test types
-    navigate('/payment', { state: { selectedTestTypes } });
-};
-
+    const handleSubmit = () => {
+        if (selectedTypes.length === 0) {
+            alert("Please select at least one test type.");
+            return;
+        }
+        const selectedTestTypes = testTypes.filter(type => selectedTypes.includes(type.testId));
+        navigate('/payment', { state: { selectedTestTypes } });
+    };
 
     return (
-        <div className=' py-20'>
-            <table className="min-w-full divide-y divide-gray-200">
-                <thead className="bg-gray-50">
+        <div className="test-table-container">
+            <table className="test-type-table">
+                <thead>
                     <tr>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        <th>
                             <input
-                                checked={selectedTypes.length === testTypes.length}
+                                checked={selectedTypes.length === testTypes.length && testTypes.length > 0}
                                 onChange={() => {
                                     if (selectedTypes.length === testTypes.length) {
                                         setSelectedType([]);
@@ -50,17 +47,18 @@ export default function TestTypeTable({ SubmitPayment }) {
                                     }
                                 }}
                                 type='checkbox'
+                                className="table-checkbox"
                             />
                         </th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Type ID</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Type Name</th>
-                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                        <th>Test Type ID</th>
+                        <th>Test Type Name</th>
+                        <th>Price</th>
                     </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody>
                     {testTypes.map((testType) => (
                         <tr key={testType.testId}>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td>
                                 <input
                                     type="checkbox"
                                     checked={selectedTypes.includes(testType.testId)}
@@ -71,20 +69,21 @@ export default function TestTypeTable({ SubmitPayment }) {
                                             setSelectedType([...selectedTypes, testType.testId]);
                                         }
                                     }}
+                                    className="table-checkbox"
                                 />
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">{testType.testId}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{testType.testName}</td>
-                            <td className="px-6 py-4 whitespace-nowrap">{formatNumberWithDot(testType.price || 0)} VNĐ</td>
+                            <td>{testType.testId}</td>
+                            <td>{testType.testName}</td>
+                            <td>{formatNumberWithDot(testType.price || 0)} VNĐ</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
 
-            <div className="mt-4 flex justify-end">
+            <div className="test-table-actions">
                 <button
                     onClick={handleSubmit}
-                    className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                    className="submit-btn"
                 >
                     Submit Payment
                 </button>

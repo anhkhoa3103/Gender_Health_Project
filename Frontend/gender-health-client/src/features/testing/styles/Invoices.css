@@ -1,0 +1,209 @@
+.invoice-container {
+  padding: 1.5rem 0.5rem;
+  background: #eff6ff;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.invoice-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #2563eb;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.invoice-table-wrapper {
+  width: 100%;
+  max-width: 1050px;
+  margin: 0 auto;
+  overflow-x: auto;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(37,99,235,0.08);
+  background: #fff;
+  border: 1px solid #bfdbfe;
+}
+
+.invoice-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.97rem;
+  letter-spacing: 0.2px;
+}
+
+.invoice-table th,
+.invoice-table td {
+  padding: 0.55rem 0.9rem;
+  text-align: left;
+}
+
+.invoice-table th {
+  color: #2563eb;
+  font-weight: 600;
+  border-bottom: 2px solid #bfdbfe;
+  background: #dbeafe;
+  font-size: 0.98rem;
+}
+
+.invoice-table tr {
+  transition: background .13s;
+}
+
+.invoice-table tbody tr:nth-child(even) {
+  background: #f0f9ff;
+}
+.invoice-table tbody tr:nth-child(odd) {
+  background: #fff;
+}
+.invoice-table tbody tr:hover {
+  background: #e0e7ef;
+}
+
+.amount {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.paid-yes, .paid-no {
+  border-radius: 9999px;
+  padding: .18rem 0.75rem;
+  font-weight: 500;
+  font-size: 0.92rem;
+  display: inline-block;
+}
+.paid-yes {
+  background: #bbf7d0;
+  color: #15803d;
+}
+.paid-no {
+  background: #fecaca;
+  color: #dc2626;
+}
+
+.view-btn {
+  background: #2563eb;
+  color: #fff;
+  padding: 0.38rem 1.1rem;
+  border-radius: 12px;
+  font-weight: 500;
+  border: none;
+  box-shadow: 0 1px 4px rgba(37,99,235,.08);
+  transition: background .14s;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.view-btn:hover {
+  background: #1d4ed8;
+}
+
+.no-invoices {
+  color: #9ca3af;
+  text-align: center;
+  padding: 1.2rem;
+  font-size: 0.97rem;
+}
+
+.invoice-modal-bg {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.32);
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invoice-modal-card {
+  border-radius: 18px;
+  border: 2px solid #bfdbfe;
+  background: #fff;
+  box-shadow: 0 10px 32px rgba(37,99,235,0.14);
+  padding: 1.3rem 1.1rem 1.2rem 1.1rem;
+  width: 100%;
+  max-width: 370px;
+  min-width: 220px;
+  position: relative;
+  font-size: 0.98rem;
+}
+
+.invoice-modal-title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.7rem;
+  color: #2563eb;
+  text-align: center;
+}
+
+.invoice-modal-list {
+  padding-left: 1.2rem;
+  margin-bottom: .8rem;
+  font-size: 0.96rem;
+}
+.invoice-modal-list li {
+  margin-bottom: 2.5px;
+}
+
+.invoice-modal-proof-img {
+  max-height: 10.5rem;
+  border-radius: .55rem;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+  margin-bottom: .55rem;
+  object-fit: contain;
+  border: 1px solid #e0e7ef;
+  cursor: pointer;
+  display: block;
+}
+
+.invoice-modal-btn-row {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.invoice-modal-btn {
+  border: none;
+  border-radius: .55rem;
+  padding: .47rem 1.25rem;
+  font-weight: 500;
+  font-size: 0.98rem;
+  cursor: pointer;
+  transition: background .13s;
+}
+
+.invoice-modal-btn.mark-paid {
+  background: #22c55e;
+  color: #fff;
+}
+.invoice-modal-btn.mark-paid:hover {
+  background: #15803d;
+}
+
+.invoice-modal-btn.close {
+  background: #2563eb;
+  color: #fff;
+}
+.invoice-modal-btn.close:hover {
+  background: #1d4ed8;
+}
+
+.invoice-modal-download {
+  background: #bfdbfe;
+  color: #2563eb;
+  padding: 0.22rem 0.78rem;
+  border-radius: .38rem;
+  font-weight: 500;
+  border: none;
+  margin-bottom: 6px;
+  margin-top: 1px;
+  cursor: pointer;
+  transition: background .14s;
+  font-size: 0.95rem;
+}
+.invoice-modal-download:hover {
+  background: #60a5fa;
+  color: #fff;
+}

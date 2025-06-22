@@ -1,0 +1,140 @@
+body, html {
+  background: #f3f4f6;
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+
+.payment-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f3f4f6;
+  padding: 1rem;
+}
+
+.payment-card {
+  background: #fff;
+  border-radius: 1.25rem;
+  box-shadow: 0 10px 24px rgba(0,0,0,0.07), 0 1.5px 3px rgba(0,0,0,0.04);
+  padding: 2rem;
+  max-width: 28rem;
+  width: 100%;
+}
+
+.payment-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.payment-qr {
+  width: 10rem;
+  height: 10rem;
+  object-fit: contain;
+  border-radius: .5rem;
+  border: 1px solid #e5e7eb;
+  background: #f9fafb;
+  display: block;
+  margin: 0 auto 1.5rem auto;
+}
+
+.payment-label {
+  font-weight: 600;
+  margin-bottom: .5rem;
+  color: #4b5563;
+  display: block;
+}
+
+.payment-input {
+  display: block;
+  margin-bottom: .5rem;
+}
+
+.payment-proof-img {
+  margin-top: .5rem;
+  width: 10rem;
+  height: 10rem;
+  object-fit: contain;
+  border-radius: .5rem;
+  border: 1px solid #e5e7eb;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.payment-table {
+  width: 100%;
+  font-size: .95rem;
+  margin-bottom: 1.5rem;
+  border-collapse: collapse;
+}
+
+.payment-table th, .payment-table td {
+  padding: .5rem;
+  text-align: left;
+}
+
+.payment-table thead {
+  background: #f3f4f6;
+}
+
+.payment-table tfoot {
+  background: #f9fafb;
+}
+
+.payment-table tr:not(:last-child) {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.payment-total {
+  font-weight: bold;
+}
+
+.payment-total-amount {
+  color: #2563eb;
+  font-weight: bold;
+  text-align: right;
+}
+
+.payment-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: .75rem;
+}
+
+.btn {
+  padding: .5rem 1rem;
+  border-radius: .5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.12s;
+  border: none;
+}
+
+.btn-back {
+  background: #d1d5db;
+  color: #1f2937;
+}
+
+.btn-back:hover {
+  background: #9ca3af;
+}
+
+.btn-confirm {
+  background: #2563eb;
+  color: #fff;
+}
+
+.btn-confirm:hover {
+  background: #1d4ed8;
+}
+
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.6;
+  pointer-events: none;
+}

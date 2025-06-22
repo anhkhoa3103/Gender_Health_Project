@@ -41,7 +41,7 @@ import Payments from "./features/testing/pages/Payments";
 import Packages from "./features/testing/pages/Packages";
 import PaymentSuccess from "./features/testing/pages/PaymentSuccess";
 import PaymentPageForPackage from "./features/testing/pages/PaymentsPackage";
-import StaffPage from "./features/testing/pages/staff";
+import StaffPage from "./features/staff/staff";
 
 function App() {
   return (
@@ -75,7 +75,13 @@ function App() {
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment" element={<Payments />} />
           <Route path="/payment-package" element={<PaymentPageForPackage />} />
-          <Route path="/staff" element={<StaffPage />} />
+          
+          {/* Staff routes */}
+          <Route path="/staff" element={
+            <RequireAuth allowedRoles={['staff']}>
+              <StaffPage />
+            </RequireAuth>
+          } />
 
           {/* Consultant routes */}
           <Route path="/consultant/workslots" element={

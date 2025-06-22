@@ -15,7 +15,7 @@
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 50%; /* chiếm nửa trên */
-  background-image: url('E:\Downloads\New folder (8)\Gender_Health_Project\Frontend\gender-health-client\src\features\img\bgcontact.jpg');
+  background-image: url('../../img/bgcontact.jpg');
   background-size: cover;
   background-position: center;
   opacity: 0.9;

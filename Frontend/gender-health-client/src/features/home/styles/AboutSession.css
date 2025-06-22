@@ -96,7 +96,7 @@
   flex: 1;
   height: 600px;
   border-radius: 180px 180px 0 0;
-  background-image: url('E:\Downloads\New folder (8)\Gender_Health_Project\Frontend\gender-health-client\src\features\img\doctormain.png');
+  background-image: url('../../img/doctormain.png');
   background-size: cover;
   background-position: center;
   box-shadow: 0 0 25px rgba(100, 84, 240, 0.5);

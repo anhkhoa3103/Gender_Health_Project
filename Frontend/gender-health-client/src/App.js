@@ -31,11 +31,13 @@ import RequireAuth from "./routes/RequireAuth";
 import ManagementWelcome from "./features/admin/ManagementWelcome";
 import AdminDashboard from "./features/admin/AdminDashboard";
 import UserManagement from "./features/admin/UserManagerment";
+import ConsultantManagement from "./features/admin/ConsultantManagement";
+import AdminFeedback from "./features/admin/AdminFeedback";
 
 // Consultant
 import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
 import ConsultantAppointmentHistory from "./features/consultant/ConsultantAppointmentHistory";
-
+import ConsultantFeedback from "./features/consultant/ConsultantFeedback";
 // Testing
 import Payments from "./features/testing/pages/Payments";
 import Packages from "./features/testing/pages/Packages";
@@ -94,6 +96,11 @@ function App() {
               <ConsultantAppointmentHistory />
             </RequireAuth>
           } />
+          <Route path="/consultant/feedback" element={
+            <RequireAuth allowedRoles={['consultant']}>
+              <ConsultantFeedback />
+            </RequireAuth>
+          } />
 
           {/* Admin routes */}
           <Route path="/management/welcome" element={
@@ -109,6 +116,16 @@ function App() {
           <Route path="/admin/users" element={
             <RequireAuth allowedRoles={['admin']}>
               <UserManagement />
+            </RequireAuth>
+          } />
+          <Route path="/admin/consultants" element={
+            <RequireAuth allowedRoles={['admin']}>
+              <ConsultantManagement />
+            </RequireAuth>
+          } />
+          <Route path="/admin/feedbacks" element={
+            <RequireAuth allowedRoles={['admin']}>    
+              <AdminFeedback />
             </RequireAuth>
           } />
 

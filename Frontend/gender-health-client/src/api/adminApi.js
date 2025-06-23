@@ -19,3 +19,7 @@ export const updateUser = (userId, payload) =>
 // Xóa user (tuỳ bạn có implement xoá hay không)
 export const deleteUser = (userId) =>
   api.delete(`${BASE}/users/${userId}`);
+
+// Lấy tất cả feedbacks
+export const getAllFeedbacks = () => 
+  api.get(`${BASE}/feedbacks`);

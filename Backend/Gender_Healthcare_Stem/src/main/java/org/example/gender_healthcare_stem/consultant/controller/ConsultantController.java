@@ -4,12 +4,15 @@ package org.example.gender_healthcare_stem.consultant.controller;
 import org.example.gender_healthcare_stem.consultant.dto.ConsultantDTO;
 import org.example.gender_healthcare_stem.consultant.service.ConsultantService;
 import org.example.gender_healthcare_stem.consultation.dto.ConsultationAppointmentDTO;
+import org.example.gender_healthcare_stem.consultation.dto.FeedbackDTO;
 import org.example.gender_healthcare_stem.consultation.dto.WorkSlotRequest;
 import org.example.gender_healthcare_stem.consultation.model.ConsultationAppointment;
+import org.example.gender_healthcare_stem.consultation.model.Feedback;
 import org.example.gender_healthcare_stem.consultation.model.WorkSlot;
 import org.example.gender_healthcare_stem.consultation.repository.ConsultationAppointmentRepository;
 import org.example.gender_healthcare_stem.consultation.repository.WorkSlotRepository;
 import org.example.gender_healthcare_stem.consultation.service.ConsultationAppointmentService;
+import org.example.gender_healthcare_stem.consultation.service.FeedbackService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,12 +28,15 @@ public class ConsultantController {
     private final ConsultantService consultantService;
     private final WorkSlotRepository workSlotRepository;
     private final ConsultationAppointmentService consultationAppointmentService;
+    private final FeedbackService feedbackService;
 
     public ConsultantController(ConsultantService consultantService, WorkSlotRepository workSlotRepository,
-                                ConsultationAppointmentService consultationAppointmentService) {
+                                ConsultationAppointmentService consultationAppointmentService,
+                                FeedbackService feedbackService) {
         this.workSlotRepository = workSlotRepository;
         this.consultantService = consultantService;
         this.consultationAppointmentService = consultationAppointmentService;
+        this.feedbackService = feedbackService;
     }
 
     @GetMapping("/getall")
@@ -88,6 +94,13 @@ public class ConsultantController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/{consultantId}/feedbacks")
+    public ResponseEntity<List<FeedbackDTO>> getFeedbacksForConsultant(@PathVariable Long consultantId) {
+        List<FeedbackDTO> feedbacks = feedbackService.getDTOByConsultantId(consultantId);
+        System.out.println("Feedback DTOs size: " + feedbacks.size());
+        return ResponseEntity.ok(feedbacks);
     }
 
 }

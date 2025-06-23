@@ -1,6 +1,7 @@
 package org.example.gender_healthcare_stem.auth.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -47,6 +48,7 @@ public class User {
 
     /* ---------- 1-1 CUSTOMER ---------- */
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private Customer customer;
 
     public Long getId() {

@@ -1,5 +1,7 @@
 package org.example.gender_healthcare_stem.auth.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +24,7 @@ public class Customer {
     @OneToOne
     @MapsId                 // <─ trùng id với User
     @JoinColumn(name = "customer_id")
+    @JsonIgnore
     private User user;
 
     private String gender;
@@ -30,7 +33,8 @@ public class Customer {
 
 
     public Long getCustomerId() {
-        return null;
+        return this.id;
     }
+
 }
 

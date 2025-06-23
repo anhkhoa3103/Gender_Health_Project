@@ -61,5 +61,11 @@ public class MenstrualCycleController {
         log.debug("📊 getCycleHistory called for customerId={}", customerId);
         return service.getRecentCycles(customerId);
     }
+
+    @GetMapping("/{customerId}/latest-cycle")
+    public List<MenstrualCycle> getLatestCycle(@PathVariable int customerId) {
+        return service.getLatestPeriodCycle(customerId);
+    }
+
 }
 

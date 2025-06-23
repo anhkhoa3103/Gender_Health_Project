@@ -1,30 +1,36 @@
-// src/api/axios.js
 import axios from 'axios';
 
 const api = axios.create({
   baseURL: 'http://localhost:8080',
 });
 
-// Thêm interceptor để tự động đính kèm token
+// Thêm interceptor để đính kèm token phù hợp
 api.interceptors.request.use(
   config => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers['Authorization'] = `Bearer ${token}`;
+    const managementToken = localStorage.getItem('managementToken');
+    const customerToken = localStorage.getItem('token');
+
+    // Ưu tiên token quản lý nếu có (admin, consultant, staff)
+    if (managementToken) {
+      config.headers['Authorization'] = `Bearer ${managementToken}`;
+    } else if (customerToken) {
+      config.headers['Authorization'] = `Bearer ${customerToken}`;
     }
+
     return config;
   },
   error => Promise.reject(error)
 );
 
+// Xử lý khi gặp lỗi 401 / 403
 api.interceptors.response.use(
-  response => response, // nếu thành công thì trả response về bình thường
+  response => response,
   error => {
     if (error.response && (error.response.status === 401 || error.response.status === 403)) {
-      // Xóa token, logout người dùng, chuyển về login
+      // Xóa token và chuyển về login phù hợp
+      localStorage.removeItem('managementToken');
       localStorage.removeItem('token');
-      localStorage.removeItem('userId');
-      window.location.href = '/login'; // chuyển về trang login
+      window.location.href = '/login'; 
     }
     return Promise.reject(error);
   }

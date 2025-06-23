@@ -1,5 +1,6 @@
 package org.example.gender_healthcare_stem.consultation.controller;
 
+import org.example.gender_healthcare_stem.consultation.dto.FeedbackDTO;
 import org.example.gender_healthcare_stem.consultation.model.Feedback;
 import org.example.gender_healthcare_stem.consultation.repository.FeedbackRepository;
 import org.example.gender_healthcare_stem.consultation.service.FeedbackService;
@@ -41,13 +42,26 @@ public class FeedbackController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Feedback> updateFeedback(@PathVariable Long id, @RequestBody Feedback updatedFeedback) {
+    public ResponseEntity<?> updateFeedback(@PathVariable Long id, @RequestBody Feedback updatedFeedback) {
         return feedbackRepository.findById(id)
                 .map(existing -> {
                     existing.setRating(updatedFeedback.getRating());
                     existing.setComment(updatedFeedback.getComment());
                     Feedback saved = feedbackRepository.save(existing);
-                    return ResponseEntity.ok(saved);
+
+                    FeedbackDTO dto = new FeedbackDTO();
+                    dto.setFeedbackId(saved.getFeedbackId());
+                    dto.setRating(saved.getRating());
+                    dto.setComment(saved.getComment());
+                    dto.setCreatedAt(saved.getCreatedAt());
+
+                    if (saved.getCustomer() != null && saved.getCustomer().getUser() != null) {
+                        dto.setCustomerName(saved.getCustomer().getUser().getFullName());
+                    } else {
+                        dto.setCustomerName("Ẩn danh");
+                    }
+
+                    return ResponseEntity.ok(dto);
                 })
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -55,8 +69,23 @@ public class FeedbackController {
     @GetMapping("/consultation/{consultationId}")
     public ResponseEntity<?> getFeedbackByConsultationId(@PathVariable Long consultationId) {
         return feedbackService.getByConsultationId(consultationId)
-                .map(ResponseEntity::ok)
+                .map(fb -> {
+                    FeedbackDTO dto = new FeedbackDTO();
+                    dto.setFeedbackId(fb.getFeedbackId());
+                    dto.setRating(fb.getRating());
+                    dto.setComment(fb.getComment());
+                    dto.setCreatedAt(fb.getCreatedAt());
+
+                    if (fb.getCustomer() != null && fb.getCustomer().getUser() != null) {
+                        dto.setCustomerName(fb.getCustomer().getUser().getFullName());
+                    } else {
+                        dto.setCustomerName("Ẩn danh");
+                    }
+
+                    return ResponseEntity.ok(dto);
+                })
                 .orElse(ResponseEntity.notFound().build());
     }
+
 
 }

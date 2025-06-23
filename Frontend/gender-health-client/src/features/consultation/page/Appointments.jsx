@@ -17,13 +17,6 @@ const Appointments = () => {
   const [showFeedbackId, setShowFeedbackId] = useState(null);
   const [feedbackMap, setFeedbackMap] = useState({});
 
-  useEffect(() => {
-    if (userId) {
-      fetchAppointments();
-      fetchSlots();
-    }
-  }, [userId]);
-
   const fetchAppointments = async () => {
     try {
       const res = await getUserAppointments(userId);
@@ -39,9 +32,15 @@ const Appointments = () => {
 
       // Load feedback
       const feedbackPromises = sorted.map(async (a) => {
-        const feedbackRes = await getFeedbackByConsultationId(a.consultationId);
-        return { consultationId: a.consultationId, feedback: feedbackRes.data };
+        try {
+          const feedbackRes = await getFeedbackByConsultationId(a.consultationId);
+          return { consultationId: a.consultationId, feedback: feedbackRes.data };
+        } catch (error) {
+          console.error(`Error fetching feedback for consultation ${a.consultationId}:`, error);
+          return { consultationId: a.consultationId, feedback: null };
+        }
       });
+
 
       const allFeedbacks = await Promise.allSettled(feedbackPromises);
       const map = {};
@@ -56,6 +55,12 @@ const Appointments = () => {
       console.error("Error loading appointments or feedbacks:", err);
     }
   };
+
+  useEffect(() => {
+    if (!userId) return;
+    fetchAppointments();
+    fetchSlots();
+  }, [userId]);
 
 
   const fetchSlots = async () => {
@@ -163,7 +168,7 @@ const Appointments = () => {
             </table>
 
             {/* Feedback Form */}
-            {showFeedbackId && (
+            {showFeedbackId && userId && (
               <div className="feedback-section">
                 <h3 style={{ marginTop: "20px" }}>
                   {feedbackMap[showFeedbackId] ? 'Edit/View Your Feedback' : 'Give Feedback'}

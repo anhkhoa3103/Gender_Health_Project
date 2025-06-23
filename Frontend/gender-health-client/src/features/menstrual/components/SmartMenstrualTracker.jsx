@@ -9,7 +9,8 @@ import CycleHistoryChart from './CycleHistoryChart';
 import { useParams } from "react-router-dom";
 import Header from "../../components/Header.jsx";
 import { AuthContext } from '../../../context/AuthContext';
-
+import AutoDiagnosis from '../components/AutoDiagnosis.jsx';
+import SymptomCheckForm from '../components/SymptomCheckForm.jsx';
 
 
 const TOTAL_DAYS = 28;
@@ -283,6 +284,12 @@ const SmartMenstrualTracker = () => {
             alert("Có lỗi xảy ra khi lưu dữ liệu.");
         }
     };
+
+    const normalizedCycleDates = (cycleDatesMap[monthKey] || []).map(d => {
+        if (typeof d === 'string') return d;
+        return d.toISOString().split('T')[0]; // Ép về yyyy-mm-dd
+    });
+
 
     const radius = 140;
     const center = 180;
@@ -688,15 +695,21 @@ const SmartMenstrualTracker = () => {
                     /></div>
 
                     <div className="cyclechart-section">
-                        <CycleHistoryChart
-                            data={[
-                                { startDate: '17 Feb', cycleLength: 21, periodLength: 4 },
-                                { startDate: '10 Mar', cycleLength: 30, periodLength: 5 },
-                                { startDate: '9 Apr', cycleLength: 32, periodLength: 4 }
-                            ]}
+                        <CycleHistoryChart />
+                    </div>
+
+                    <div className="diagnosis-section">
+                        <AutoDiagnosis
+                            dayData={dayData[monthKey] || {}}
+                            cycleDates={(cycleDatesMap[monthKey] || []).map(d =>
+                                typeof d === 'string' ? d : d.toISOString().split('T')[0]
+                            )}
                         />
                     </div>
 
+                    <div className="symptom-check-section">
+                        <SymptomCheckForm />
+                    </div>
                 </div>
             </div >
         </>

@@ -1,0 +1,44 @@
+.admin-container_adminfeedback {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+}
+
+.main-content_adminfeedback {
+  flex: 1;
+  padding: 30px;
+  background-color: #fff;
+  overflow-x: auto;
+}
+
+.title_adminfeedback {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.table_adminfeedback {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.table_adminfeedback th,
+.table_adminfeedback td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.table_adminfeedback th {
+  background-color: #f2f2f2;
+  color: #333;
+  font-weight: 600;
+}
+
+.table_adminfeedback tr:hover {
+  background-color: #f9f9f9;
+}

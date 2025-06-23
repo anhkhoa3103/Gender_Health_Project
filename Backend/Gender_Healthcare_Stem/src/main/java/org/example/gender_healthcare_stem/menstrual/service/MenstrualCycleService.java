@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -103,5 +105,27 @@ public class MenstrualCycleService {
         return repository.findRecentCycles(customerId);
     }
 
+    public List<MenstrualCycle> getLatestPeriodCycle(int customerId) {
+        List<MenstrualCycle> all = repository.findByCustomerIdAndHasPeriodOrderByCycleDateDesc(customerId, true);
+
+        // Lấy chuỗi ngày liên tiếp gần nhất có kinh (ví dụ: 5 ngày liên tục)
+        List<MenstrualCycle> latestStreak = new ArrayList<>();
+        if (all.isEmpty()) return latestStreak;
+
+        latestStreak.add(all.get(0));
+        LocalDate prev = all.get(0).getCycleDate();
+
+        for (int i = 1; i < all.size(); i++) {
+            LocalDate curr = all.get(i).getCycleDate();
+            if (prev.minusDays(1).equals(curr)) {
+                latestStreak.add(all.get(i));
+                prev = curr;
+            } else break;
+        }
+
+        // Sắp tăng dần để hiển thị đúng trình tự ngày
+        latestStreak.sort(Comparator.comparing(MenstrualCycle::getCycleDate));
+        return latestStreak;
+    }
 
 }

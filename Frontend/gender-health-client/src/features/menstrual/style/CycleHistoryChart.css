@@ -1,0 +1,94 @@
+/* ==== Dùng chung ==== */
+.chart-container {
+    max-width: 500px;
+    margin: 2rem auto;
+    background-color: #fffefc;
+    padding: 1.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.06);
+}
+
+.chart-container h2,
+.chart-container h3 {
+    text-align: center;
+    margin-bottom: 1rem;
+    color: #444;
+}
+
+/* ==== Chu kỳ kinh nguyệt (Cycle History) ==== */
+.cycle-info-box {
+    margin-top: 1.5rem;
+    background-color: #f0f9ff;
+    padding: 1rem;
+    border-left: 6px solid #38bdf8;
+    border-radius: 8px;
+}
+
+.cycle-info-box h4 {
+    margin-bottom: 0.5rem;
+    color: #0284c7;
+}
+
+/* ==== Lượng máu (Blood Flow) ==== */
+.blood-stats-box {
+    margin-top: 1.5rem;
+    background-color: #fff0f0;
+    padding: 1rem;
+    border-left: 6px solid #f87171;
+    border-radius: 8px;
+}
+
+.blood-stats-box h4 {
+    margin-bottom: 0.5rem;
+    color: #dc2626;
+}
+
+/* ==== Đau bụng kinh (Pain Level) ==== */
+.pain-stats-box {
+    margin-top: 1.5rem;
+    background-color: #fffbea;
+    padding: 1rem;
+    border-left: 6px solid #facc15;
+    border-radius: 8px;
+}
+
+.pain-stats-box h4 {
+    margin-bottom: 0.5rem;
+    color: #b45309;
+}
+
+/* ==== Typography cho nội dung phân tích ==== */
+.pain-stats-box p,
+.blood-stats-box p,
+.cycle-info-box p {
+    margin: 0.4rem 0;
+    font-size: 1rem;
+    color: #333;
+}
+
+.pain-stats-box strong,
+.blood-stats-box strong,
+.cycle-info-box strong {
+    font-weight: 600;
+    color: #111;
+}
+
+/* .diagnosis-box {
+    background-color: #ecfdf5;
+    padding: 1.2rem;
+    border-left: 6px solid #10b981;
+    border-radius: 8px;
+    margin-top: 2rem;
+} */
+
+.diagnosis-box h4 {
+    margin-bottom: 0.6rem;
+    color: #065f46;
+}
+
+.diagnosis-box ul {
+    margin: 0;
+    padding-left: 1.5rem;
+    color: #333;
+    font-size: 1rem;
+}

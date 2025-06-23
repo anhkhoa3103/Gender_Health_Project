@@ -2,6 +2,7 @@ package org.example.gender_healthcare_stem.consultation.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.example.gender_healthcare_stem.auth.model.Customer;
 
 import java.time.LocalDateTime;
 
@@ -13,6 +14,10 @@ public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long feedbackId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "customer_id", insertable = false, updatable = false)
+    private Customer customer;
 
     @Column(name = "customer_id")
     private Long customerId;

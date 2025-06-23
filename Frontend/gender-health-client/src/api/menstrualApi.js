@@ -1,6 +1,6 @@
-import api from "./axios";          
+import api from "./axios";
 
-const BASE = "/api/menstrual";         
+const BASE = "/api/menstrual";
 
 export const saveCycleEntry = (cid, data) => {
   if (!cid) return Promise.reject("Invalid customer id");
@@ -20,5 +20,10 @@ export const saveBulkCycles = (cid, list) => {
 export const getCycleHistory = (cid) => {
   if (!cid) return Promise.reject("Invalid customer id");
   return api.get(`${BASE}/cycle-history/${cid}`);
+};
+
+export const getLatestCycle = (cid) => {
+  if (!cid) return Promise.reject("Invalid customer id");
+  return api.get(`${BASE}/${cid}/latest-cycle`);
 };
 

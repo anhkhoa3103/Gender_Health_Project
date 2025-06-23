@@ -1,26 +1,35 @@
 package org.example.gender_healthcare_stem.consultation.dto;
 
+import org.example.gender_healthcare_stem.consultation.model.Feedback;
+
+import java.time.LocalDateTime;
+
 public class FeedbackDTO {
-    private Long customerId;
-    private Long consultantId;
+    private Long feedbackId;
     private Integer rating;
     private String comment;
+    private LocalDateTime createdAt;
+    private String customerName;
 
-    // Getters and Setters
-    public Long getCustomerId() {
-        return customerId;
+    public FeedbackDTO(Feedback fb) {
+        this.feedbackId = fb.getFeedbackId();
+        this.rating = fb.getRating();
+        this.comment = fb.getComment();
+        this.createdAt = fb.getCreatedAt();
+        this.customerName = fb.getCustomer() != null && fb.getCustomer().getUser() != null
+                ? fb.getCustomer().getUser().getFullName()
+                : "Ẩn danh";
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public FeedbackDTO() {
     }
 
-    public Long getConsultantId() {
-        return consultantId;
+    public Long getFeedbackId() {
+        return feedbackId;
     }
 
-    public void setConsultantId(Long consultantId) {
-        this.consultantId = consultantId;
+    public void setFeedbackId(Long feedbackId) {
+        this.feedbackId = feedbackId;
     }
 
     public Integer getRating() {
@@ -37,5 +46,21 @@ public class FeedbackDTO {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 }

@@ -1,0 +1,100 @@
+.cf-wrapper {
+  display: flex;
+  background-color: #e2f0fa;
+  min-height: 100vh;
+}
+
+.cf-main {
+  flex: 1;
+  padding: 40px;
+  background-color: #f5faff;
+}
+
+.cf-header {
+  margin-bottom: 30px;
+}
+
+.cf-average {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #fbbf24;
+}
+
+.cf-filter {
+  margin: 10px 0;
+}
+
+.cf-filter select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-left: 8px;
+}
+
+.cf-feedback-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cf-card {
+  display: flex;
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  align-items: flex-start;
+}
+
+.cf-avatar {
+  width: 48px;
+  height: 48px;
+  background-color: #d6ccf0;
+  color: #4b0082;
+  font-weight: bold;
+  font-size: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 16px;
+}
+
+.cf-info {
+  flex: 1;
+}
+
+.cf-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.cf-name {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.cf-time {
+  background-color: #e5e7fb;
+  color: #4a4ab9;
+  padding: 4px 10px;
+  font-size: 13px;
+  border-radius: 8px;
+}
+
+.cf-stars {
+  color: #fbbf24;
+  font-size: 14px;
+  margin-left: auto;
+}
+
+.cf-comment {
+  font-size: 15px;
+  color: #555;
+  line-height: 1.5;
+}

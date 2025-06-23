@@ -28,4 +28,6 @@ public interface MenstrualCycleRepository extends JpaRepository<MenstrualCycle, 
             """, nativeQuery = true)
     List<CycleHistoryDTO> findRecentCycles(int customerId);
 
+    List<MenstrualCycle> findByCustomerIdAndHasPeriodOrderByCycleDateDesc(Integer customerId, boolean hasPeriod);
+
 }

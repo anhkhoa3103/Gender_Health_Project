@@ -28,7 +28,8 @@ public class TestResultDetailController {
                         d.getTestType().getTestId(),
                         d.getValue(),
                         d.getResult(),
-                        d.getTestType().getThreshold()
+                        d.getTestType().getThreshold(),
+                        d.getTestType().getTestName()
                 ))
 
                 .collect(Collectors.toList());

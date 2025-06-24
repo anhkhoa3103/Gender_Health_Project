@@ -111,16 +111,16 @@ export default function TestResultList() {
             <table className="result-detail-table">
               <thead>
                 <tr>
-                  <th>Test ID</th>
+                  <th>Test Name</th>
                   <th>Value</th>
                   <th>Result</th>
-                  <th>Threshold</th>
+                  
                 </tr>
               </thead>
               <tbody>
                 {editDetail.map((d, i) => (
                   <tr key={i}>
-                    <td>{d.testId}</td>
+                    <td>{d.testName}</td>
                     <td>
                       <input
                         type="text"
@@ -137,7 +137,7 @@ export default function TestResultList() {
                         <span style={{ color: "#888" }}>—</span>
                       )}
                     </td>
-                    <td>{d.threshold}</td>
+                    
                   </tr>
                 ))}
               </tbody>

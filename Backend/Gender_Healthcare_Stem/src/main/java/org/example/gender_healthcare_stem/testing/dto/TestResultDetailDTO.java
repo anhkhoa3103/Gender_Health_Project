@@ -5,7 +5,7 @@ public class TestResultDetailDTO {
     private String value;
     private String result;
     private Double threshold;
-
+    private String testName;
     public Integer getTestId() {
         return testId;
     }
@@ -38,10 +38,19 @@ public class TestResultDetailDTO {
         this.threshold = threshold;
     }
 
-    public TestResultDetailDTO(Integer testId, String value, String result, Double threshold) {
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
+    }
+
+    public TestResultDetailDTO(Integer testId, String value, String result, Double threshold, String testName) {
         this.testId = testId;
         this.value = value;
         this.result = result;
         this.threshold = threshold;
+        this.testName = testName;
     }
 }

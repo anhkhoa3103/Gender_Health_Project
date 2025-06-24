@@ -58,16 +58,16 @@ export default function CustomerResultList() {
             <table className="result-detail-table">
               <thead>
                 <tr>
-                  <th>Test ID</th>
+                  <th>Test Name</th>
                   <th>Value</th>
                   <th>Result</th>
-                  <th>Threshold</th>
+                  
                 </tr>
               </thead>
               <tbody>
                 {detail.map((d, i) => (
                   <tr key={i}>
-                    <td>{d.testId}</td>
+                    <td>{d.testName}</td>
                     <td>{d.value}</td>
                     <td>
                       {d.result ? (
@@ -78,7 +78,7 @@ export default function CustomerResultList() {
                         <span style={{ color: "#888" }}>—</span>
                       )}
                     </td>
-                    <td>{d.threshold}</td>
+                    
                   </tr>
                 ))}
               </tbody>

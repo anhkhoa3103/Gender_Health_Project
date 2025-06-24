@@ -23,7 +23,20 @@ public class TestResultController {
         return results.stream()
                 .map(result -> new TestResultDTO(
                         result.getResultId(),
-                        result.getCustomer().getUser().getFullName(),     // Get customer name here!
+                        result.getCustomer().getUser().getFullName(),
+                        result.getAppointment().getAppointmentId()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    // ⭐️ Customer-only endpoint
+    @GetMapping("/customer")
+    public List<TestResultDTO> getTestResultsByCustomer(@RequestParam Integer customerId) {
+        List<TestResult> results = testResultRepository.findByCustomer_Id(customerId);
+        return results.stream()
+                .map(result -> new TestResultDTO(
+                        result.getResultId(),
+                        result.getCustomer().getUser().getFullName(),
                         result.getAppointment().getAppointmentId()
                 ))
                 .collect(Collectors.toList());

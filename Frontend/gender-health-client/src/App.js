@@ -46,7 +46,7 @@ import PaymentSuccess from "./features/testing/pages/PaymentSuccess";
 import PaymentPageForPackage from "./features/testing/pages/PaymentsPackage";
 import StaffPage from "./features/staff/staff";
 import Invoices from "./features/testing/pages/Invoices";
-
+import CustomerPage from "./features/testing/pages/CustomerPage";
 // Staff
 import StaffAppointmentManagement from "./features/staff/staffAppointment";
 import StafftDashboard from "./features/staff/staffDashboard";
@@ -85,7 +85,7 @@ function App() {
           <Route path="/payment" element={<Payments />} />
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/payment-package" element={<PaymentPageForPackage />} />
-          
+          <Route path="/customer-page" element={<CustomerPage />} />
           {/* Staff routes */}
           <Route path="/staff/invoices" element={
             <RequireAuth allowedRoles={['staff']}>

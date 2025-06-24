@@ -11,3 +11,5 @@ export const updateAppointmentStatus = (appointmentId, status, staffId, config =
         { status, staffId },
         config
     );
+export const setAppointmentStatusCompleted = (appointmentId) => 
+  api.put(`/api/sti-appointment/staff/update-status/${appointmentId}`, { status: "completed" });

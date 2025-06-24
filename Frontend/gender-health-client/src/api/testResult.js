@@ -10,3 +10,7 @@ export const getTestResultDetail = (resultId) => api.get(`/api/test-results/${re
 export const updateTestResultDetail = (resultId, details) => {
   return axios.put(`${BASE_URL}/api/test-results/${resultId}/details`, { details });
 };
+export const getTestResultsByCustomerId = (customerId) =>
+    api.get('/api/test-results/customer', { params: { customerId } });
+export const setAppointmentStatusCompleted = (appointmentId) => 
+  api.put(`/api/sti-appointment/staff/update-status/${appointmentId}`, { status: "completed" });

@@ -3,23 +3,32 @@ import {
   getAllTestResults,
   getTestResultDetail,
   updateTestResultDetail,
+  setAppointmentStatusCompleted, // <-- new
 } from "../../../api/testResult";
-import "../styles/ResultList.css"
+import "../styles/ResultList.css";
+
 export default function TestResultList() {
   const [results, setResults] = useState([]);
   const [detail, setDetail] = useState(null);
   const [editDetail, setEditDetail] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [selectedResultId, setSelectedResultId] = useState(null);
+  const [selectedAppointmentId, setSelectedAppointmentId] = useState(null); // NEW
 
+  // Fetch all test results on load
   useEffect(() => {
     getAllTestResults()
       .then((res) => setResults(res.data))
       .catch(() => setResults([]));
   }, []);
 
+  // Show detail modal
   const handleShowDetail = async (resultId) => {
     try {
+      // Get appointmentId for this test result
+      const resultRow = results.find(r => r.resultId === resultId);
+      setSelectedAppointmentId(resultRow?.appointmentId);
+
       const res = await getTestResultDetail(resultId);
       setDetail(res.data);
       setEditDetail(res.data.map((d) => ({ ...d })));
@@ -30,7 +39,7 @@ export default function TestResultList() {
     }
   };
 
-  // Auto-set result based on threshold from DB
+  // Value change (with auto result)
   const handleValueChange = (idx, value) => {
     setEditDetail((ed) =>
       ed.map((d, i) => {
@@ -48,12 +57,19 @@ export default function TestResultList() {
     );
   };
 
+  // Save test result + set appointment completed
   const handleSave = async () => {
     try {
       if (editDetail && editDetail.length > 0 && selectedResultId) {
         await updateTestResultDetail(selectedResultId, editDetail);
+        // Also set appointment status to completed
+        if (selectedAppointmentId) {
+          await setAppointmentStatusCompleted(selectedAppointmentId);
+        }
         setDetail(editDetail);
         setShowModal(false);
+        // Refresh table
+        getAllTestResults().then((res) => setResults(res.data));
       }
     } catch (err) {
       alert("Update failed!");
@@ -69,7 +85,7 @@ export default function TestResultList() {
             <th>Result ID</th>
             <th>Customer Name</th>
             <th>Appointment ID</th>
-            <th>Detail</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -80,7 +96,7 @@ export default function TestResultList() {
               <td>{r.appointmentId}</td>
               <td>
                 <button onClick={() => handleShowDetail(r.resultId)}>
-                  Detail
+                  Enter Result
                 </button>
               </td>
             </tr>
@@ -121,9 +137,7 @@ export default function TestResultList() {
                         <span style={{ color: "#888" }}>—</span>
                       )}
                     </td>
-                    <td>
-                      {d.threshold}
-                    </td>
+                    <td>{d.threshold}</td>
                   </tr>
                 ))}
               </tbody>

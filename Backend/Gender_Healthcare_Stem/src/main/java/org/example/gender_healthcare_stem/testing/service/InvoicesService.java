@@ -28,21 +28,22 @@ public class InvoicesService {
         String customerName = (user != null) ? user.getFullName() : "Unknown";
         return new InvoicesDTO(
                 invoice.getId(),
+                invoice.getCustomerId(), // <-- include customerId!
                 customerName,
                 invoice.getAppointmentId(),
                 invoice.getAmount(),
                 invoice.getPaid(),
                 invoice.getCreatedAt(),
                 invoice.getPaymentProof(),
-                invoice.getPaidItems()  // Add paidItems here
+                invoice.getPaidItems()
         );
     }
-
 
     public List<InvoicesDTO> getAllInvoicesDTO() {
         List<Invoices> invoices = invoicesRepository.findAll();
         return invoices.stream().map(this::toDTO).toList();
     }
+
     public InvoicesDTO createInvoice(InvoicesDTO dto) {
         Invoices entity = new Invoices();
         entity.setCustomerId(dto.getCustomerId());
@@ -51,16 +52,16 @@ public class InvoicesService {
         entity.setPaid(dto.getPaid());
         entity.setCreatedAt(LocalDateTime.now());
         entity.setPaymentProof(dto.getPaymentProof());
-        entity.setPaidItems(dto.getPaidItems()); // if you have this field
+        entity.setPaidItems(dto.getPaidItems());
 
         Invoices saved = invoicesRepository.save(entity);
 
-        // Optionally fetch customer name and return DTO
         User user = userRepository.findById(saved.getCustomerId()).orElse(null);
         String customerName = (user != null) ? user.getFullName() : "Unknown";
 
         return new InvoicesDTO(
                 saved.getId(),
+                saved.getCustomerId(), // <-- include customerId!
                 customerName,
                 saved.getAppointmentId(),
                 saved.getAmount(),
@@ -70,6 +71,7 @@ public class InvoicesService {
                 saved.getPaidItems()
         );
     }
+
     public InvoicesDTO updatePaidStatus(Long invoiceId, Boolean paid) {
         Invoices invoice = invoicesRepository.findById(invoiceId)
                 .orElseThrow(() -> new RuntimeException("Invoice not found"));
@@ -82,6 +84,7 @@ public class InvoicesService {
 
         return new InvoicesDTO(
                 saved.getId(),
+                saved.getCustomerId(), // <-- include customerId!
                 customerName,
                 saved.getAppointmentId(),
                 saved.getAmount(),
@@ -91,5 +94,4 @@ public class InvoicesService {
                 saved.getPaidItems()
         );
     }
-
 }

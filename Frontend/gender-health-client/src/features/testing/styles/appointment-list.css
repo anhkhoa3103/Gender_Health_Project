@@ -1,0 +1,64 @@
+.appointment-container {
+  max-width: 900px;
+  margin: 40px auto;
+  background: #fff;
+  padding: 32px 24px;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.07);
+}
+.appointment-title {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 2rem;
+  color: #2364b5;
+  letter-spacing: 0.01em;
+}
+.appointment-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #f9fbfd;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.appointment-table th,
+.appointment-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid #e3e9f0;
+  text-align: left;
+}
+.appointment-table th {
+  background: #eaf2fc;
+  font-weight: 600;
+  color: #19335c;
+}
+.appointment-table tr:last-child td {
+  border-bottom: none;
+}
+.appointment-table tbody tr:hover {
+  background: #f2f6fa;
+  transition: background 0.18s;
+}
+.status-badge {
+  display: inline-block;
+  padding: 5px 13px;
+  border-radius: 18px;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+.status-pending {
+  background: #fff7c6;
+  color: #c19700;
+}
+.status-completed {
+  background: #dbffe5;
+  color: #009e36;
+}
+.status-canceled {
+  background: #ffeaea;
+  color: #e02424;
+}
+.status-sampled {
+  background: #e8f0fe;
+  color: #2563eb;
+}

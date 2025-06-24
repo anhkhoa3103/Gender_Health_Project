@@ -1,16 +1,15 @@
 package org.example.gender_healthcare_stem.testing.controller;
 
 
+import org.example.gender_healthcare_stem.testing.model.TestType;
 import org.example.gender_healthcare_stem.testing.service.PackageService;
 import org.example.gender_healthcare_stem.testing.model.Package;
+import org.example.gender_healthcare_stem.testing.service.PackageTestService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,10 +21,16 @@ public class PackageController {
 
     @Autowired
     private PackageService service;
-
+    @Autowired
+    private PackageTestService packageTestService;
     @PostMapping("")
     public ResponseEntity<List<Package>> GetPackagess() {
         List<Package> packages = service.getPackages();
         return ResponseEntity.ok(packages);
+    }
+    @GetMapping("/{packageId}/test-types")
+    public ResponseEntity<List<TestType>> getTestTypesByPackage(@PathVariable Long packageId) {
+        List<TestType> testTypes = packageTestService.getTestTypesForPackage(packageId);
+        return ResponseEntity.ok(testTypes);
     }
 }

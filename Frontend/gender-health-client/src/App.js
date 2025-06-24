@@ -38,12 +38,19 @@ import AdminFeedback from "./features/admin/AdminFeedback";
 import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
 import ConsultantAppointmentHistory from "./features/consultant/ConsultantAppointmentHistory";
 import ConsultantFeedback from "./features/consultant/ConsultantFeedback";
+
 // Testing
 import Payments from "./features/testing/pages/Payments";
 import Packages from "./features/testing/pages/Packages";
 import PaymentSuccess from "./features/testing/pages/PaymentSuccess";
 import PaymentPageForPackage from "./features/testing/pages/PaymentsPackage";
 import StaffPage from "./features/staff/staff";
+import Invoices from "./features/testing/pages/Invoices";
+
+// Staff
+import StaffAppointmentManagement from "./features/staff/staffAppointment";
+import StafftDashboard from "./features/staff/staffDashboard";
+import StaffResult from "./features/staff/staffResult";
 
 function App() {
   return (
@@ -76,12 +83,28 @@ function App() {
           <Route path="/package" element={<Packages />} />
           <Route path="/payment-success" element={<PaymentSuccess />} />
           <Route path="/payment" element={<Payments />} />
+          <Route path="/invoices" element={<Invoices />} />
           <Route path="/payment-package" element={<PaymentPageForPackage />} />
           
           {/* Staff routes */}
-          <Route path="/staff" element={
+          <Route path="/staff/invoices" element={
             <RequireAuth allowedRoles={['staff']}>
               <StaffPage />
+            </RequireAuth>
+          } />
+          <Route path="/staff/appointments" element={
+            <RequireAuth allowedRoles={['staff']}>
+              <StaffAppointmentManagement />
+            </RequireAuth>
+          } />
+          <Route path="/staff/dashboard" element={
+            <RequireAuth allowedRoles={['staff']}>
+              <StafftDashboard />
+            </RequireAuth>
+          } />
+          <Route path="/staff/results" element={
+            <RequireAuth allowedRoles={['staff']}>
+              <StaffResult />
             </RequireAuth>
           } />
 
@@ -124,7 +147,7 @@ function App() {
             </RequireAuth>
           } />
           <Route path="/admin/feedbacks" element={
-            <RequireAuth allowedRoles={['admin']}>    
+            <RequireAuth allowedRoles={['admin']}>
               <AdminFeedback />
             </RequireAuth>
           } />

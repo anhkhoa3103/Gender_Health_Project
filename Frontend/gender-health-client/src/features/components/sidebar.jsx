@@ -22,8 +22,8 @@ const Sidebar = () => {
     STAFF: [
       { label: 'Dashboard', path: '/staff/dashboard', icon: '📊' },
       { label: 'Appointments', path: '/staff/appointments', icon: '📅' },
-      { label: 'Results', path: '/staff/samples', icon: '🧪' },
-      { label: 'Invoices', path: '/staff/results', icon: '📄' },
+      { label: 'Results', path: '/staff/results', icon: '🧪' },
+      { label: 'Invoices', path: '/staff/invoices', icon: '📄' },
     ],
     CONSULTANT: [
       { label: 'Dashboard', path: '/consultant/dashboard', icon: '📊' },

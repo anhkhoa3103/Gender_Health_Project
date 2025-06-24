@@ -28,7 +28,7 @@ const LoginManagement = () => {
             if (role === "admin") {
                 navigate("/admin/dashboard");
             } else if (role === "staff") {
-                navigate("/staff");
+                navigate("/staff/dashboard");
             } else if (role === "consultant") {
                 navigate("/consultant/workslots");
             } else {

@@ -66,6 +66,18 @@ public class InvoicesDTO {
         this.paidItems = paidItems;
     }
 
+    public InvoicesDTO(Long id, Long customerId, String customerName, Long appointmentId, Double amount, Boolean paid, LocalDateTime createdAt, String paymentProof, String paidItems) {
+        this.id = id;
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.appointmentId = appointmentId;
+        this.amount = amount;
+        this.paid = paid;
+        this.createdAt = createdAt;
+        this.paymentProof = paymentProof;
+        this.paidItems = paidItems;
+    }
+
     public InvoicesDTO() {
     }
 }

@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getInvoicesAxios } from "../../../api/invoice";
 import { formatNumberWithDot } from "../helper/helper";
 import { useNavigate } from "react-router-dom";
+import "../styles/Invoices.css";
+import { AuthContext } from "../../../context/AuthContext"; // Add this
 
 export default function InvoiceList() {
   const [invoices, setInvoices] = useState([]);
@@ -9,6 +11,7 @@ export default function InvoiceList() {
   const [selectedInvoice, setSelectedInvoice] = useState(null);
 
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext); // Get logged-in user
 
   function openModal(invoice) {
     setSelectedInvoice(invoice);
@@ -32,6 +35,20 @@ export default function InvoiceList() {
   useEffect(() => {
     getInvoices();
   }, []);
+  useEffect(() => {
+  console.log("Fetched invoices:", invoices);
+  console.log("Logged in user id:", user?.id);
+}, [invoices, user]);
+
+  // Filter invoices by logged-in user
+  const filteredInvoices = user && user.id
+  ? invoices.filter(
+      (inv) =>
+        String(inv.customerId) === String(user.id) ||
+        String(inv.customer_id) === String(user.id)
+    )
+  : [];
+
 
   // --------- PARSE PAID ITEMS ---------
   let paidItems = [];
@@ -55,60 +72,45 @@ export default function InvoiceList() {
   }
 
   return (
-    <div className="px-8 py-10 bg-blue-50 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6 text-blue-700">Invoices</h1>
-      <div className="overflow-x-auto rounded-2xl shadow-xl bg-white border border-blue-100">
-        <table className="min-w-full text-sm">
+    <div className="invoice-container">
+      <h1 className="invoice-title">Invoices</h1>
+      <div className="invoice-table-wrapper">
+        <table className="invoice-table">
           <thead>
-            <tr className="bg-blue-100 text-blue-800 font-semibold">
-              <th className="p-4">Invoice #</th>
-              <th className="p-4">Customer Name</th>
-              <th className="p-4">Appointment ID</th>
-              <th className="p-4">Amount</th>
-              <th className="p-4">Paid</th>
-              <th className="p-4">Created At</th>
-              <th className="p-4">Actions</th>
+            <tr>
+              <th>Invoice #</th>
+              <th>Customer Name</th>
+              <th>Appointment ID</th>
+              <th>Amount</th>
+              <th>Paid</th>
+              <th>Created At</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {invoices && invoices.length > 0 ? (
-              invoices.map((inv, idx) => (
-                <tr
-                  key={inv.id || inv.invoice_id}
-                  className={`${
-                    idx % 2 === 0 ? "bg-white" : "bg-blue-50"
-                  } border-b last:border-none hover:bg-blue-100 transition`}
-                >
-                  <td className="p-4">{inv.id || inv.invoice_id}</td>
-                  <td className="p-4">{inv.customerName || "-"}</td>
-                  <td className="p-4">
-                    {inv.appointmentId || inv.appointment_id || "-"}
+            {filteredInvoices && filteredInvoices.length > 0 ? (
+              filteredInvoices.map((inv, idx) => (
+                <tr key={inv.id || inv.invoice_id}>
+                  <td>{inv.id || inv.invoice_id}</td>
+                  <td>{inv.customerName || "-"}</td>
+                  <td>{inv.appointmentId || inv.appointment_id || "-"}</td>
+                  <td className="amount">{formatNumberWithDot(inv.amount || 0)} VNĐ</td>
+                  <td>
+                    <span className={inv.paid ? "paid-yes" : "paid-no"}>
+                      {inv.paid ? "Yes" : "No"}
+                    </span>
                   </td>
-                  <td className="p-4 text-blue-700 font-semibold">
-                    {formatNumberWithDot(inv.amount || 0)} VNĐ
-                  </td>
-                  <td className="p-4">
-                    {inv.paid ? (
-                      <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 font-medium shadow-sm">
-                        Yes
-                      </span>
-                    ) : (
-                      <span className="px-3 py-1 rounded-full bg-red-100 text-red-600 font-medium shadow-sm">
-                        No
-                      </span>
-                    )}
-                  </td>
-                  <td className="p-4">
+                  <td>
                     {inv.createdAt || inv.created_at
                       ? new Date(
                           inv.createdAt || inv.created_at
                         ).toLocaleString("vi-VN")
                       : "-"}
                   </td>
-                  <td className="p-4">
+                  <td>
                     <button
                       onClick={() => openModal(inv)}
-                      className="bg-blue-500 text-white px-4 py-1.5 rounded-xl font-medium shadow hover:bg-blue-600 transition"
+                      className="view-btn"
                     >
                       View Details
                     </button>
@@ -117,7 +119,7 @@ export default function InvoiceList() {
               ))
             ) : (
               <tr>
-                <td colSpan={8} className="p-6 text-center text-gray-400">
+                <td colSpan={8} className="no-invoices">
                   No invoices found.
                 </td>
               </tr>
@@ -128,35 +130,31 @@ export default function InvoiceList() {
 
       {/* Modal for details */}
       {modalIsOpen && selectedInvoice && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 z-50 flex items-center justify-center">
-          <div className="rounded-2xl border-2 border-blue-200 px-8 py-7 bg-white w-[450px] shadow-2xl">
-            <h2 className="text-xl font-bold mb-3 text-blue-700">
+        <div className="invoice-modal-bg">
+          <div className="invoice-modal-card">
+            <h2 className="invoice-modal-title">
               Invoice #{selectedInvoice.id || selectedInvoice.invoice_id}
             </h2>
-            <div className="mb-1">
-              Customer Name:{" "}
+            <div style={{ marginBottom: ".35rem" }}>
+              <span style={{ color: "#555" }}>Customer Name:</span>{" "}
+              <span className="font-semibold">{selectedInvoice.customerName}</span>
+            </div>
+            <div style={{ marginBottom: ".35rem" }}>
+              <span style={{ color: "#555" }}>Appointment ID:</span>{" "}
               <span className="font-semibold">
-                {selectedInvoice.customerName}
+                {selectedInvoice.appointmentId || selectedInvoice.appointment_id}
               </span>
             </div>
-            <div className="mb-1">
-              Appointment ID:{" "}
-              <span className="font-semibold">
-                {selectedInvoice.appointmentId ||
-                  selectedInvoice.appointment_id}
-              </span>
-            </div>
-            <div className="mb-1">
-              Amount:{" "}
-              <span className="font-semibold text-blue-600">
+            <div style={{ marginBottom: ".35rem" }}>
+              <span style={{ color: "#555" }}>Amount:</span>{" "}
+              <span className="amount">
                 {formatNumberWithDot(selectedInvoice.amount || 0)} VNĐ
               </span>
             </div>
-            {/* Show payment proof if exists */}
-            <div className="mb-1">
+            {/* Payment proof image or link */}
+            <div style={{ marginBottom: ".35rem" }}>
               <span className="block font-medium mb-1">Payment Proof:</span>
-              {selectedInvoice.paymentProof &&
-              selectedInvoice.paymentProof.startsWith("http") ? (
+              {selectedInvoice.paymentProof && selectedInvoice.paymentProof.startsWith("http") ? (
                 <a
                   href={selectedInvoice.paymentProof}
                   target="_blank"
@@ -166,40 +164,39 @@ export default function InvoiceList() {
                   {selectedInvoice.paymentProof}
                 </a>
               ) : (
-                <span className="italic text-gray-700">
-                  {selectedInvoice.paymentProof}
-                </span>
+                selectedInvoice.paymentProof && (
+                  <img
+                    src={selectedInvoice.paymentProof}
+                    alt="Payment Proof"
+                    className="invoice-modal-proof-img"
+                  />
+                )
               )}
             </div>
-            {/* Show selected/paid packages/items */}
+            {/* Paid Items */}
             {paidItems.length > 0 && (
-              <div className="mb-3">
+              <div>
                 <span className="block font-medium mb-1">Paid Items:</span>
-                <ul className="pl-4 list-disc">
+                <ul className="invoice-modal-list">
                   {paidItems.map((item, idx) => (
                     <li key={idx}>
                       <span className="font-semibold">{item.testName || item.packageName || "Item"}</span>
                       {item.price && (
-                        <span className="ml-2 text-blue-700">({formatNumberWithDot(item.price)} VNĐ)</span>
+                        <span className="amount"> ({formatNumberWithDot(item.price)} VNĐ)</span>
                       )}
                     </li>
                   ))}
                 </ul>
               </div>
             )}
-
-            <div className="mb-1">
-              Paid:{" "}
-              <span
-                className={`font-semibold ${
-                  selectedInvoice.paid ? "text-green-700" : "text-red-600"
-                }`}
-              >
+            <div style={{ marginBottom: ".35rem" }}>
+              <span style={{ color: "#555" }}>Paid:</span>{" "}
+              <span className={selectedInvoice.paid ? "paid-yes" : "paid-no"}>
                 {selectedInvoice.paid ? "Yes" : "No"}
               </span>
             </div>
-            <div className="mb-3">
-              Created At:{" "}
+            <div style={{ marginBottom: ".5rem" }}>
+              <span style={{ color: "#555" }}>Created At:</span>{" "}
               <span className="font-medium">
                 {selectedInvoice.createdAt || selectedInvoice.created_at
                   ? new Date(
@@ -208,10 +205,10 @@ export default function InvoiceList() {
                   : "-"}
               </span>
             </div>
-            <div className="flex justify-end mt-4 gap-3">
+            <div className="invoice-modal-btn-row">
               <button
                 onClick={closeModal}
-                className="rounded-lg px-6 py-2 bg-blue-500 text-white hover:bg-blue-600 transition"
+                className="invoice-modal-btn close"
               >
                 Close
               </button>

@@ -11,6 +11,8 @@ import Header from "../../components/Header.jsx";
 import { AuthContext } from '../../../context/AuthContext';
 import AutoDiagnosis from '../components/AutoDiagnosis.jsx';
 import SymptomCheckForm from '../components/SymptomCheckForm.jsx';
+import { Link } from 'react-router-dom';
+
 
 
 const TOTAL_DAYS = 28;
@@ -682,6 +684,9 @@ const SmartMenstrualTracker = () => {
                                 />
                             </div>
                         </div>
+                        <button className="testingbutton_menstrual">
+                            <a href='#symptomcheck'>Bạn có dấu hiệu bất thường?</a>
+                        </button>
                     </div>
 
                     <div className="bloodchart-section"><BloodFlowChart
@@ -707,7 +712,7 @@ const SmartMenstrualTracker = () => {
                         />
                     </div>
 
-                    <div className="symptom-check-section">
+                    <div className="symptom-check-section" id='symptomcheck'>
                         <SymptomCheckForm />
                     </div>
                 </div>

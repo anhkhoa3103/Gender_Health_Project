@@ -4,6 +4,7 @@ import api from "../../../api/axios";
 import { AuthContext } from "../../../context/AuthContext";
 import { formatNumberWithDot } from "../helper/helper";
 import "../styles/Payments.css"; // Import the CSS
+import qrimg from "../../img/qr.jpg"
 
 // Helper to create STI Appointment (sends testIds array)
 const createStiAppointment = async ({ customerId, amount, testIds }) => {
@@ -104,7 +105,7 @@ export default function Payments() {
     <div className="payment-container">
       <div className="payment-card">
         <h2 className="payment-title">Payment Summary</h2>
-        <img src="/qr.png" alt="Payment QR Code" className="payment-qr" />
+        <img src={qrimg} alt="Payment QR Code" className="payment-qr" />
         <div>
           <label className="payment-label">
             Upload Payment Proof (screenshot/photo)

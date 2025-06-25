@@ -17,7 +17,6 @@
   transform: translate(-50%, 0);
 }
 
-
 .header-container {
   width: 100vw;
   margin: 0 auto;
@@ -52,7 +51,7 @@
   opacity: 0.8;
 }
 
-/* Nút Login bên phải trên */
+/* Nút Login bên phải */
 .login-button-header {
   position: absolute;
   right: 20px;
@@ -61,7 +60,7 @@
   border: none;
   color: white;
   font-weight: 700;
-  padding: 6px 15px;
+  padding: 6px 19px;
   border-radius: 25px;
   display: flex;
   align-items: center;
@@ -77,7 +76,6 @@
   background-color: #94bdf9;
 }
 
-/* Icon trong nút Login */
 .login-icon {
   stroke: white;
   width: 18px;
@@ -98,7 +96,6 @@
   height: 40px;
 }
 
-/* Menu vẫn căn giữa */
 .nav-list {
   max-width: 1000px;
   margin: 0 auto;
@@ -131,4 +128,54 @@
   background-color: #a6d2f7;
   color: black;
   font-weight: 700;
+}
+
+/* User icon + dropdown */
+.user-menu {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  z-index: 1001;
+}
+
+.user-icon {
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  background-color: #a6d2f7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.user-icon:hover {
+  background-color: #94bdf9;
+}
+
+.dropdown-menu {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  background-color: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 999;
+  width: 180px;
+}
+
+.dropdown-menu > div {
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: 14px;
+}
+
+.dropdown-menu > div:hover {
+  background-color: #f5f5f5;
 }

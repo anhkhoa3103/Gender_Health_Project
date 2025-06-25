@@ -4,6 +4,7 @@ import { formatNumberWithDot } from "../helper/helper";
 import api from "../../../api/axios";
 import { AuthContext } from "../../../context/AuthContext";
 import "../styles/Payments.css";
+import qrimg from "../../img/qr.jpg"
 
 // Helper to create STI Appointment with testIds
 const createStiAppointment = async ({ customerId, amount, testIds }) => {
@@ -113,7 +114,7 @@ export default function PaymentPageForPackage() {
     } catch (err) {
       alert(
         "Error submitting payment: " +
-          (err.response?.data?.message || err.message)
+        (err.response?.data?.message || err.message)
       );
     }
   };
@@ -149,7 +150,7 @@ export default function PaymentPageForPackage() {
       <div className="payment-card">
         <h2 className="payment-title">Payment for Package</h2>
         <img
-          src="/qr.png"
+          src={qrimg}
           alt="Payment QR Code"
           className="payment-qr"
         />

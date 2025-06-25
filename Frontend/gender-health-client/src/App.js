@@ -33,6 +33,7 @@ import AdminDashboard from "./features/admin/AdminDashboard";
 import UserManagement from "./features/admin/UserManagerment";
 import ConsultantManagement from "./features/admin/ConsultantManagement";
 import AdminFeedback from "./features/admin/AdminFeedback";
+import StaffsManagement from "./features/admin/StaffsManagement.jsx";
 
 // Consultant
 import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
@@ -46,6 +47,8 @@ import PaymentSuccess from "./features/testing/pages/PaymentSuccess";
 import PaymentPageForPackage from "./features/testing/pages/PaymentsPackage";
 import StaffPage from "./features/staff/staff";
 import Invoices from "./features/testing/pages/Invoices";
+import CustomerTestResult from "./features/testing/pages/CustomerTestResult";
+import CustomerInvoicesHistory from "./features/testing/pages/CustomerInvoicesHistory";
 
 // Staff
 import StaffAppointmentManagement from "./features/staff/staffAppointment";
@@ -85,7 +88,9 @@ function App() {
           <Route path="/payment" element={<Payments />} />
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/payment-package" element={<PaymentPageForPackage />} />
-          
+          <Route path="/customer-results" element={<CustomerTestResult />} />
+          <Route path="/customer-invoices" element={<CustomerInvoicesHistory />} />
+
           {/* Staff routes */}
           <Route path="/staff/invoices" element={
             <RequireAuth allowedRoles={['staff']}>
@@ -149,6 +154,11 @@ function App() {
           <Route path="/admin/feedbacks" element={
             <RequireAuth allowedRoles={['admin']}>
               <AdminFeedback />
+            </RequireAuth>
+          } />
+          <Route path="/admin/staffs" element={
+            <RequireAuth allowedRoles={['admin']}>
+              <StaffsManagement />
             </RequireAuth>
           } />
 

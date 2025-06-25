@@ -27,7 +27,7 @@ const ContactSession = () => {
     return (
         <section className="contact-session">
             <div className="form-container">
-                <h2 className="contact-title">Book your appointment now</h2>
+                <h2 className="contact-title">Contact for more</h2>
                 <p className="contact-subtitle">So our team can reach out to you on time</p>
 
                 <form className="contact-form" onSubmit={handleSubmit}>

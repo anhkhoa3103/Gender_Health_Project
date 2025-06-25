@@ -24,7 +24,6 @@ export default function AppointmentList() {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        // Pass headers if your API requires token for this endpoint (often it does for staff)
         const response = await getAllAppointments(authHeaders);
         const data = Array.isArray(response.data) ? response.data : response;
         setAppointments(data);
@@ -57,25 +56,25 @@ export default function AppointmentList() {
     setStatusUpdates((prev) => ({ ...prev, [id]: newStatus }));
   };
 
-  // UPDATE: Use staffId and management token
+  // Prevent setting status to 'completed'
   const handleUpdateClick = async (appointmentId) => {
     const newStatus = statusUpdates[appointmentId];
     if (!newStatus) return;
+    if (newStatus === "completed") {
+      alert("Staff are not allowed to set status to 'Completed'.");
+      return;
+    }
     try {
       await updateAppointmentStatus(
         appointmentId,
         newStatus,
         staffId,
-        authHeaders // Pass headers for authentication
+        authHeaders
       );
       setAppointments((prev) =>
         prev.map((a) =>
           a.appointmentId === appointmentId
-            ? {
-                ...a,
-                status: newStatus,
-                // You could set staffName, etc, if you want
-              }
+            ? { ...a, status: newStatus }
             : a
         )
       );
@@ -100,11 +99,10 @@ export default function AppointmentList() {
       </div>
     );
   if (!Array.isArray(appointments))
-    return (
-      <div className="appointment-container">
-        <h2 className="appointment-title">All Appointments</h2>
-        <div style={{ color: "#e02424" }}>Appointments data error: Not an array.</div>
-      </div>
+    return (<div className="appointment-container">
+      <h2 className="appointment-title">All Appointments</h2>
+      <div style={{ color: "#e02424" }}>Appointments data error: Not an array.</div>
+    </div>
     );
 
   return (
@@ -115,7 +113,6 @@ export default function AppointmentList() {
           <tr>
             <th>Appointment ID</th>
             <th>Customer Name</th>
-            <th>Staff Name</th>
             <th>Status</th>
             <th>Amount</th>
             <th>Change Status</th>
@@ -126,7 +123,6 @@ export default function AppointmentList() {
             <tr key={item.appointmentId}>
               <td>{item.appointmentId}</td>
               <td>{item.customerName ?? "N/A"}</td>
-              <td>{item.staffName ?? "N/A"}</td>
               <td>
                 <span className={getStatusClass(item.status)}>
                   {item.status || "N/A"}
@@ -145,7 +141,7 @@ export default function AppointmentList() {
                   <option value="pending">Pending</option>
                   <option value="sampling">Sampling</option>
                   <option value="sampled">Sampled</option>
-                  <option value="completed">Completed</option>
+                  {/* <option value="completed">Completed</option> */}
                   <option value="canceled">Canceled</option>
                 </select>
                 <button

@@ -1,5 +1,6 @@
 package org.example.gender_healthcare_stem.adminconsultant.service;
 
+import org.example.gender_healthcare_stem.adminconsultant.dto.ConsultantFeedbackDTO;
 import org.example.gender_healthcare_stem.adminconsultant.dto.ConsultationAppointmentDto;
 import org.example.gender_healthcare_stem.consultation.repository.ConsultationAppointmentRepository;
 import org.example.gender_healthcare_stem.consultation.repository.FeedbackRepository;
@@ -92,5 +93,21 @@ public class AdminConsultationService {
         dto.setGoogleMeetLink(rs.getString("google_meet_link"));
         dto.setSlotDescription(rs.getString("slot_description"));
         return dto;
+    }
+    public List<ConsultantFeedbackDTO> getFeedbacksByConsultantId(Long consultantId) {
+        String sql = """
+        SELECT cu.full_name as customer_name, f.comment, f.rating
+        FROM feedback f
+        JOIN customers c ON f.customer_id = c.customer_id
+        JOIN users cu ON c.customer_id = cu.user_id
+        WHERE f.consultant_id = ?
+        ORDER BY f.created_at DESC
+    """;
+
+        return jdbcTemplate.query(sql, (rs, rowNum) -> new ConsultantFeedbackDTO(
+                rs.getString("customer_name"),
+                rs.getString("comment"),
+                rs.getInt("rating")
+        ), consultantId);
     }
 }

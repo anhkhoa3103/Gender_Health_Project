@@ -20,6 +20,17 @@ public class TestType {
     @Column(name = "price", nullable = false)
     private BigDecimal price;
 
+    @Column(name = "threshold")
+    private Double threshold;
+
+    public Double getThreshold() {
+        return threshold;
+    }
+
+    public void setThreshold(Double threshold) {
+        this.threshold = threshold;
+    }
+
     // Getters and Setters
 
     public Integer getTestId() {

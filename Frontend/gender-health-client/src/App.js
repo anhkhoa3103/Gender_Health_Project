@@ -34,6 +34,7 @@ import UserManagement from "./features/admin/UserManagerment";
 import ConsultantManagement from "./features/admin/ConsultantManagement";
 import AdminFeedback from "./features/admin/AdminFeedback";
 import StaffsManagement from "./features/admin/StaffsManagement.jsx";
+import AdminServices from "./features/admin/AdminServices.jsx";
 
 // Consultant
 import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
@@ -132,6 +133,11 @@ function App() {
           <Route path="/admin/feedbacks" element={
             <RequireAuth allowedRoles={['admin']}>    
               <AdminFeedback />
+            </RequireAuth>
+          } />
+          <Route path="/admin/services" element={
+            <RequireAuth allowedRoles={['admin']}>    
+              <AdminServices />
             </RequireAuth>
           } />
 

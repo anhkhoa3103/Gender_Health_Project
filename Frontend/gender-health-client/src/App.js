@@ -4,6 +4,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./context/AuthContext";
 
 
+
 // Auth
 import Login from "./features/auth/pages/LoginPage";
 import Register from "./features/auth/pages/RegisterPage";
@@ -15,6 +16,8 @@ import LogoutManagement from "./features/auth/pages/LogoutManagement";
 
 // Home
 import HomePage from "./features/home/pages/HomePage";
+import BlogDetailSession from "./features/home/sessions/BlogDetailSession";
+import DoctorDetail from "./features/home/sessions/DoctorDetail";
 
 // Menstrual
 import MenstrualTracker from "./features/menstrual/pages/MenstrualTracker";
@@ -71,6 +74,8 @@ function App() {
 
           {/* Main Page */}
           <Route path="/" element={<HomePage />} />
+          <Route path="/blog/:id" element={<BlogDetailSession />} />
+           <Route path="/doctor/:id" element={<DoctorDetail />} />
 
           {/* Menstrual tracking */}
           <Route path="/menstrual/:userId" element={<MenstrualTracker />} />

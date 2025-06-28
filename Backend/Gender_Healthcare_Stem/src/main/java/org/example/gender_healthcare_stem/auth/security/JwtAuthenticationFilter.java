@@ -49,14 +49,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             User user = userRepository.findById(userId).orElse(null);
             if (user != null && jwtService.isValid(token)) {
                 String role = jwtService.extractRole(token); // 👈 Lấy từ token, không phụ thuộc DB
-
+                String authority = "ROLE_" + role.toUpperCase();
                 UserDetails principal = org.springframework.security.core.userdetails.User
                         .withUsername(user.getEmail())
                         .password(user.getPasswordHash())
-                        .authorities("ROLE_" + role.toUpperCase()) // Spring cần prefix "ROLE_"
+                        .authorities(authority)// Spring cần prefix "ROLE_"
                         .build();
 
-                log.debug("Assigned authority: ROLE_{}", role.toUpperCase());
+                System.out.println("✅ ROLE from token: " + role);
+                System.out.println("✅ Authority assigned: " + authority);
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());

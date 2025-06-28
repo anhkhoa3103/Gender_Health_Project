@@ -107,6 +107,7 @@
 }
 
 .nav-item {
+  cursor: pointer;
   font-weight: 600;
   font-size: 15px;
   color: black;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from "react-router-dom";
 import { getTestTypeAxios } from '../../../api/testtype';
 import { formatNumberWithDot } from '../helper/helper';
@@ -12,7 +12,7 @@ export default function TestTypeTable({ SubmitPayment }) {
     useEffect(() => {
         getTestTypes();
     }, []);
-    
+
     const getTestTypes = async () => {
         try {
             const { data } = await getTestTypeAxios();
@@ -31,54 +31,67 @@ export default function TestTypeTable({ SubmitPayment }) {
         navigate('/payment', { state: { selectedTestTypes } });
     };
 
+    // 👉 Tính tổng tiền các test đã chọn
+    const totalPrice = useMemo(() => {
+        return testTypes
+            .filter(type => selectedTypes.includes(type.testId))
+            .reduce((sum, type) => sum + (type.price || 0), 0);
+    }, [selectedTypes, testTypes]);
+
     return (
-        <div className="test-table-container">
-            <table className="test-type-table">
-                <thead>
-                    <tr>
-                        <th>
-                            <input
-                                checked={selectedTypes.length === testTypes.length && testTypes.length > 0}
-                                onChange={() => {
-                                    if (selectedTypes.length === testTypes.length) {
-                                        setSelectedType([]);
-                                    } else {
-                                        setSelectedType(testTypes.map(type => type.testId));
-                                    }
-                                }}
-                                type='checkbox'
-                                className="table-checkbox"
-                            />
-                        </th>
-                        <th>Test Type ID</th>
-                        <th>Test Type Name</th>
-                        <th>Price</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {testTypes.map((testType) => (
-                        <tr key={testType.testId}>
-                            <td>
+        <>
+            <div className="test-table-container">
+                <table className="test-type-table">
+                    <thead>
+                        <tr>
+                            <th>
                                 <input
-                                    type="checkbox"
-                                    checked={selectedTypes.includes(testType.testId)}
+                                    checked={selectedTypes.length === testTypes.length && testTypes.length > 0}
                                     onChange={() => {
-                                        if (selectedTypes.includes(testType.testId)) {
-                                            setSelectedType(selectedTypes.filter(id => id !== testType.testId));
+                                        if (selectedTypes.length === testTypes.length) {
+                                            setSelectedType([]);
                                         } else {
-                                            setSelectedType([...selectedTypes, testType.testId]);
+                                            setSelectedType(testTypes.map(type => type.testId));
                                         }
                                     }}
+                                    type='checkbox'
                                     className="table-checkbox"
                                 />
-                            </td>
-                            <td>{testType.testId}</td>
-                            <td>{testType.testName}</td>
-                            <td>{formatNumberWithDot(testType.price || 0)} VNĐ</td>
+                            </th>
+                            <th>Test Type ID</th>
+                            <th>Test Type Name</th>
+                            <th>Price</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        {testTypes.map((testType) => (
+                            <tr key={testType.testId}>
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedTypes.includes(testType.testId)}
+                                        onChange={() => {
+                                            if (selectedTypes.includes(testType.testId)) {
+                                                setSelectedType(selectedTypes.filter(id => id !== testType.testId));
+                                            } else {
+                                                setSelectedType([...selectedTypes, testType.testId]);
+                                            }
+                                        }}
+                                        className="table-checkbox"
+                                    />
+                                </td>
+                                <td>{testType.testId}</td>
+                                <td>{testType.testName}</td>
+                                <td>{formatNumberWithDot(testType.price || 0)} VNĐ</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
+
+            <div className="test-table-summary">
+                <p><strong>Total:</strong> {formatNumberWithDot(totalPrice)} VNĐ</p>
+            </div>
 
             <div className="test-table-actions">
                 <button
@@ -88,6 +101,6 @@ export default function TestTypeTable({ SubmitPayment }) {
                     Submit Payment
                 </button>
             </div>
-        </div>
+        </>
     )
 }

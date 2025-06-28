@@ -4,6 +4,7 @@ import api from "../../../api/axios";  // chắc bạn đã có file này config
 import { GoogleLogin } from "@react-oauth/google";
 import { AuthContext } from "../../../context/AuthContext"; // context quản lý auth
 import "../styles/LoginPage.css";
+import bgcontact from "../../img/bgcontact.jpg"
 
 function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -68,7 +69,9 @@ function LoginPage() {
   return (
     <div className="login-container">
       <div className="login-left">
-        <div className="image-placeholder" />
+        <div className="image-placeholder">
+          <img src={bgcontact} />
+        </div>
       </div>
 
       <div className="login-right">

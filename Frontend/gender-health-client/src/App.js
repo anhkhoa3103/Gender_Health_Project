@@ -25,6 +25,7 @@ import Appointments from './features/consultation/page/Appointments';
 import BookAppointment from './features/consultation/page/BookAppointment';
 import BookingSuccess from './features/consultation/page/BookingSuccess';
 import Feedback from './features/consultation/page/Feedback';
+import HealthcareWebsite_consultation from "./features/consultation/page/HealthcareWebsite_consultation.jsx";
 
 // Admin
 import RequireAuth from "./routes/RequireAuth";
@@ -34,6 +35,7 @@ import UserManagement from "./features/admin/UserManagerment";
 import ConsultantManagement from "./features/admin/ConsultantManagement";
 import AdminFeedback from "./features/admin/AdminFeedback";
 import StaffsManagement from "./features/admin/StaffsManagement.jsx";
+import AdminServices from "./features/admin/AdminServices.jsx";
 
 // Consultant
 import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
@@ -76,7 +78,7 @@ function App() {
           <Route path="/menstrual/:userId" element={<MenstrualTracker />} />
 
           {/* Consultation routes */}
-          <Route path="/consultation" element={<ConsultationBooking />} />
+          <Route path="/consultation" element={<HealthcareWebsite_consultation />} />
           <Route path="/appointments" element={<Appointments />} />
           <Route path="/bookappointment" element={<BookAppointment />} />
           <Route path="/bookingsuccess" element={<BookingSuccess />} />
@@ -161,7 +163,11 @@ function App() {
               <StaffsManagement />
             </RequireAuth>
           } />
-
+          <Route path="/admin/services" element={
+            <RequireAuth allowedRoles={['admin']}>
+            <AdminServices />
+          </RequireAuth>
+          } />
           {/* Catch-all route */}
         </Routes>
 

@@ -3,15 +3,13 @@ package org.example.gender_healthcare_stem.consultant.controller;
 
 import org.example.gender_healthcare_stem.consultant.dto.ConsultantDTO;
 import org.example.gender_healthcare_stem.consultant.service.ConsultantService;
-import org.example.gender_healthcare_stem.consultation.dto.ConsultationAppointmentDTO;
-import org.example.gender_healthcare_stem.consultation.dto.FeedbackDTO;
-import org.example.gender_healthcare_stem.consultation.dto.WorkSlotRequest;
-import org.example.gender_healthcare_stem.consultation.model.ConsultationAppointment;
-import org.example.gender_healthcare_stem.consultation.model.Feedback;
+import org.example.gender_healthcare_stem.consultation.dto.*;
+import org.example.gender_healthcare_stem.consultation.model.ConsultationResult;
 import org.example.gender_healthcare_stem.consultation.model.WorkSlot;
-import org.example.gender_healthcare_stem.consultation.repository.ConsultationAppointmentRepository;
+import org.example.gender_healthcare_stem.consultation.repository.ConsultationResultRepository;
 import org.example.gender_healthcare_stem.consultation.repository.WorkSlotRepository;
 import org.example.gender_healthcare_stem.consultation.service.ConsultationAppointmentService;
+import org.example.gender_healthcare_stem.consultation.service.ConsultationResultService;
 import org.example.gender_healthcare_stem.consultation.service.FeedbackService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,14 +27,20 @@ public class ConsultantController {
     private final WorkSlotRepository workSlotRepository;
     private final ConsultationAppointmentService consultationAppointmentService;
     private final FeedbackService feedbackService;
+    private final ConsultationResultService consultationResultService;
+    private final ConsultationResultRepository consultationResultRepository;
 
     public ConsultantController(ConsultantService consultantService, WorkSlotRepository workSlotRepository,
                                 ConsultationAppointmentService consultationAppointmentService,
-                                FeedbackService feedbackService) {
+                                FeedbackService feedbackService,
+                                ConsultationResultService consultationResultService,
+                                ConsultationResultRepository consultationResultRepository) {
         this.workSlotRepository = workSlotRepository;
         this.consultantService = consultantService;
         this.consultationAppointmentService = consultationAppointmentService;
         this.feedbackService = feedbackService;
+        this.consultationResultService = consultationResultService;
+        this.consultationResultRepository = consultationResultRepository;
     }
 
     @GetMapping("/getall")
@@ -101,6 +105,42 @@ public class ConsultantController {
         List<FeedbackDTO> feedbacks = feedbackService.getDTOByConsultantId(consultantId);
         System.out.println("Feedback DTOs size: " + feedbacks.size());
         return ResponseEntity.ok(feedbacks);
+    }
+
+    @DeleteMapping("/appointments/{id}")
+    public ResponseEntity<String> deleteCancelledAppointment(@PathVariable Long id) {
+        boolean deleted = consultationAppointmentService.deleteCancelledAppointment(id);
+        if (deleted) {
+            return ResponseEntity.ok("Xóa lịch hẹn đã hủy thành công.");
+        } else {
+            return ResponseEntity.badRequest().body("Chỉ được xóa các lịch hẹn đã hủy hoặc không tồn tại.");
+        }
+    }
+
+    @PostMapping("/results")
+    public ResponseEntity<?> submitResult(@RequestBody ConsultationResultRequest request) {
+        System.out.println("📥 Nhận request: " + request);
+        try {
+            ConsultationResultResponse savedResult = consultationResultService.saveResult(request);
+            return ResponseEntity.ok(savedResult); // ✅ Trả về object chi tiết
+        } catch (Exception e) {
+            e.printStackTrace(); // log lỗi cụ thể
+            return ResponseEntity.badRequest().body("Lỗi: " + e.getMessage());
+        }
+    }
+
+    @GetMapping("/results/by-consultation/{id}")
+    public ResponseEntity<ConsultationResultResponse> getResultByConsultationId(@PathVariable Long id) {
+        ConsultationResult result = consultationResultRepository.findByConsultation_ConsultationId(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy kết quả tư vấn"));
+
+        return ResponseEntity.ok(new ConsultationResultResponse(
+                result.getConsultationResultId(),
+                result.getConsultation().getConsultationId(),  // ✅ Sửa dòng này
+                result.getResult(),
+                result.getNotes(),
+                result.getCreatedAt()
+        ));
     }
 
 }

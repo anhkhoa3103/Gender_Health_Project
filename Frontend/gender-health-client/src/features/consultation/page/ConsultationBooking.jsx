@@ -22,9 +22,7 @@ const HealthcareWebsite_consultation = () => {
   const userId = user?.id;
   const [selectedWorkslotId, setSelectedWorkslotId] = useState(null);
   const [availableWorkslots, setAvailableWorkslots] = useState([]);
-
-
-
+  const [showBookingModal, setShowBookingModal] = useState(false);
 
   const [feedbacks, setFeedbacks] = useState([
     { customerName: "Sarah Johnson", comment: "Excellent service and very professional staff!", rating: 5 },
@@ -168,7 +166,7 @@ const HealthcareWebsite_consultation = () => {
       month: currentMonth
     };
 
-    navigate('/bookappointment', { state: appointmentData });
+     setShowBookingModal(true);
   }
 
   // Tên các tháng
@@ -183,7 +181,7 @@ const HealthcareWebsite_consultation = () => {
   };
 
   return (
-    <>
+    <body>
       <div className="heder-section">
         <HeaderSession />
       </div>
@@ -246,6 +244,14 @@ const HealthcareWebsite_consultation = () => {
                   <p>Loading consultants...</p>
                 )}
               </div>
+              <div>
+                <button
+                  className="cta-button_consultation"
+                  onClick={() => navigate('/appointments')}
+                >
+                  Booking History
+                </button>
+              </div>
             </div>
 
             {/* Right Content */}
@@ -282,15 +288,7 @@ const HealthcareWebsite_consultation = () => {
                 <p>Please select a consultant</p>
               )}
             </div>
-          </div>
 
-          <div>
-            <button
-              className="cta-button_consultation"
-              onClick={() => navigate('/appointments')}
-            >
-              HistoryBooking
-            </button>
           </div>
         </section>
 
@@ -397,10 +395,11 @@ const HealthcareWebsite_consultation = () => {
           </div>
         </section>
       </div>
+      
       <div className="footer-section">
         <FooterSession />
       </div>
-    </>
+    </body>
   );
 };
 

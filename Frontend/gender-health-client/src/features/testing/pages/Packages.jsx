@@ -1,5 +1,5 @@
 import React from 'react'
-import PackageList from '../components/PaymentList'
+import PackageList from '../components/PackageList'
 import TestTypeTable from '../components/TestTypeTable'
 import InvoiceList from '../components/InvoicesList'
 import Header from '../../components/Header'
@@ -11,7 +11,6 @@ export default function Packages() {
         <Header />
       </div>
         <PackageList />
-       
     </div>
   )
 }

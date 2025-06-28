@@ -168,4 +168,17 @@ public class ConsultationAppointmentService {
                 .orElse(false);
     }
 
+    @Transactional
+    public boolean deleteCancelledAppointment(Long id) {
+        return appointmentRepository.findById(id)
+                .filter(appointment -> "CANCELLED".equals(appointment.getStatus()))
+                .map(appointment -> {
+                    appointmentRepository.delete(appointment);
+                    return true;
+                })
+                .orElse(false);
+    }
+
+
+
 }

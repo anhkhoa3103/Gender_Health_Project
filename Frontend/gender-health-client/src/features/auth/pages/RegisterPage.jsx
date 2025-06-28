@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import "../styles/RegisterPage.css";
+import bgcontact from "../../img/bgcontact.jpg"
 
 function RegisterPage() {
   const [form, setForm] = useState({
@@ -50,7 +51,9 @@ function RegisterPage() {
   return (
     <div className="register-container">
       <div className="register-left">
-        <div className="image-placeholder" />
+        <div className="image-placeholder">
+          <img src={bgcontact}></img>
+        </div>
       </div>
       <div className="register-right">
         <h2 className="system-title">Gender Health System</h2>
@@ -60,11 +63,16 @@ function RegisterPage() {
           <label>Full Name</label>
           <input name="fullName" onChange={handleChange} required />
 
-          <label>Email</label>
-          <input name="email" type="email" onChange={handleChange} required />
-
-          <label>Phone</label>
-          <input name="phone" onChange={handleChange} />
+          <div className="form-row_register">
+            <div className="form-group_register">
+              <label>Email</label>
+              <input name="email" type="email" onChange={handleChange} required />
+            </div>
+            <div className="form-group_register">
+              <label>Phone</label>
+              <input name="phone" onChange={handleChange} />
+            </div>
+          </div>
 
           <label>Password</label>
           <input name="password" type="password" onChange={handleChange} required />

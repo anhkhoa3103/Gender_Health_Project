@@ -1,67 +1,188 @@
-.package-list-container {
-  padding: 5rem 2rem;
-}
-
-.package-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2.5rem;
-  margin-bottom: 2rem;
-}
-
-.package-card {
-  border-radius: .75rem;
-  padding: 1.25rem 1rem;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 1.5px 3px rgba(0,0,0,0.05);
-  background: #fff;
+.sti-testing-wrapper {
+  padding: 40px 20px;
+  background: #fcfcff;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  min-height: 220px;
+  align-items: center;
 }
 
-.package-card h2 {
-  font-size: 1.6rem;
-  font-weight: bold;
-  margin-bottom: 0.75rem;
+.sti-title {
+  font-size: 32px;
+  font-weight: 800;
+  background: linear-gradient(to right, #6ee2f5, #6454f0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 8px;
 }
 
-.package-card .package-price {
-  font-size: 1.15rem;
-  font-weight: 600;
-  margin-bottom: 1.2rem;
-  color: #111827;
+.sti-subtitle {
+  font-size: 18px;
+  color: #777;
+  margin-bottom: 32px;
 }
 
-.package-card .buy-btn {
-  margin-top: auto;
-  background: #2563eb;
-  color: #fff;
-  padding: .6rem 1.5rem;
-  border-radius: .5rem;
+.sti-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+  margin-bottom: 40px;
+}
+
+.package-card-list {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.sti-package-card {
+  background: #fff;
+  padding: 24px 20px;
+  width: 300px;
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0px 6px 18px rgba(0, 0, 0, 0.05);
+  transition: transform 0.3s ease;
+  border: 1px solid #eee;
+}
+
+.sti-package-card:hover {
+  transform: translateY(-4px);
+}
+
+.package-name {
+  font-size: 18px;
+  font-weight: 700;
+  color: #5d5dff;
+  margin-bottom: 8px;
+}
+
+.package-price {
+  font-size: 16px;
   font-weight: 500;
-  font-size: 1rem;
+  color: #555;
+  margin-bottom: 16px;
+}
+
+.package-btn {
+  background: linear-gradient(to right, #6ee2f5, #6454f0);
+  color: white;
+  padding: 10px 20px;
+  font-weight: bold;
   border: none;
+  border-radius: 999px;
   cursor: pointer;
-  transition: background .14s;
+  transition: background 0.3s ease;
+  box-shadow: 0 4px 12px rgba(100, 100, 255, 0.2);
 }
 
-.package-card .buy-btn:hover {
-  background: #1d4ed8;
+.package-btn:hover {
+  background: linear-gradient(to right, #6454f0, #6ee2f5);
 }
 
-@media (max-width: 1000px) {
-  .package-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
+.sti-test-table {
+  width: 100%;
+  max-width: 1024px;
 }
-@media (max-width: 600px) {
-  .package-list-container {
-    padding: 2rem 0.5rem;
-  }
-  .package-grid {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
+
+.service-features-box {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 32px;
+  margin-top: 60px;
+  max-width: 1024px;
+  width: 100%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e0e0e0;
+  margin-bottom: 30px;
+}
+
+.service-title_experience {
+  font-size: 20px;
+  font-weight: 700;
+  background: linear-gradient(to right, #6ee2f5, #6454f0);
+  -webkit-background-clip: text;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.service-features-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px 40px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.feature-icon {
+  background-color: #6b94b2;
+  color: white;
+  font-size: 23px;
+  padding: 10px;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-item p {
+  font-size: 18px;
+  color: #1c2b36;
+  margin: 0;
+}
+
+.faq-section {
+  background-color: #ffffff;
+  padding: 40px;
+  margin-top: 60px;
+  border-radius: 12px;
+  max-width: 1024px;
+  width: 100%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+}
+
+.faq-title {
+  font-size: 30px;
+  font-weight: 700;
+  color: #1c2b36;
+  margin-bottom: 20px;
+}
+
+.faq-subtitle {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 32px;
+  line-height: 1.6;
+}
+
+.faq-block {
+  margin-bottom: 32px;
+}
+
+.faq-block h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1c2b36;
+  margin-bottom: 10px;
+}
+
+.faq-block p, .faq-block ul {
+  font-size: 15px;
+  color: #444;
+  line-height: 1.6;
+}
+
+.faq-block ul {
+  padding-left: 20px;
+}
+
+.faq-block li {
+  margin-bottom: 6px;
 }

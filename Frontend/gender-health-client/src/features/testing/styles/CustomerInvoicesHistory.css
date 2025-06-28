@@ -1,0 +1,129 @@
+.container_customerinvoiceshistory {
+  padding: 40px;
+  margin-top: 200px;
+  font-family: 'Inter', sans-serif;
+}
+
+.title_customerinvoiceshistory {
+  text-align: center;
+  font-size: 28px;
+  margin-bottom: 24px;
+}
+
+.table-wrapper_customerinvoiceshistory {
+  overflow-x: auto;
+}
+
+.table_customerinvoiceshistory {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table_customerinvoiceshistory th,
+.table_customerinvoiceshistory td {
+  padding: 12px 16px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+}
+
+.amount_customerinvoiceshistory {
+  font-weight: bold;
+  color: #14b8a6;
+}
+
+.paid-yes_customerinvoiceshistory {
+  color: green;
+  font-weight: bold;
+}
+
+.paid-no_customerinvoiceshistory {
+  color: red;
+  font-weight: bold;
+}
+
+.view-btn_customerinvoiceshistory {
+  background-color: #14b8a6;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.no-data_customerinvoiceshistory {
+  text-align: center;
+  padding: 24px;
+  font-style: italic;
+}
+
+.modal-bg_customerinvoiceshistory {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-card_customerinvoiceshistory {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 600px;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal-title_customerinvoiceshistory {
+  font-size: 22px;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.modal-field_customerinvoiceshistory {
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.proof-img_customerinvoiceshistory {
+  max-width: 150px;
+  margin-top: 6px;
+  border-radius: 4px;
+}
+
+.proof-link_customerinvoiceshistory {
+  color: #2563eb;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.paid-items_customerinvoiceshistory {
+  margin-top: 4px;
+  padding-left: 18px;
+}
+
+.modal-actions_customerinvoiceshistory {
+  text-align: right;
+  margin-top: 16px;
+}
+
+.btn-close_customerinvoiceshistory {
+  background-color: #999;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

@@ -1,96 +1,135 @@
 .register-container {
   display: flex;
-  height: 110vh;
-  font-family: Arial, sans-serif;
+  height: 100vh;
+  font-family: 'Inter', sans-serif;
 }
 
+/* Left side - image */
 .register-left {
   flex: 1;
-  background-color: #d3d3d3;
+  background-color: #e5e7eb;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  overflow: hidden;
 }
 
 .image-placeholder {
-  width: 300px;
-  height: 300px;
-  background-color: #e0e0e0;
-  border: 10px solid #d3d3d3;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  border: none;
 }
 
+.image-placeholder img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* Right side - form */
 .register-right {
   flex: 1;
-  background-color: #fff;
-  padding: 60px;
+  padding: 60px 40px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  background-color: white;
 }
 
-.logo-text {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+.system-title {
+  font-size: 24px;
+  font-weight: 600;
+  background: linear-gradient(to right, #60a5fa, #a78bfa);
+  /* blue to violet */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin-bottom: 4px;
 }
 
 .subtitle {
-  font-size: 12px;
-  color: #888;
-  margin-bottom: 30px;
+  font-size: 14px;
+  color: #7e7e7e;
+  margin-bottom: 24px;
 }
 
 .register-title {
   font-size: 28px;
-  margin-bottom: 30px;
+  color: #6d28d9;
+  margin-bottom: 20px;
+  font-weight: 600;
 }
 
 .register-form {
   display: flex;
   flex-direction: column;
+  gap: 7px;
+}
+
+.register-form label {
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .register-form input {
-  margin-bottom: 15px;
   padding: 12px;
-  border: 1px solid #ddd;
+  font-size: 14px;
+  border: 1px solid #ccc;
   border-radius: 6px;
-  background-color: #f7f9fc;
+  background-color: #f3f4f6;
 }
 
-.form-row {
+.form-row_register {
   display: flex;
-  gap: 15px;
+  gap: 16px;
 }
 
-.terms {
+.form-group_register {
+  width: 50%; 
   display: flex;
-  align-items: center;
-  font-size: 12px;
-  margin-bottom: 20px;
+  flex-direction: column;
 }
 
+/* Submit button */
 .register-button {
-  background-color: #007a94;
-  color: white;
   padding: 12px;
+  background-color: #a5d8f3;
+  color: white;
+  font-weight: 600;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-weight: bold;
+  transition: background-color 0.3s;
 }
 
+.register-button:hover {
+  background-color: #7dd3fc;
+}
+
+/* Google login */
 .google-login-wrapper {
-  margin-top: 20px;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Divider and link */
+hr {
+  margin: 32px 0 12px;
+  border: none;
+  border-top: 1px solid #e5e7eb;
 }
 
 .login-link {
-  margin-top: 20px;
-  font-size: 13px;
   text-align: center;
+  font-size: 14px;
+  color: #6b7280;
 }
 
 .login-link span {
-  color: #0042aa;
+  color: #7c3aed;
+  font-weight: 500;
   cursor: pointer;
 }

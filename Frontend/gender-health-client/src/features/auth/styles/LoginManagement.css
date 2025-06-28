@@ -1,31 +1,97 @@
 .login-container_management {
-  max-width: 400px;
-  margin: 80px auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: 'Inter', sans-serif;
+  transform: translateY(-10%);
 }
 
-.login-container_management input {
-  display: block;
+.login-box {
+  text-align: center;
+  max-width: 350px;
   width: 100%;
-  margin-bottom: 1rem;
-  padding: 0.75rem;
+}
+
+.login-box h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+
+.login-box .subtitle {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 24px;
+}
+
+.login-box h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.login-box form {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.login-box label {
+  font-size: 12px;
+  margin-bottom: 4px;
+  margin-top: 12px;
+}
+
+.login-box input {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 6px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 
-.login-container_management button {
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #6454F0;
+.password-wrapper {
+  position: relative;
+}
+
+.password-wrapper .eye-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.login-box button {
+  margin-top: 16px;
+  padding: 10px;
+  background-color: #4caf50;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.error {
+.login-box button:hover {
+  background-color: #43a047;
+}
+
+.login-box .error {
   color: red;
-  margin-top: 1rem;
+  font-size: 13px;
+  text-align: center;
+  margin-top: 10px;
+}
+
+.forgot-link {
+  display: block;
+  margin-top: 12px;
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+  text-decoration: none;
 }

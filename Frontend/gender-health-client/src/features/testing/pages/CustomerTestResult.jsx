@@ -7,6 +7,7 @@ import {
 import { AuthContext } from "../../../context/AuthContext";
 import "../styles/appointment-list.css";
 import "../styles/ResultList.css";
+import Header from "../../components/Header";
 
 export default function AppointmentList() {
   const { user } = useContext(AuthContext);
@@ -73,6 +74,9 @@ export default function AppointmentList() {
 
   return (
     <div>
+      <div className="header-section">
+        <Header />
+      </div>
       <div className="appointment-container">
         <h1 className="appointment-title">My Appointments</h1>
         <div className="appointment-table-wrapper">
@@ -82,7 +86,7 @@ export default function AppointmentList() {
                 <th>Appointment ID</th>
                 <th>Status</th>
                 <th>Amount</th>
-                
+
                 <th>Test Result</th>
               </tr>
             </thead>
@@ -105,7 +109,7 @@ export default function AppointmentList() {
                         ? app.amount.toLocaleString("vi-VN")
                         : app.amount}
                     </td>
-                    
+
                     <td>
                       {String(app.status).toLowerCase() === "completed" ? (
                         <button

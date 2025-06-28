@@ -43,7 +43,7 @@ public class User {
     @CreationTimestamp                    // tự sinh timestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
-
+    @Column(name = "avatar", columnDefinition = "text")
     private String avatar;                // url hoặc path
 
     /* ---------- 1-1 CUSTOMER ---------- */

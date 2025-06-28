@@ -1,13 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { getPackagesAxios } from "../../../api/package";
+import { getCustomerById } from "../../../api/customer";
+import { AuthContext } from "../../../context/AuthContext";
 import { formatNumberWithDot } from "../helper/helper";
 import { useNavigate } from "react-router-dom";
 import TestTypeTable from "./TestTypeTable";
 import "../styles/Packages.css";
 
+// Modal for missing info
+function MissingInfoModal({ open, missingLabels, onConfirm }) {
+  if (!open) return null;
+  return (
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <div className="modal-title">Incomplete Profile</div>
+        <div className="modal-message">
+          Please fill out the following information before making a purchase:
+          <ul style={{ textAlign: "left", margin: "12px 0 0 22px" }}>
+            {missingLabels.map((label) => (
+              <li key={label} style={{ color: "#e74c3c" }}>
+                • {label}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <button className="modal-close-btn" onClick={onConfirm}>
+          Go to Profile
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function PackageList() {
   const [packages, setPackages] = useState([]);
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+
+  // Modal state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [missingLabels, setMissingLabels] = useState([]);
+  const [missingFieldNames, setMissingFieldNames] = useState([]);
 
   useEffect(() => {
     const getPackages = async () => {
@@ -21,8 +54,57 @@ export default function PackageList() {
     getPackages();
   }, []);
 
+  // Validate info fields
+  const handleBuyNow = async (pm) => {
+    if (!user?.id) {
+      alert("Please log in first.");
+      navigate("/login");
+      return;
+    }
+    try {
+      const res = await getCustomerById(user.id);
+      const info = res.data;
+      const requiredFields = [
+        { name: "fullName", label: "Name" },
+        { name: "email", label: "Email" },
+        { name: "phone", label: "Phone" },
+        { name: "dateOfBirth", label: "Birthdate" },
+        { name: "gender", label: "Gender" },
+        { name: "address", label: "Location" },
+      ];
+      const missingFields = requiredFields.filter(
+        (f) => !info[f.name] || info[f.name].toString().trim() === ""
+      );
+      if (missingFields.length > 0) {
+        setMissingLabels(missingFields.map((f) => f.label));
+        setMissingFieldNames(missingFields.map((f) => f.name));
+        setModalOpen(true);
+        return;
+      }
+      // All info is filled, go to payment
+      navigate("/payment-package", { state: { selectedPackage: pm } });
+    } catch (err) {
+      alert("Failed to validate customer info.");
+    }
+  };
+
+  // Modal confirm: navigate to customer info
+  const handleModalConfirm = () => {
+    setModalOpen(false);
+    navigate("/customer-info", {
+      state: { missingFields: missingFieldNames },
+    });
+  };
+
   return (
     <div className="sti-testing-wrapper">
+      <MissingInfoModal
+        open={modalOpen}
+        missingLabels={missingLabels}
+        onConfirm={handleModalConfirm}
+      />
+
+      {/* Feature section */}
       <div className="service-features-box">
         <h2 className="service-title_experience">
           For the Best Testing Experience, Our Service Includes
@@ -54,6 +136,7 @@ export default function PackageList() {
           </div>
         </div>
       </div>
+
       <h1 className="sti-title">STI Testing Package</h1>
       <p className="sti-subtitle">STI Test Prices and Packages</p>
 
@@ -66,11 +149,7 @@ export default function PackageList() {
                 {formatNumberWithDot(pm.totalPrice || 0)} VNĐ
               </p>
               <button
-                onClick={() =>
-                  navigate("/payment-package", {
-                    state: { selectedPackage: pm },
-                  })
-                }
+                onClick={() => handleBuyNow(pm)}
                 className="package-btn"
               >
                 Get Tested Now
@@ -87,12 +166,13 @@ export default function PackageList() {
         <TestTypeTable />
       </div>
 
+      {/* FAQ section */}
       <div className="faq-section">
         <h2 className="faq-title">Complete STD Testing at Unbeatable Prices</h2>
         <p className="faq-subtitle">
           You may be concerned about the best time to test for STDs. If you have had unprotected sexual contact, our doctors recommend testing 3 weeks after initial exposure, and again 3 months after to confirm your initial diagnosis...
         </p>
-
+        {/* ...the rest of your FAQ blocks, unchanged ... */}
         <div className="faq-block">
           <h3>Why test with STDcheck.com?</h3>
           <ul>
@@ -105,52 +185,42 @@ export default function PackageList() {
             <li>All services approved and managed by our physicians</li>
           </ul>
         </div>
-
         <div className="faq-block">
           <h3>What are the differences between the HIV RNA test and the HIV 4th Generation Antibody test?</h3>
           <p>The HIV RNA test can detect HIV sooner than any other test; as early as 9–11 days after exposure...</p>
         </div>
-
         <div className="faq-block">
           <h3>What happens next?</h3>
           <p>STDcheck.com makes testing for STDs fast and convenient. Select a testing center closest to you...</p>
         </div>
-
         <div className="faq-block">
           <h3>Do I have to set an appointment?</h3>
           <p>No, it is not necessary for you to set an appointment for STD testing...</p>
         </div>
-
         <div className="faq-block">
           <h3>Will everyone at the Lab Center know what I'm getting tested for?</h3>
           <p>No. Our lab centers test for many diseases other than STDs...</p>
         </div>
-
         <div className="faq-block">
           <h3>Is this private?</h3>
           <p>We go well above and beyond standard industry practices to provide you with the utmost privacy...</p>
         </div>
-
         <div className="faq-block">
           <h3>How does the doctor consultation work?</h3>
           <p>If you test positive for an STD, you will be able to speak with one of our physicians...</p>
         </div>
-
         <div className="faq-block">
           <h3>Is there anything I have to do before or after the test?</h3>
           <p>It depends on the type of test you are taking. If you are taking a blood test...</p>
         </div>
-
         <div className="faq-block">
           <h3>How soon can I take the test after ordering?</h3>
           <p>You can take your STD test as soon as you have completed your order...</p>
         </div>
-
         <div className="faq-block">
           <h3>How long is the lab visit?</h3>
           <p>Testing for STDs with STDcheck.com usually takes 5 minutes...</p>
         </div>
-
         <div className="faq-block">
           <h3>Do I need to bring anything to the lab for my test?</h3>
           <p>We do not require you to bring anything to the test center other than your Lab Requisition Form...</p>

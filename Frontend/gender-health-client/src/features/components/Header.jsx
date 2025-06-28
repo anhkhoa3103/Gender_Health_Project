@@ -75,6 +75,9 @@ const Header = ({ activePage }) => {
             </div>
             {showDropdown && (
               <div className="dropdown-menu">
+                <div onClick={() => navigate("/customer-info")}>
+                  Thông tin tài khoản
+                </div>
                 <div onClick={() => navigate("/appointments")}>
                   Lịch sử cuộc hẹn
                 </div>

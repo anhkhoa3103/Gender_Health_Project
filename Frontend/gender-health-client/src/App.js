@@ -51,7 +51,7 @@ import StaffPage from "./features/staff/staff";
 import Invoices from "./features/testing/pages/Invoices";
 import CustomerTestResult from "./features/testing/pages/CustomerTestResult";
 import CustomerInvoicesHistory from "./features/testing/pages/CustomerInvoicesHistory";
-
+import CustomerTable from "./features/testing/pages/CustomerInfo.jsx";
 // Staff
 import StaffAppointmentManagement from "./features/staff/staffAppointment";
 import StafftDashboard from "./features/staff/staffDashboard";
@@ -92,7 +92,7 @@ function App() {
           <Route path="/payment-package" element={<PaymentPageForPackage />} />
           <Route path="/customer-results" element={<CustomerTestResult />} />
           <Route path="/customer-invoices" element={<CustomerInvoicesHistory />} />
-
+          <Route path="/customer-info" element={<CustomerTable />} /> 
           {/* Staff routes */}
           <Route path="/staff/invoices" element={
             <RequireAuth allowedRoles={['staff']}>

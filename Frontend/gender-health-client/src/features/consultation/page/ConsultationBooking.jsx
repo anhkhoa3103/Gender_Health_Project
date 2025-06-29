@@ -166,7 +166,7 @@ const HealthcareWebsite_consultation = () => {
       month: currentMonth
     };
 
-     setShowBookingModal(true);
+    setShowBookingModal(true);
   }
 
   // Tên các tháng
@@ -181,7 +181,7 @@ const HealthcareWebsite_consultation = () => {
   };
 
   return (
-    <body>
+    <>
       <div className="heder-section">
         <HeaderSession />
       </div>
@@ -395,11 +395,11 @@ const HealthcareWebsite_consultation = () => {
           </div>
         </section>
       </div>
-      
+
       <div className="footer-section">
         <FooterSession />
       </div>
-    </body>
+    </>
   );
 };
 

@@ -1,20 +1,16 @@
 .footer-session {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   background-color: #5f6265; /* màu xám đậm */
   color: #d8dadf;
-  padding: 60px 60px;
+  padding: 50px 50px;
   font-family: Arial, sans-serif;
   font-size: 14px;
   gap: 30px;
 }
 
-.footer-top {
-    display: flex;
-    gap: 800px;
-}
 
 .footer-left h3 {
   margin: 0;

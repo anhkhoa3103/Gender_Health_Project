@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { AuthProvider } from "./context/AuthContext";
@@ -15,6 +15,8 @@ import LogoutManagement from "./features/auth/pages/LogoutManagement";
 
 // Home
 import HomePage from "./features/home/pages/HomePage";
+import BlogDetailSession from "./features/home/sessions/BlogDetailSession";
+import DoctorDetail from "./features/home/sessions/DoctorDetail";
 
 // Menstrual
 import MenstrualTracker from "./features/menstrual/pages/MenstrualTracker";
@@ -57,7 +59,18 @@ import StaffAppointmentManagement from "./features/staff/staffAppointment";
 import StafftDashboard from "./features/staff/staffDashboard";
 import StaffResult from "./features/staff/staffResult";
 
+
 function App() {
+  useEffect(() => {
+    window.onerror = function (message, source, lineno, colno, error) {
+      console.error("🛑 Lỗi toàn cục:", message, error);
+    };
+
+    window.addEventListener("unhandledrejection", function (event) {
+      console.error("🛑 Promise lỗi chưa xử lý:", event.reason);
+    });
+  }, []);
+
   return (
     <AuthProvider>
       <BrowserRouter>
@@ -73,6 +86,8 @@ function App() {
 
           {/* Main Page */}
           <Route path="/" element={<HomePage />} />
+          <Route path="/blog/:id" element={<BlogDetailSession />} />
+          <Route path="/doctor/:id" element={<DoctorDetail />} />
 
           {/* Menstrual tracking */}
           <Route path="/menstrual/:userId" element={<MenstrualTracker />} />
@@ -92,7 +107,7 @@ function App() {
           <Route path="/payment-package" element={<PaymentPageForPackage />} />
           <Route path="/customer-results" element={<CustomerTestResult />} />
           <Route path="/customer-invoices" element={<CustomerInvoicesHistory />} />
-          <Route path="/customer-info" element={<CustomerTable />} /> 
+          <Route path="/customer-info" element={<CustomerTable />} />
           {/* Staff routes */}
           <Route path="/staff/invoices" element={
             <RequireAuth allowedRoles={['staff']}>
@@ -165,8 +180,8 @@ function App() {
           } />
           <Route path="/admin/services" element={
             <RequireAuth allowedRoles={['admin']}>
-            <AdminServices />
-          </RequireAuth>
+              <AdminServices />
+            </RequireAuth>
           } />
           {/* Catch-all route */}
         </Routes>

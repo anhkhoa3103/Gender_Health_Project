@@ -1,0 +1,133 @@
+.result-container_staffresult {
+  margin-left: 260px;
+  padding: 30px;
+  background-color: #f9fafc;
+  min-height: 100vh;
+}
+
+.result-title_staffresult {
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #2d3748;
+}
+
+.result-table_staffresult {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.result-table_staffresult th,
+.result-table_staffresult td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+  text-align: left;
+}
+
+.enter-btn_staffresult {
+  background-color: #2563eb;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.enter-btn_staffresult:hover {
+  background-color: #1e40af;
+}
+
+/* Modal */
+.modal-overlay_staffresult {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-content_staffresult {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.detail-table_staffresult {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+}
+
+.detail-table_staffresult th,
+.detail-table_staffresult td {
+  padding: 10px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.input-value_staffresult {
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #cbd5e0;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.result-badge_staffresult {
+  font-weight: 600;
+  text-transform: capitalize;
+  padding: 4px 10px;
+  border-radius: 16px;
+  font-size: 13px;
+}
+
+.result-badge_staffresult.positive {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.result-badge_staffresult.negative {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.modal-actions_staffresult {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.save-btn_staffresult,
+.close-btn_staffresult {
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.save-btn_staffresult {
+  background-color: #2563eb;
+  color: white;
+}
+
+.save-btn_staffresult:hover {
+  background-color: #1e40af;
+}
+
+.close-btn_staffresult {
+  background-color: #e2e8f0;
+  color: #333;
+}

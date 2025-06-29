@@ -10,7 +10,6 @@ api.interceptors.request.use(
     const managementToken = localStorage.getItem('managementToken');
     const customerToken = localStorage.getItem('token');
 
-    // Ưu tiên token quản lý nếu có (admin, consultant, staff)
     if (managementToken) {
       config.headers['Authorization'] = `Bearer ${managementToken}`;
     } else if (customerToken) {

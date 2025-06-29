@@ -2,6 +2,8 @@
 .workslot_container {
   display: flex;
   height: 100vh;
+  margin-left: 240px;
+  padding: 20px;
 }
 
 /* Sidebar giữ nguyên kích thước, không bị co */

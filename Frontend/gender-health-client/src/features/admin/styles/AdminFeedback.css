@@ -2,6 +2,8 @@
   display: flex;
   min-height: 100vh;
   background-color: #f9f9f9;
+  margin-left: 240px;
+  padding: 20px;
 }
 
 .main-content_adminfeedback {

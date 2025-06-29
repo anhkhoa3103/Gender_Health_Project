@@ -1,0 +1,57 @@
+.doctor-detail-container {
+  padding: 40px;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', sans-serif;
+  line-height: 1.6;
+}
+
+.back-button {
+  margin-bottom: 30px;
+  padding: 10px 20px;
+  border: none;
+  background-color: #6454f0;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.no-data {
+  padding: 40px;
+  text-align: center;
+}
+
+.doctor-card {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.doctor-image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
+.doctor-content {
+  padding: 30px;
+}
+
+.doctor-name {
+  font-size: 28px;
+  margin-bottom: 10px;
+  color: #22223d;
+}
+
+.doctor-role {
+  color: #6454f0;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.doctor-desc {
+  font-size: 16px;
+  color: #444;
+}

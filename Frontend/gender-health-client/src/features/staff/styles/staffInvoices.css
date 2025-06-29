@@ -1,0 +1,140 @@
+.invoice-container_staffinvoices {
+  margin-left: 260px;
+  padding: 30px;
+  background-color: #f9fafc;
+  min-height: 100vh;
+}
+
+.invoice-title_staffinvoices {
+  font-size: 26px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.invoice-table-wrapper_staffinvoices {
+  overflow-x: auto;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(0,0,0,0.1);
+  padding: 20px;
+}
+
+.invoice-table_staffinvoices {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.invoice-table_staffinvoices th,
+.invoice-table_staffinvoices td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+}
+
+.amount_staffinvoices {
+  color: #2b6cb0;
+  font-weight: 600;
+}
+
+.paid-yes_staffinvoices {
+  color: green;
+  font-weight: 600;
+}
+
+.paid-no_staffinvoices {
+  color: red;
+  font-weight: 600;
+}
+
+.view-btn_staffinvoices {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.view-btn_staffinvoices:hover {
+  background-color: #357ab8;
+}
+
+.no-invoices_staffinvoices {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+/* Modal */
+.invoice-modal-bg_staffinvoices {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.invoice-modal-card_staffinvoices {
+  background: white;
+  padding: 25px;
+  border-radius: 8px;
+  width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.invoice-modal-title_staffinvoices {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.invoice-modal-field_staffinvoices {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.invoice-modal-proof-img_staffinvoices {
+  max-width: 100%;
+  height: auto;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+}
+
+.proof-link_staffinvoices {
+  color: #3182ce;
+  text-decoration: underline;
+  word-break: break-all;
+}
+
+.invoice-modal-btn-row_staffinvoices {
+  text-align: right;
+  margin-top: 20px;
+}
+
+.invoice-modal-btn_staffinvoices {
+  background-color: #4a90e2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+}
+
+.invoice-modal-btn_staffinvoices.close:hover {
+  background-color: #2b6cb0;
+}
+
+.invoice-modal-list_staffinvoices {
+  padding-left: 16px;
+  margin-top: 6px;
+}

@@ -65,6 +65,13 @@
   flex-shrink: 0;
 }
 
+.blog-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ảnh vừa khít khung, không méo */
+  border-radius: 12px 12px 0 0;
+}
+
 .blog-content {
   padding: 15px 20px;
   flex-grow: 1;
@@ -142,4 +149,27 @@
 
 .blog-view-more-btn:hover {
   background: linear-gradient(to right, #58c9eb, #4a3ccc);
+}
+
+.blog-gradient-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center; /* ← căn giữa ngang */
+  padding: 10px 24px;
+  font-size: 15px;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(to right, #6ee2f5, #6454f0);
+  border: none;
+  border-radius: 999px;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 4px 12px rgba(100, 84, 240, 0.3);
+  min-width: 140px; /* đảm bảo có đủ chiều ngang để thấy chữ giữa */
+  height: 40px;
+}
+
+.blog-gradient-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(100, 84, 240, 0.4);
 }

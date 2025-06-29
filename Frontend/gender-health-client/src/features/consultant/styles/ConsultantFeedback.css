@@ -2,6 +2,8 @@
   display: flex;
   background-color: #e2f0fa;
   min-height: 100vh;
+  margin-left: 240px;
+  padding: 20px;  
 }
 
 .cf-main {

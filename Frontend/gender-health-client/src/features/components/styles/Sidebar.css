@@ -1,9 +1,13 @@
 .sidebar_management {
+  position: fixed;              /* 👈 Cố định vị trí */
+  top: 0;                       /* Bắt đầu từ đầu trang */
+  left: 0;                      /* Căn trái */
   width: 240px;
+  height: 100vh;                /* Chiều cao toàn bộ màn hình */
   background-color: #ffffff;
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0,0,0,0.1);
-  height: 100vh;
+  z-index: 999;                 /* Đảm bảo nằm trên nội dung khác */
 }
 
 .logo_management {

@@ -31,15 +31,18 @@ const Appointments = () => {
       setAppointments(sorted);
 
       // Load feedback
-      const feedbackPromises = sorted.map(async (a) => {
-        try {
-          const feedbackRes = await getFeedbackByConsultationId(a.consultationId);
-          return { consultationId: a.consultationId, feedback: feedbackRes.data };
-        } catch (error) {
-          console.error(`Error fetching feedback for consultation ${a.consultationId}:`, error);
-          return { consultationId: a.consultationId, feedback: null };
-        }
-      });
+      const feedbackPromises = sorted
+        .filter(a => a.status === "DONE") // ✅ chỉ lấy feedback cho lịch đã hoàn tất
+        .map(async (a) => {
+          try {
+            const feedbackRes = await getFeedbackByConsultationId(a.consultationId);
+            return { consultationId: a.consultationId, feedback: feedbackRes.data };
+          } catch (error) {
+            console.warn(`No feedback for consultation ${a.consultationId}:`, error.message);
+            return { consultationId: a.consultationId, feedback: null };
+          }
+        });
+
 
 
       const allFeedbacks = await Promise.allSettled(feedbackPromises);

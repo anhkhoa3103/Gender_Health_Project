@@ -11,12 +11,15 @@
   padding: 24px;
   background-color: #f8fafc;
   min-height: 100vh;
+  margin-left: 240px;
+  padding: 20px;
 }
 
 /* Header */
 .admin-services-header {
   display: flex;
-  justify-content: space-between; /* ✅ Sửa từ 'between' thành 'space-between' */
+  justify-content: space-between;
+  /* ✅ Sửa từ 'between' thành 'space-between' */
   align-items: center;
   margin-bottom: 24px;
   background: white;
@@ -167,7 +170,7 @@
 .package-card {
   background: white;
   border-radius: 12px;
-  padding: 20px;  
+  padding: 20px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.2s ease;
   border: 1px solid #e2e8f0;
@@ -243,7 +246,8 @@
 }
 
 /* Loading & No Data */
-.loading, .no-data {
+.loading,
+.no-data {
   text-align: center;
   padding: 60px 20px;
   color: #718096;
@@ -330,7 +334,8 @@
   border-radius: 8px;
   font-size: 14px;
   transition: all 0.2s ease;
-  box-sizing: border-box; /* Thêm để tránh overflow */
+  box-sizing: border-box;
+  /* Thêm để tránh overflow */
 }
 
 .form-group input:focus {
@@ -410,7 +415,8 @@
 .package-details {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Thay thế space-y với gap */
+  gap: 16px;
+  /* Thay thế space-y với gap */
 }
 
 .detail-row {

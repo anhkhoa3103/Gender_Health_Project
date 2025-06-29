@@ -31,6 +31,13 @@ const HealthcareWebsite_consultation = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        if (!user) {
+            navigate('/login');
+        }
+    }, [user]);
+
+
+    useEffect(() => {
         const timer = setTimeout(() => {
             setAnimatedCards(true);
         }, 500);
@@ -149,6 +156,7 @@ const HealthcareWebsite_consultation = () => {
             navigate('/bookingsuccess');
             setShowBookingModal(false);
         } catch (error) {
+            console.error("❌ Booking failed:", error);
             alert('Booking failed. Please try again.');
         } finally {
             setLoading(false);
@@ -170,8 +178,6 @@ const HealthcareWebsite_consultation = () => {
     return (
         <div>
             <HeaderSession />
-            {/* Booking UI Here... giữ nguyên phần UI cũ của bạn */}
-
             <div className="app_consultation">
                 {/* Hero Section */}
                 <section className="hero-section_consultation">

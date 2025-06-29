@@ -43,8 +43,9 @@ public class User {
     @CreationTimestamp                    // tự sinh timestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
-
-    private String avatar;                // url hoặc path
+    
+    @Column(name = "avatar", columnDefinition = "text")
+    private String avatar;
 
     /* ---------- 1-1 CUSTOMER ---------- */
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

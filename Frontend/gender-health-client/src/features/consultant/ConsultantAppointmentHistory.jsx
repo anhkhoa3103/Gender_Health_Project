@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import "./styles/ConsultationHistory.css";
 import Sidebar from "../../features/components/sidebar";
 import ResultModal from "./ResultModel";
+import MainListSpinner from "../components/MainListSpinner";
+import LoadingOverlay from "../components/LoadingOverlay";
+
 
 const ConsultationHistory = () => {
   const [appointments, setAppointments] = useState([]);
@@ -115,15 +118,14 @@ const ConsultationHistory = () => {
     window.location.reload(); // hoặc gọi lại useEffect fetchAppointments() nếu tách được
   };
 
-  if (loading) return <p>Đang tải dữ liệu...</p>;
-
   return (
     <div className="history-container_consultant">
+      <LoadingOverlay show={loading} text="Đang tải lịch sử cuộc hẹn..." />
       <Sidebar />
       <div className="history-content_consultant">
         <h2>Lịch sử các cuộc hẹn</h2>
         {appointments.length === 0 ? (
-          <p>Không có cuộc hẹn nào.</p>
+          <p></p>
         ) : (
           <table className="history-table_consultant">
             <thead>

@@ -97,7 +97,6 @@ const WorkSlotPicker = ({ }) => {
             <div className="workslot-container_consultantSlot">
                 <h2 className="workslot-title_consultantSlot">📅 Chọn lịch làm việc</h2>
                 <h4>ID Tư vấn viên: {consultantId}</h4>
-
                 <div className="workslot-grid">
                     {/* Bên trái: Lịch */}
                     <div className="calendar-wrapper">
@@ -115,11 +114,15 @@ const WorkSlotPicker = ({ }) => {
                             ))}
                             {daysInMonth.map((day) => {
                                 const dayStr = format(day, "yyyy-MM-dd");
+                                const isPast = day < new Date(new Date().setHours(0, 0, 0, 0));
+
                                 return (
                                     <div
                                         key={dayStr}
-                                        className={`calendar-day ${selectedDate === dayStr ? "selected" : ""}`}
-                                        onClick={() => setSelectedDate(dayStr)}
+                                        className={`calendar-day 
+                ${selectedDate === dayStr ? "selected" : ""} 
+                ${isPast ? "calendar-day-past" : ""}`}
+                                        onClick={() => !isPast && setSelectedDate(dayStr)}
                                     >
                                         {format(day, "d")}
                                     </div>

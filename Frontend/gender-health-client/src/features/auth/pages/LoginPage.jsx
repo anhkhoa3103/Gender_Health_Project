@@ -10,6 +10,7 @@ function LoginPage() {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
 
   /* -------------------- helpers -------------------- */
   const handleChange = (e) =>
@@ -18,6 +19,7 @@ function LoginPage() {
   /* -------------------- login (email-pass) -------------------- */
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const res = await api.post("/api/auth/login", {
         email: form.email,
@@ -25,8 +27,6 @@ function LoginPage() {
       });
 
       const token = res.data.token;
-
-      // 👇 Extract user info (fullName, phoneNumber, email, avatar...)
       const userInfo = {
         fullName: res.data.fullName,
         phoneNumber: res.data.phoneNumber,
@@ -34,16 +34,20 @@ function LoginPage() {
         avatar: res.data.avatar,
       };
 
-      login(token, userInfo); // 👈 truyền cả userInfo
+      login(token, userInfo);
       navigate("/");
     } catch (err) {
       alert("Login failed");
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
 
+
   /* -------------------- login (Google) -------------------- */
   const handleGoogleLogin = async (cred) => {
+    setLoading(true);
     try {
       const { data } = await api.post("/api/auth/oauth/google", {
         token: cred.credential,
@@ -52,7 +56,7 @@ function LoginPage() {
       const token = data.token;
       const userInfo = {
         fullName: data.fullName,
-        phoneNumber: data.phoneNumber, // nếu backend có
+        phoneNumber: data.phoneNumber,
         email: data.email,
         avatar: data.avatar,
       };
@@ -62,12 +66,21 @@ function LoginPage() {
     } catch (err) {
       alert("Google login failed");
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
+
 
   /* -------------------- UI -------------------- */
   return (
     <div className="login-container">
+      {loading && (
+        <div className="loading-overlay">
+          <div className="spinner" />
+        </div>
+      )}
+
       <div className="login-left">
         <div className="image-placeholder">
           <img src={bgcontact} />

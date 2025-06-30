@@ -43,6 +43,7 @@ import AdminServices from "./features/admin/AdminServices.jsx";
 import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
 import ConsultantAppointmentHistory from "./features/consultant/ConsultantAppointmentHistory";
 import ConsultantFeedback from "./features/consultant/ConsultantFeedback";
+import ConsultantDashboard from "./features/consultant/ConsultantDashboard.jsx";
 
 // Testing
 import Payments from "./features/testing/pages/Payments";
@@ -58,7 +59,6 @@ import CustomerTable from "./features/testing/pages/CustomerInfo.jsx";
 import StaffAppointmentManagement from "./features/staff/staffAppointment";
 import StafftDashboard from "./features/staff/staffDashboard";
 import StaffResult from "./features/staff/staffResult";
-
 
 function App() {
   useEffect(() => {
@@ -146,6 +146,12 @@ function App() {
               <ConsultantFeedback />
             </RequireAuth>
           } />
+          <Route path="/consultant/dashboard" element={
+            <RequireAuth allowedRoles={['consultant']}>
+              <ConsultantDashboard />
+            </RequireAuth>
+          } />
+          
 
           {/* Admin routes */}
           <Route path="/management/welcome" element={
@@ -183,6 +189,8 @@ function App() {
               <AdminServices />
             </RequireAuth>
           } />
+
+
           {/* Catch-all route */}
         </Routes>
 

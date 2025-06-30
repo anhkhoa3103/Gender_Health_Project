@@ -62,8 +62,14 @@ public class ConsultationAppointmentService {
                 }
             }
 
+            Long consultantIdInRecord = null;
+            if (appointment.getConsultant() != null) {
+                consultantIdInRecord = appointment.getConsultantId();
+            }
+
             return ConsultationAppointmentDTO.builder()
                     .consultationId(appointment.getConsultationId())
+                    .consultantId(consultantIdInRecord) // ✅ Đã thêm
                     .name(appointment.getName())
                     .phoneNumber(appointment.getPhoneNumber())
                     .appointmentDate(appointment.getAppointmentDate().toString())

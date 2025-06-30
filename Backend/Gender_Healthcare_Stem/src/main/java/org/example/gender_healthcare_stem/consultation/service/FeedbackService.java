@@ -1,5 +1,6 @@
 package org.example.gender_healthcare_stem.consultation.service;
 
+import org.example.gender_healthcare_stem.consultation.dto.ConsultantRatingSummary;
 import org.example.gender_healthcare_stem.consultation.dto.FeedbackDTO;
 import org.example.gender_healthcare_stem.consultation.model.Feedback;
 import org.example.gender_healthcare_stem.consultation.repository.FeedbackRepository;
@@ -62,6 +63,22 @@ public class FeedbackService {
                 .collect(Collectors.toList());
     }
 
+    public ConsultantRatingSummary getRatingSummaryByConsultantId(Long consultantId) {
+        List<Feedback> feedbacks = feedbackRepository.findByConsultantId(consultantId);
+
+        if (feedbacks.isEmpty()) {
+            return new ConsultantRatingSummary(consultantId, 0.0, 0L);
+        }
+
+        double avg = feedbacks.stream()
+                .mapToInt(Feedback::getRating)
+                .average()
+                .orElse(0.0);
+
+        long count = feedbacks.size();
+
+        return new ConsultantRatingSummary(consultantId, Math.round(avg * 10.0) / 10.0, count); // Làm tròn 1 chữ số
+    }
 
 
 }

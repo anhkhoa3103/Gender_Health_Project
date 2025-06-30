@@ -29,3 +29,11 @@ export const cancelAppointment = (appointmentId) =>
 /** Lấy feedback theo consultantId */
 export const getFeedbacksByConsultantId = (consultantId) =>
   api.get(`/api/consultants/${consultantId}/feedbacks`);
+
+export const getAppointmentsByConsultantId = (consultantId) =>
+  api.get(`/api/consultants/appointments`, {
+    params: { consultantId }
+  });
+
+export const getConsultantById = (consultantId) =>
+  api.get(`/api/consultants/${consultantId}`);

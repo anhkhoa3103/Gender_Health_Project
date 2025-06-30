@@ -5,6 +5,7 @@ import HeaderSession from "../../components/Header";
 import FooterSession from "../../home/sessions/FooterSession";
 import "../style/ConsultationBooking.css"
 import "../style/Last.css"
+import { getRatingSummaryByConsultantId } from "../../../api/feedbackApi"
 import { AuthContext } from '../../../context/AuthContext';
 
 const HealthcareWebsite_consultation = () => {
@@ -45,9 +46,30 @@ const HealthcareWebsite_consultation = () => {
     }, []);
 
     useEffect(() => {
-        getConsultants()
-            .then(res => setConsultants(res.data))
-            .catch(console.error);
+        const fetchConsultantsWithRatings = async () => {
+            try {
+                const res = await getConsultants();
+                const rawConsultants = res.data;
+
+                const enriched = await Promise.all(
+                    rawConsultants.map(async (c) => {
+                        try {
+                            const { data } = await getRatingSummaryByConsultantId(c.userId);
+                            return { ...c, avgRating: data.averageRating };
+                        } catch (e) {
+                            console.error(`Error loading rating for consultant ${c.userId}`, e);
+                            return { ...c, avgRating: null };
+                        }
+                    })
+                );
+
+                setConsultants(enriched);
+            } catch (error) {
+                console.error("Failed to load consultants", error);
+            }
+        };
+
+        fetchConsultantsWithRatings();
     }, []);
 
     useEffect(() => {
@@ -257,7 +279,17 @@ const HealthcareWebsite_consultation = () => {
                                             className="hero-image_consultation"
                                         />
                                         <h3 className="hero-name_consultation">{selectedConsultant.name}</h3>
-                                        <div className="hero-rating_consultation">★★★★★</div>
+                                        <div className="hero-rating_consultation">
+                                            {selectedConsultant.avgRating !== null && selectedConsultant.avgRating > 0
+                                                ? <>
+                                                    {"★".repeat(Math.round(selectedConsultant.avgRating))}
+                                                    {"☆".repeat(5 - Math.round(selectedConsultant.avgRating))}
+                                                    <span style={{ marginLeft: 6, fontSize: "14px", color: "#666" }}>
+                                                        ({selectedConsultant.avgRating})
+                                                    </span>
+                                                </>
+                                                : "No ratings yet"}
+                                        </div>
                                     </div>
 
                                     {/* Các thông tin chi tiết khác */}
@@ -319,18 +351,23 @@ const HealthcareWebsite_consultation = () => {
                                         ))}
                                     </div>
                                     <div className="grid grid-cols-7 gap-2">
-                                        {dates.map((date, index) => (
-                                            <button
-                                                key={index}
-                                                onClick={() => handleDateSelect(date)}
-                                                className={`p-2 text-sm rounded-lg transition-colors ${selectedDate === date
-                                                    ? 'bg-blue-600 text-white'
-                                                    : 'hover:bg-gray-100 text-gray-700'
-                                                    }`}
-                                            >
-                                                {date}
-                                            </button>
-                                        ))}
+                                        {dates.map((date, index) => {
+                                            const thisDate = new Date(currentYear, currentMonth, date);
+                                            const isPast = thisDate < new Date(new Date().setHours(0, 0, 0, 0));
+
+                                            return (
+                                                <button
+                                                    key={index}
+                                                    onClick={() => !isPast && handleDateSelect(date)}
+                                                    disabled={isPast}
+                                                    className={`p-2 text-sm rounded-lg transition-colors
+                ${selectedDate === date ? 'bg-blue-600 text-white' : 'hover:bg-gray-100 text-gray-700'}
+                ${isPast ? 'past-date_consultation' : ''}`}
+                                                >
+                                                    {date}
+                                                </button>
+                                            );
+                                        })}
                                     </div>
                                 </div>
                             </div>

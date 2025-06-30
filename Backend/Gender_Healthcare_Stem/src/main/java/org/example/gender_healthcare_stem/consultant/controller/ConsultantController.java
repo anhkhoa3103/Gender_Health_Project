@@ -143,5 +143,10 @@ public class ConsultantController {
         ));
     }
 
+    @GetMapping("/{consultantId}")
+    public ResponseEntity<ConsultantDTO> getConsultantInfo(@PathVariable Long consultantId) {
+        ConsultantDTO dto = consultantService.getConsultantById(consultantId);
+        return ResponseEntity.ok(dto);
+    }
 }
 

@@ -32,6 +32,21 @@ public class ConsultantService {
                         c.getGoogleMeetLinks()))
                 .collect(Collectors.toList());
     }
+
+    public ConsultantDTO getConsultantById(Long consultantId) {
+        Consultant consultant = consultantRepository.findById(consultantId.intValue())
+                .orElseThrow(() -> new RuntimeException("Consultant not found"));
+
+        return new ConsultantDTO(
+                consultant.getUserId(),
+                consultant.getUser().getFullName(),
+                consultant.getUser().getAvatar(),
+                consultant.getSpecialization(),
+                consultant.getQualification(),
+                consultant.getExperiencedYears(),
+                consultant.getGoogleMeetLinks()
+        );
+    }
 }
 
 

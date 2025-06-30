@@ -352,6 +352,11 @@ body {
   cursor: pointer;
 }
 
+.past-date_consultation {
+    opacity: 0.4;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {

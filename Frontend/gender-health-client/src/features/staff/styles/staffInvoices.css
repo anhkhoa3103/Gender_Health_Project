@@ -138,3 +138,37 @@
   padding-left: 16px;
   margin-top: 6px;
 }
+.invoice-modal-download_staffinvoices {
+  background: #f1f5fb;
+  color: #2563eb;
+  border: 1.5px solid #2563eb;
+  border-radius: 5px;
+  font-size: 14px;
+  padding: 7px 15px;
+  margin-top: 8px;
+  margin-bottom: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.17s, color 0.17s, border-color 0.17s;
+  display: inline-block;
+}
+
+.invoice-modal-download_staffinvoices:hover {
+  background: #2563eb;
+  color: #fff;
+  border-color: #2563eb;
+}
+/* Add this to your staffInvoices.css */
+.staffinvoices-spinner {
+  display: block;
+  margin: 55px auto 20px auto;
+  border: 6px solid #cfd8dc;
+  border-top: 6px solid #2563eb;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}

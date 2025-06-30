@@ -19,3 +19,7 @@ export const updateFeedback = (feedbackId, updatedData) => {
 
 export const getFeedbackByConsultationId = (consultationId) =>
   api.get(`/api/feedbacks/consultation/${consultationId}`);
+
+export const getRatingSummaryByConsultantId = (consultantId) => {
+  return api.get(`/api/feedbacks/rating-summary/${consultantId}`);
+};

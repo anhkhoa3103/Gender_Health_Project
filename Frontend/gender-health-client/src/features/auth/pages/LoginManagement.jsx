@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import LoadingOverlay from "../../components/LoadingOverlay";
 import "../styles/LoginManagement.css";
 
 const LoginManagement = () => {
@@ -8,6 +9,7 @@ const LoginManagement = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -44,6 +46,7 @@ const LoginManagement = () => {
 
     return (
         <div>
+            <LoadingOverlay show={loading} text="Đang đăng nhập..." />
             <div className="login-container_management">
                 <div className="login-box">
                     <h1>Gender Healthcare<br />Manager</h1>

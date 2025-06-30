@@ -32,6 +32,9 @@ public class CustomerController {
             dto.setEmail(user.getEmail());
             dto.setPhone(user.getPhone());
             dto.setAvatar(user.getAvatar());
+            dto.setRole(user.getRole());
+            dto.setStatus(user.getStatus());
+            dto.setCreatedAt(user.getCreatedAt());
         }
         return dto;
     }

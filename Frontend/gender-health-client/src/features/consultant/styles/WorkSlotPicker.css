@@ -1,216 +1,176 @@
-/* Tổng thể chia layout 2 cột */
-.workslot_container {
-  display: flex;
-  height: 100vh;
-  margin-left: 240px;
-  padding: 20px;
-}
-
-/* Sidebar giữ nguyên kích thước, không bị co */
-.workslot_container > .sidebar {
-  width: 240px;
-  flex-shrink: 0;
-}
-
-/* Nội dung bên phải */
+/* Tổng thể container */
 .workslot-container_consultantSlot {
-  flex: 1;
-  padding: 30px;
-  background-color: #f7f9fc;
-  overflow-y: auto;
+    margin-left: 240px;
+    padding: 30px;
+    background-color: #f9fafb;
+    min-height: 100vh;
 }
 
 .workslot-title_consultantSlot {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
-/* Lịch kiểu lưới */
+/* Grid chia 2 cột */
+.workslot-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+/* Lịch */
+.calendar-wrapper {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.calendar-header button {
+    background-color: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #2563eb;
+}
+
 .calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 8px;
-  margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
 }
 
+.calendar-day-name {
+    text-align: center;
+    font-weight: 500;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.calendar-empty {
+    visibility: hidden;
+}
+
+/* Các ngày */
 .calendar-day {
-  padding: 12px;
-  background-color: white;
-  border: 1px solid #ddd;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 8px;
-  transition: all 0.2s ease;
+    text-align: center;
+    padding: 12px;
+    background-color: #f3f4f6;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #374151;
+    transition: background-color 0.2s;
 }
 
-.calendar-day:hover {
-  background-color: #e0e7ff;
+.calendar-day:hover:not(.calendar-day-past):not(.selected) {
+    background-color: #e0f2fe;
 }
 
 .calendar-day.selected {
-  background-color: #4f46e5;
-  color: white;
+    background-color: #2563eb;
+    color: white;
+    font-weight: bold;
 }
 
-/* Slot section */
+.calendar-day-past {
+    opacity: 0.4;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+/* Danh sách slot */
 .slot-list_consultantSlot {
-  margin-top: 30px;
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
-
-.slot-item_consultantSlot {
-  margin-bottom: 10px;
-}
-
-.slot-checkbox_consultantSlot {
-  margin-right: 10px;
-}
-
-/* Buttons */
-.workslot-save_consultantSlot,
-.workslot-viewappointments_consultantSlot {
-  margin-top: 30px;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background-color: #4f46e5;
-  color: white;
-  font-weight: bold;
-  transition: background-color 0.2s ease;
-  margin-right: 10px;
-}
-
-.workslot-save_consultantSlot:hover,
-.workslot-viewappointments_consultantSlot:hover {
-  background-color: #4338ca;
-}
-
-/* Grid layout cho lịch + slot */
-.workslot-grid {
-  display: flex;
-  gap: 40px;
-  margin-top: 20px;
-  align-items: flex-start;
-}
-
-/* Slot list đẹp hơn */
 
 .slot-select-actions {
-  margin-bottom: 15px;
-  display: flex;
-  gap: 10px;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
 }
 
 .select-all-button,
 .deselect-all-button {
-  padding: 8px 12px;
-  font-size: 13px;
-  background-color: #f3f4f6;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
+    padding: 8px 14px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background-color: #f3f4f6;
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
-
-.slot-item_consultantSlot input[type="checkbox"]:checked + label {
-  font-weight: 600;
-  color: #4f46e5;
-}
-
 
 .select-all-button:hover {
-  background-color: #d1fae5;
+    background-color: #d1fae5;
+    border-color: #10b981;
 }
 
 .deselect-all-button:hover {
-  background-color: #fee2e2;
+    background-color: #fee2e2;
+    border-color: #ef4444;
 }
 
-.slot-list_consultantSlot {
-  background-color: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
-  min-width: 300px;
-}
-
+/* Checkbox từng slot */
 .slot-item_consultantSlot {
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.slot-item_consultantSlot label {
-  margin-left: 10px;
-  font-size: 14px;
+.slot-checkbox_consultantSlot {
+    transform: scale(1.2);
 }
 
+/* Nút */
 .button-group {
-  margin-top: 20px;
-  display: flex;
-  gap: 10px;
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
 }
 
-
-.calendar-wrapper {
-  max-width: 400px;
-  margin-bottom: 20px;
-  background-color: white;
-  border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+.workslot-save_consultantSlot {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-.calendar-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-  margin-bottom: 10px;
+.workslot-save_consultantSlot:hover {
+    background-color: #059669;
 }
 
-.calendar-header button {
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
+.workslot-viewappointments_consultantSlot {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
-.calendar-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+.workslot-viewappointments_consultantSlot:hover {
+    background-color: #2563eb;
 }
-
-.calendar-day-name {
-  text-align: center;
-  font-size: 12px;
-  font-weight: bold;
-  color: #555;
-}
-
-.calendar-empty {
-  height: 40px;
-}
-
-.calendar-day {
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f1f5f9;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.calendar-day:hover {
-  background-color: #c7d2fe;
-}
-
-.calendar-day.selected {
-  background-color: #4f46e5;
-  color: white;
-}
-

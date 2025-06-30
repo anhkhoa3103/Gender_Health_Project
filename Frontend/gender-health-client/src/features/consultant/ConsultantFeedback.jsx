@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getFeedbacksByConsultantId } from "../../api/consultationApi";
 import Sidebar from "../../features/components/sidebar";
 import "./styles/ConsultantFeedback.css";
+import MainListSpinner from "../components/MainListSpinner";
 
 const ConsultantFeedback = () => {
     const [consultantId] = useState(localStorage.getItem("userId"));
@@ -33,9 +34,9 @@ const ConsultantFeedback = () => {
     const averageRating =
         Array.isArray(feedbacks) && feedbacks.length > 0
             ? (
-                  feedbacks.reduce((sum, fb) => sum + fb.rating, 0) /
-                  feedbacks.length
-              ).toFixed(1)
+                feedbacks.reduce((sum, fb) => sum + fb.rating, 0) /
+                feedbacks.length
+            ).toFixed(1)
             : 0;
 
     const filteredFeedbacks =
@@ -49,6 +50,14 @@ const ConsultantFeedback = () => {
             <div className="cf-main">
                 <div className="cf-header">
                     <h2>Feedback History</h2>
+                    {loading && (
+                        <div>
+                            <MainListSpinner />
+                            <div style={{ textAlign: "center", marginTop: 14, color: "#888" }}>
+                                Loading Feedbacks...
+                            </div>
+                        </div>
+                    )}
                     <div className="cf-average">⭐ {averageRating} / 5</div>
                     <div className="cf-filter">
                         <label>Lọc theo số sao: </label>

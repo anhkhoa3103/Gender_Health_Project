@@ -1,5 +1,6 @@
 package org.example.gender_healthcare_stem.consultation.controller;
 
+import org.example.gender_healthcare_stem.consultation.dto.ConsultantRatingSummary;
 import org.example.gender_healthcare_stem.consultation.dto.FeedbackDTO;
 import org.example.gender_healthcare_stem.consultation.model.Feedback;
 import org.example.gender_healthcare_stem.consultation.repository.FeedbackRepository;
@@ -85,6 +86,12 @@ public class FeedbackController {
                     return ResponseEntity.ok(dto);
                 })
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/rating-summary/{consultantId}")
+    public ResponseEntity<ConsultantRatingSummary> getRatingSummary(@PathVariable Long consultantId) {
+        ConsultantRatingSummary summary = feedbackService.getRatingSummaryByConsultantId(consultantId);
+        return ResponseEntity.ok(summary);
     }
 
 

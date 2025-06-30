@@ -25,6 +25,18 @@ public class ConsultationAppointment {
     @JoinColumn(name = "consultant_id", referencedColumnName = "user_id", insertable = false, updatable = false)
     private Consultant consultant;
 
+    public void setConsultant(Consultant consultant) {
+        this.consultant = consultant;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
     @Column(length = 100)
     private String name;
 

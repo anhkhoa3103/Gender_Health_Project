@@ -1,0 +1,143 @@
+.dashboard_consultantdashboard {
+  padding: 20px;
+  background-color: #7ea8fd; /* Màu nền nhạt */
+  min-height: 100vh;
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.grid_consultantdashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+/* Các thẻ thông tin */
+.card_consultantdashboard {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
+}
+
+.card_consultantdashboard:hover {
+  transform: translateY(-2px);
+}
+
+/* Màu cạnh trái theo loại */
+.card_consultantdashboard.blue {
+  border-left: 5px solid #3b82f6;
+}
+
+.card_consultantdashboard.green {
+  border-left: 5px solid #22c55e;
+}
+
+.card_consultantdashboard.orange {
+  border-left: 5px solid #f97316;
+}
+
+.card_consultantdashboard.red {
+  border-left: 5px solid #ef4444;
+}
+
+.card_consultantdashboard.feedback-summary {
+  border-left: 5px solid #8b5cf6;
+  font-size: 14px;
+}
+
+/* Feedback trung bình */
+.avg-rating-big {
+  font-size: 26px;
+  font-weight: bold;
+  color: #8b5cf6;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.avg-rating-big span {
+  font-size: 36px;
+  margin: 0 6px;
+}
+
+/* Danh sách feedback nhỏ */
+.card_consultantdashboard.feedback-summary ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 8px;
+}
+
+.card_consultantdashboard.feedback-summary li {
+  margin-bottom: 10px;
+  line-height: 1.5;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 8px;
+}
+
+.small-stars {
+  font-size: 14px;
+  color: #facc15; /* Màu vàng sao */
+}
+
+.view-detail-btn {
+  margin-top: 12px;
+  background-color: #2563eb;
+  color: white;
+  padding: 6px 12px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.view-detail-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.card_consultantdashboard.meet-upcoming {
+  border-left: 5px solid #10b981;
+  background-color: #f0fdf4;
+}
+
+.upcoming-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.personal-meet {
+  margin-bottom: 15px;
+}
+
+.meet-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.upcoming-item {
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed #ccc;
+}
+
+.appt-info {
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.meet-link {
+  color: #10b981;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.no-link {
+  font-size: 13px;
+  color: gray;
+  font-style: italic;
+}
+

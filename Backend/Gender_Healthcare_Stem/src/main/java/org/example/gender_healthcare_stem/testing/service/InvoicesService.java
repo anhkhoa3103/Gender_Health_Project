@@ -26,16 +26,18 @@ public class InvoicesService {
     public InvoicesDTO toDTO(Invoices invoice) {
         User user = userRepository.findById(invoice.getCustomerId()).orElse(null);
         String customerName = (user != null) ? user.getFullName() : "Unknown";
+        String customerPhone = (user != null && user.getPhone() != null) ? user.getPhone() : "";
         return new InvoicesDTO(
                 invoice.getId(),
-                invoice.getCustomerId(), // <-- include customerId!
+                invoice.getCustomerId(),
                 customerName,
                 invoice.getAppointmentId(),
                 invoice.getAmount(),
                 invoice.getPaid(),
                 invoice.getCreatedAt(),
                 invoice.getPaymentProof(),
-                invoice.getPaidItems()
+                invoice.getPaidItems(),
+                customerPhone     // <-- set customer phone here!
         );
     }
 
@@ -58,17 +60,19 @@ public class InvoicesService {
 
         User user = userRepository.findById(saved.getCustomerId()).orElse(null);
         String customerName = (user != null) ? user.getFullName() : "Unknown";
+        String customerPhone = (user != null && user.getPhone() != null) ? user.getPhone() : "";
 
         return new InvoicesDTO(
                 saved.getId(),
-                saved.getCustomerId(), // <-- include customerId!
+                saved.getCustomerId(),
                 customerName,
                 saved.getAppointmentId(),
                 saved.getAmount(),
                 saved.getPaid(),
                 saved.getCreatedAt(),
                 saved.getPaymentProof(),
-                saved.getPaidItems()
+                saved.getPaidItems(),
+                customerPhone
         );
     }
 
@@ -81,17 +85,19 @@ public class InvoicesService {
 
         User user = userRepository.findById(saved.getCustomerId()).orElse(null);
         String customerName = (user != null) ? user.getFullName() : "Unknown";
+        String customerPhone = (user != null && user.getPhone() != null) ? user.getPhone() : "";
 
         return new InvoicesDTO(
                 saved.getId(),
-                saved.getCustomerId(), // <-- include customerId!
+                saved.getCustomerId(),
                 customerName,
                 saved.getAppointmentId(),
                 saved.getAmount(),
                 saved.getPaid(),
                 saved.getCreatedAt(),
                 saved.getPaymentProof(),
-                saved.getPaidItems()
+                saved.getPaidItems(),
+                customerPhone
         );
     }
 }

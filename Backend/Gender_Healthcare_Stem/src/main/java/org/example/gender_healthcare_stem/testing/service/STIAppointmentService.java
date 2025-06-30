@@ -50,6 +50,7 @@ public class STIAppointmentService {
             dto.setStaffName(a.getStaff() != null ? a.getStaff().getFullName() : null);
             dto.setStatus(a.getStatus());
             dto.setAmount(a.getAmount());
+            dto.setCustomerPhone(a.getCustomer() != null ? a.getCustomer().getUser().getPhone() : null);
             dtos.add(dto);
         }
         return dtos;

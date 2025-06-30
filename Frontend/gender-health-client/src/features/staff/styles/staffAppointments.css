@@ -35,35 +35,44 @@
   font-weight: 600;
 }
 
-/* Status badges */
+/* Status badges - dashboard style */
 .status-badge_staffappointments {
   display: inline-block;
-  padding: 4px 10px;
-  border-radius: 20px;
-  font-size: 12px;
+  padding: 5px 16px;
+  border-radius: 16px;
+  font-size: 15px;
   font-weight: 600;
   text-transform: capitalize;
+  border-left: 4px solid #cbd5e1;
+  background: #f4f7fe;
+  color: #2d3748;
+  margin-right: 2px;
 }
 
 .status-pending_staffappointments {
-  background-color: #fff3cd;
-  color: #856404;
+  background-color: #fef9c3;
+  color: #b45309;
+  border-left: 4px solid #fde68a;
 }
 
 .status-sampling_staffappointments {
-  background-color: #d1ecf1;
-  color: #0c5460;
+  background-color: #dbeafe;
+  color: #2563eb;
+  border-left: 4px solid #2563eb;
 }
 
 .status-sampled_staffappointments {
-  background-color: #c3e6cb;
-  color: #155724;
+  background-color: #d1fae5;
+  color: #059669;
+  border-left: 4px solid #22c55e;
 }
 
 .status-canceled_staffappointments {
-  background-color: #f8d7da;
-  color: #721c24;
+  background-color: #fee2e2;
+  color: #dc2626;
+  border-left: 4px solid #ef4444;
 }
+
 
 /* Select + Button */
 select {
@@ -87,4 +96,26 @@ button.change-status-btn_staffappointments {
 
 button.change-status-btn_staffappointments:hover {
   background: #1e40af;
+}
+/* Main spinner for appointment list */
+.mainlist-spinner_staffappointments {
+  display: block;
+  margin: 60px auto 10px auto;
+  border: 7px solid #e2e8f0;
+  border-top: 7px solid #4a90e2;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.change-status-spinner_staffappointments {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2.2px solid #2563eb;
+  border-top: 2.2px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  vertical-align: middle;
 }

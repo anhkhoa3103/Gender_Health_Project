@@ -11,7 +11,12 @@ import {
 import "./styles/staffResult.css";
 import Sidebar from "../components/sidebar";
 
-// Spinner using class only!
+// Main spinner for the whole table loading
+function MainListSpinner() {
+  return <span className="mainlist-spinner_staffresult" />;
+}
+
+// Small spinner for export button
 function Spinner() {
   return <span className="spinner_staffresult" />;
 }
@@ -30,15 +35,25 @@ export default function TestResultList() {
   const [selectedResultId, setSelectedResultId] = useState(null);
   const [selectedAppointmentId, setSelectedAppointmentId] = useState(null);
 
-  // Export state
   const [exportTestResult, setExportTestResult] = useState(null);
   const [exportLoading, setExportLoading] = useState(false);
   const [pdfExportSuccess, setPdfExportSuccess] = useState(false);
 
+  // Search bar and loading state
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
+    setLoading(true);
     getAllTestResults()
-      .then((res) => setResults(res.data))
-      .catch(() => setResults([]));
+      .then((res) => {
+        setResults(res.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setResults([]);
+        setLoading(false);
+      });
   }, []);
 
   const handleShowDetail = async (resultId) => {
@@ -84,7 +99,13 @@ export default function TestResultList() {
         }
         setDetail(editDetail);
         setShowModal(false);
-        getAllTestResults().then((res) => setResults(res.data));
+        setLoading(true);
+        getAllTestResults()
+          .then((res) => {
+            setResults(res.data);
+            setLoading(false);
+          })
+          .catch(() => setLoading(false));
       }
     } catch (err) {
       alert("Update failed!");
@@ -96,7 +117,6 @@ export default function TestResultList() {
     if (!selectedResultId) return;
     setExportLoading(true);
     try {
-      // Fetch ALL exportable results for this customer (array)
       const row = results.find((r) => r.resultId === selectedResultId);
       const { data: pdfResults } = await getPdfDataByCustomerId(row.customerId);
 
@@ -182,38 +202,84 @@ export default function TestResultList() {
     doc.save(`TestResultsSummary-${c.customerName}.pdf`);
   }
 
+  // --- Filtered array using search ---
+  const filteredResults = results.filter((r) => {
+    if (!search) return true;
+    const s = search.toLowerCase();
+    // Check name, appointmentId, resultId
+    return (
+      (r.customerName && r.customerName.toLowerCase().includes(s)) ||
+      String(r.appointmentId).includes(s) ||
+      String(r.resultId).includes(s)
+    );
+  });
+
   return (
     <>
       <Sidebar />
       <div className="result-container_staffresult">
         <h2 className="result-title_staffresult">Test Results</h2>
-        <table className="result-table_staffresult">
-          <thead>
-            <tr>
-              <th>Result ID</th>
-              <th>Customer Name</th>
-              <th>Appointment ID</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {results.map((r) => (
-              <tr key={r.resultId}>
-                <td>{r.resultId}</td>
-                <td>{r.customerName}</td>
-                <td>{r.appointmentId}</td>
-                <td>
-                  <button
-                    className="enter-btn_staffresult"
-                    onClick={() => handleShowDetail(r.resultId)}
-                  >
-                    Enter Result
-                  </button>
-                </td>
+
+        {/* --- Search Bar --- */}
+        <div style={{ marginBottom: 12 }}>
+          <input
+            type="text"
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            placeholder="Search ..."
+            className="search-input_staffresult"
+            style={{
+              padding: "8px 15px",
+              borderRadius: 7,
+              border: "1px solid #e3e5ea",
+              fontSize: 16,
+              width: 340,
+              marginBottom: 10,
+            }}
+          />
+        </div>
+
+        {loading ? (
+          <div>
+            <MainListSpinner />
+            <div style={{ textAlign: "center", marginTop: 14, color: "#888" }}>Loading test results...</div>
+          </div>
+        ) : (
+          <table className="result-table_staffresult">
+            <thead>
+              <tr>
+                <th>Result ID</th>
+                <th>Customer Name</th>
+                <th>Appointment ID</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {filteredResults.map((r) => (
+                <tr key={r.resultId}>
+                  <td>{r.resultId}</td>
+                  <td>{r.customerName}</td>
+                  <td>{r.appointmentId}</td>
+                  <td>
+                    <button
+                      className="enter-btn_staffresult"
+                      onClick={() => handleShowDetail(r.resultId)}
+                    >
+                      Enter Result
+                    </button>
+                  </td>
+                </tr>
+              ))}
+              {filteredResults.length === 0 && (
+                <tr>
+                  <td colSpan={4} style={{ textAlign: "center", color: "#888" }}>
+                    No results found.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
 
         {/* Detail Modal */}
         {showModal && editDetail && (
@@ -226,6 +292,7 @@ export default function TestResultList() {
                     <th>Test Name</th>
                     <th>Value</th>
                     <th>Result</th>
+                    <th>Threshold</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -249,6 +316,7 @@ export default function TestResultList() {
                           <span style={{ color: "#888" }}>—</span>
                         )}
                       </td>
+                      <td>{d.threshold}</td>
                     </tr>
                   ))}
                 </tbody>

@@ -14,7 +14,7 @@ public class InvoicesDTO {
     private LocalDateTime createdAt;
     private String paymentProof;
     private String paidItems;   // <-- For JSON
-
+    private String customerPhone;
     // --- Getters and Setters ---
 
     public Long getId() { return id; }
@@ -44,29 +44,16 @@ public class InvoicesDTO {
     public String getPaidItems() { return paidItems; }
     public void setPaidItems(String paidItems) { this.paidItems = paidItems; }
 
-    // Update the constructor
-    public InvoicesDTO(Long id, String customerName, Long appointmentId, Double amount, Boolean paid, LocalDateTime createdAt, String paymentProof, String paidItems) {
-        this.id = id;
-        this.customerName = customerName;
-        this.appointmentId = appointmentId;
-        this.amount = amount;
-        this.paid = paid;
-        this.createdAt = createdAt;
-        this.paymentProof = paymentProof;
-        this.paidItems = paidItems;
+    public String getCustomerPhone() {
+        return customerPhone;
     }
 
-    // Overloaded constructor for creation (with customerId)
-    public InvoicesDTO(Long customerId, Long appointmentId, Double amount, Boolean paid, String paymentProof, String paidItems) {
-        this.customerId = customerId;
-        this.appointmentId = appointmentId;
-        this.amount = amount;
-        this.paid = paid;
-        this.paymentProof = paymentProof;
-        this.paidItems = paidItems;
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
     }
+    //Constructor
 
-    public InvoicesDTO(Long id, Long customerId, String customerName, Long appointmentId, Double amount, Boolean paid, LocalDateTime createdAt, String paymentProof, String paidItems) {
+    public InvoicesDTO(Long id, Long customerId, String customerName, Long appointmentId, Double amount, Boolean paid, LocalDateTime createdAt, String paymentProof, String paidItems, String customerPhone) {
         this.id = id;
         this.customerId = customerId;
         this.customerName = customerName;
@@ -76,8 +63,6 @@ public class InvoicesDTO {
         this.createdAt = createdAt;
         this.paymentProof = paymentProof;
         this.paidItems = paidItems;
-    }
-
-    public InvoicesDTO() {
+        this.customerPhone = customerPhone;
     }
 }

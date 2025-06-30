@@ -8,6 +8,7 @@ public class STIAppointmentDTO {
     private Double amount;
     private String customerName;
     private String staffName;
+    private String customerPhone;
     // Getters and Setters
     public int getAppointmentId() {
         return appointmentId;
@@ -54,6 +55,15 @@ public class STIAppointmentDTO {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getCustomerPhone() {
+        return customerPhone;
+    }
+
+    public void setCustomerPhone(String customerPhone) {
+        this.customerPhone = customerPhone;
+    }
+
     public Double getAmount() {
         return amount;
     }

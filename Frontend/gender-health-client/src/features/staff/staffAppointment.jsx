@@ -66,6 +66,10 @@ export default function AppointmentList() {
     },
   };
 
+  const [filterStatus, setFilterStatus] = useState("");
+  const [minAmount, setMinAmount] = useState("");
+  const [maxAmount, setMaxAmount] = useState("");
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -90,27 +94,39 @@ export default function AppointmentList() {
 
   // Search by all fields
   useEffect(() => {
-    if (!search) {
-      setFilteredAppointments(appointments);
-    } else {
+    let filtered = appointments;
+
+    if (search) {
       const s = search.toLowerCase();
-      setFilteredAppointments(
-        appointments.filter((item) => {
-          const allFields = [
-            item.appointmentId,
-            item.customerName,
-            item.customerPhone,
-            item.status,
-            item.amount,
-          ]
-            .map((v) => (v === undefined || v === null ? "" : String(v)))
-            .join(" ")
-            .toLowerCase();
-          return allFields.includes(s);
-        })
-      );
+      filtered = filtered.filter((item) => {
+        const allFields = [
+          item.appointmentId,
+          item.customerName,
+          item.customerPhone,
+          item.status,
+          item.amount,
+        ]
+          .map((v) => (v === undefined || v === null ? "" : String(v)))
+          .join(" ")
+          .toLowerCase();
+        return allFields.includes(s);
+      });
     }
-  }, [search, appointments]);
+
+    if (filterStatus) {
+      filtered = filtered.filter((item) => item.status?.toLowerCase() === filterStatus.toLowerCase());
+    }
+
+    if (minAmount) {
+      filtered = filtered.filter((item) => Number(item.amount) >= Number(minAmount));
+    }
+
+    if (maxAmount) {
+      filtered = filtered.filter((item) => Number(item.amount) <= Number(maxAmount));
+    }
+
+    setFilteredAppointments(filtered);
+  }, [search, appointments, filterStatus, minAmount, maxAmount]);
 
   const getStatusClass = (status) => {
     switch (status?.toLowerCase()) {
@@ -172,21 +188,53 @@ export default function AppointmentList() {
       <div className="appointment-container_staffappointments">
         <h2 className="appointment-title_staffappointments">All Appointments</h2>
 
-        <div style={{ margin: "18px 0 14px 0" }}>
+        <div className="filter-bar_staffappointments">
           <input
             className="appointment-search-input_staffappointments"
-            placeholder="Search ..."
+            placeholder="Search..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{
-              padding: "9px 17px",
-              border: "1.3px solid #cbd5e1",
-              borderRadius: 8,
-              fontSize: "1rem",
-              width: 270,
-              marginBottom: 5,
-            }}
           />
+          <select
+            className="filter-select_staffappointments"
+            value={filterStatus}
+            onChange={(e) => setFilterStatus(e.target.value)}
+          >
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="sampling">Sampling</option>
+            <option value="sampled">Sampled</option>
+            <option value="canceled">Canceled</option>
+          </select>
+          <select
+            value={minAmount}
+            onChange={(e) => setMinAmount(e.target.value)}
+            className="filter-select_staffappointments"
+          >
+            <option value="">Min Amount</option>
+            <option value="100000">100000</option>
+            <option value="200000">200000</option>
+            <option value="400000">400000</option>
+            <option value="800000">800000</option>
+            <option value="1200000">1200000</option>
+            <option value="1600000">1600000</option>
+            <option value="2000000">2000000</option>
+          </select>
+
+          <select
+            value={maxAmount}
+            onChange={(e) => setMaxAmount(e.target.value)}
+            className="filter-select_staffappointments"
+          >
+            <option value="">Max Amount</option>
+            <option value="100000">100000</option>
+            <option value="200000">200000</option>
+            <option value="400000">400000</option>
+            <option value="800000">800000</option>
+            <option value="1200000">1200000</option>
+            <option value="1600000">1600000</option>
+            <option value="2000000">2000000</option>
+          </select>
         </div>
 
         {error && <div className="error_staffappointments">{error}</div>}

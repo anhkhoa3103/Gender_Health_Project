@@ -105,7 +105,7 @@ const AppointmentsTab = () => {
         </select>
       </div>
 
-      <table className="user-table_admindashboard">
+      <table className="user-table_adminconsultant">
         <thead>
           <tr>
             <th>ID</th>

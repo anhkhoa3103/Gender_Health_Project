@@ -131,6 +131,26 @@
   background-color: #e2e8f0;
   color: #333;
 }
+
+.view-btn_staffresult {
+  background-color: #64748b;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.enter-btn_staffresult {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+
 /* Spinner (for Export PDF button) */
 .spinner_staffresult {
   display: inline-block;

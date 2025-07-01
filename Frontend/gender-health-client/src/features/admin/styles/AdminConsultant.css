@@ -1,0 +1,103 @@
+.container_adminconsultant {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f4f6f8;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.main_adminconsultant {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  margin-left: 240px;
+  padding: 20px;
+}
+
+.user-management_adminconsultant {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  padding: 20px 25px;
+}
+
+.tab-buttons_adminconsultant {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.tab-buttons_adminconsultant button {
+  padding: 10px 20px;
+  background-color: #e2e8f0;
+  border: none;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.tab-buttons_adminconsultant button.active_adminconsultant {
+  background-color: #2563eb;
+  color: white;
+}
+
+.user-table_adminconsultant {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+}
+
+.user-table_adminconsultant th,
+.user-table_adminconsultant td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.user-table_adminconsultant th {
+  background-color: #f1f5f9;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.user-table_adminconsultant tr:hover {
+  background-color: #f8fafc;
+}
+
+.user-table_adminconsultant a {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.user-table_adminconsultant select,
+.user-table_adminconsultant input[type="text"] {
+  padding: 7px 10px;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.user-table_adminconsultant button {
+  padding: 6px 12px;
+  border: none;
+  background-color: #4f46e5;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.user-table_adminconsultant button:hover {
+  background-color: #4338ca;
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #1f2937;
+  font-size: 24px;
+  font-weight: 700;
+}

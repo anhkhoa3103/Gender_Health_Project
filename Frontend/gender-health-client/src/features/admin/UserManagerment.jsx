@@ -5,12 +5,15 @@ import axios from "axios";
 import AllUsers from "./user-tabs/AllUsers";
 import FindUser from "./user-tabs/FindUser";
 import UpdateUserTab from "./user-tabs/UpdateUserTab";
-import "./styles/UserManagement.css"; // Assuming you have a CSS file for styles
+import "./styles/UserManagement.css";
+import MainListSpinner from "../components/MainListSpinner";
 
 const UserManagement = () => {
     const [tab, setTab] = useState("all");
     const [users, setUsers] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null); // user cần update
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const token = localStorage.getItem("managementToken");
@@ -29,8 +32,6 @@ const UserManagement = () => {
         <div className="container_admindashboard">
             <Sidebar />
             <div className="main_admindashboard">
-                <Header />
-
                 <div className="user-management_admindashboard">
                     {/* Tabs */}
                     <div className="tab-buttons_admindashboard">
@@ -39,7 +40,6 @@ const UserManagement = () => {
                         <button onClick={() => setTab("update")} className={tab === "update" ? "active_admindashboard" : ""}>✏️ Update user</button>
                     </div>
 
-                    {/* Tab content */}
                     {tab === "all" &&
                         <AllUsers users={users} onUpdate={(user) => {
                             setSelectedUser(user);

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import MainListSpinner from "../../components/MainListSpinner";
 const UserTable = ({ users, onUpdate }) => {
   const [sortOrder, setSortOrder] = useState("asc");
   const [currentPage, setCurrentPage] = useState(1);
-  const usersPerPage = 10;
+  const usersPerPage = 8;
   const navigate = useNavigate();
 
   // Sắp xếp theo ID

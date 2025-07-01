@@ -1,5 +1,9 @@
+.main_admindashboard {
+  margin-left: 240px;
+  padding: 20px;
+}
+
 .user-management_admindashboard {
-  padding: 20px 30px;
   background-color: #f4f4f4;
   min-height: 100vh;
 }

@@ -120,3 +120,17 @@
   color: #666;
   cursor: not-allowed;
 }
+
+.filter-bar_consultation {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filter-bar_consultation input,
+.filter-bar_consultation select {
+  padding: 6px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}

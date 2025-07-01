@@ -18,6 +18,12 @@ const ConsultationHistory = () => {
   const consultantId = localStorage.getItem("userId");
   const token = localStorage.getItem("managementToken");
 
+  const [filters, setFilters] = useState({
+    name: "",
+    date: "",
+    status: "",
+  });
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
@@ -123,6 +129,28 @@ const ConsultationHistory = () => {
       <LoadingOverlay show={loading} text="Đang tải lịch sử cuộc hẹn..." />
       <Sidebar />
       <div className="history-content_consultant">
+        <div className="filter-bar_consultation">
+          <input
+            type="text"
+            placeholder="Tìm theo tên khách hàng..."
+            value={filters.name}
+            onChange={(e) => setFilters({ ...filters, name: e.target.value })}
+          />
+          <input
+            type="date"
+            value={filters.date}
+            onChange={(e) => setFilters({ ...filters, date: e.target.value })}
+          />
+          <select
+            value={filters.status}
+            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+          >
+            <option value="">Tất cả trạng thái</option>
+            <option value="PENDING">Đang chờ</option>
+            <option value="DONE">Hoàn thành</option>
+            <option value="CANCELLED">Đã hủy</option>
+          </select>
+        </div>
         <h2>Lịch sử các cuộc hẹn</h2>
         {appointments.length === 0 ? (
           <p></p>
@@ -140,46 +168,53 @@ const ConsultationHistory = () => {
               </tr>
             </thead>
             <tbody>
-              {appointments.map((a) => (
-                <tr key={a.consultationId}>
-                  <td>{a.name}</td>
-                  <td>{a.appointmentDate}</td>
-                  <td>{a.timeRange || "Chưa rõ"}</td>
-                  <td>{a.note}</td>
-                  <td>{a.status}</td>
-                  <td>
-                    {a.status === "CANCELLED" ? (
-                      <button className="delete-btn" onClick={() => handleDelete(a.consultationId)}>Xóa</button>
-                    ) : (
-                      <input
-                        type="checkbox"
-                        disabled={a.status === "DONE"}
-                        checked={a.status === "DONE"}
-                        onChange={() => handleComplete(a.consultationId)}
-                      />
-                    )}
-                  </td>
-                  <td>
-                    {a.status !== "DONE" ? (
-                      <button className="result-btn disabled" disabled>Chờ hoàn thành</button>
-                    ) : resultMap[a.consultationId] ? (
-                      <button
-                        className="result-btn btn-view"
-                        onClick={() => openResultModal(a.consultationId)}
-                      >
-                        Xem kết quả
-                      </button>
-                    ) : (
-                      <button
-                        className="result-btn btn-submit"
-                        onClick={() => openResultModal(a.consultationId)}
-                      >
-                        Nhập kết quả
-                      </button>
-                    )}
-                  </td>
-                </tr>
-              ))}
+              {appointments
+                .filter((a) => {
+                  const nameMatch = a.name?.toLowerCase().includes(filters.name.toLowerCase());
+                  const dateMatch = filters.date ? a.appointmentDate === filters.date : true;
+                  const statusMatch = filters.status ? a.status === filters.status : true;
+                  return nameMatch && dateMatch && statusMatch;
+                })
+                .map((a) => (
+                  <tr key={a.consultationId}>
+                    <td>{a.name}</td>
+                    <td>{a.appointmentDate}</td>
+                    <td>{a.timeRange || "Chưa rõ"}</td>
+                    <td>{a.note}</td>
+                    <td>{a.status}</td>
+                    <td>
+                      {a.status === "CANCELLED" ? (
+                        <button className="delete-btn" onClick={() => handleDelete(a.consultationId)}>Xóa</button>
+                      ) : (
+                        <input
+                          type="checkbox"
+                          disabled={a.status === "DONE"}
+                          checked={a.status === "DONE"}
+                          onChange={() => handleComplete(a.consultationId)}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {a.status !== "DONE" ? (
+                        <button className="result-btn disabled" disabled>Chờ hoàn thành</button>
+                      ) : resultMap[a.consultationId] ? (
+                        <button
+                          className="result-btn btn-view"
+                          onClick={() => openResultModal(a.consultationId)}
+                        >
+                          Xem kết quả
+                        </button>
+                      ) : (
+                        <button
+                          className="result-btn btn-submit"
+                          onClick={() => openResultModal(a.consultationId)}
+                        >
+                          Nhập kết quả
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         )}

@@ -13,7 +13,7 @@ const AdminStaffManagement = () => {
   const [searchAmount, setSearchAmount] = useState("");
   const [searchPackage, setSearchPackage] = useState("");
 
-  const itemsPerPage = 10;
+  const itemsPerPage = 9;
 
   const fetchStiAppointments = () => {
     const token = localStorage.getItem("managementToken");
@@ -189,7 +189,6 @@ const AdminStaffManagement = () => {
     <div className="container_admindashboard">
       <Sidebar />
       <div className="main_admindashboard">
-        <Header />
         <div className="user-management_admindashboard">
           <h2>👩‍⚕️ STI Appointment Management</h2>
 

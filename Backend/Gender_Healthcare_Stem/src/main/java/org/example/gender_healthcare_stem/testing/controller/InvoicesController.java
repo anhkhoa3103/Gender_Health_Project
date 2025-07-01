@@ -1,8 +1,6 @@
 package org.example.gender_healthcare_stem.testing.controller;
 
-
 import org.example.gender_healthcare_stem.testing.dto.InvoicesDTO;
-import org.example.gender_healthcare_stem.testing.model.Invoices;
 import org.example.gender_healthcare_stem.testing.service.InvoicesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,26 +17,23 @@ import java.util.Map;
 public class InvoicesController {
     private static final Logger log = LoggerFactory.getLogger(InvoicesController.class);
 
-    /*@Autowired
-    private InvoicesService service;
-
-    @PostMapping("")
-    public ResponseEntity<List<Invoices>> GetInvoices() {
-        List<Invoices> invoices = service.getInvoices();
-        return ResponseEntity.ok(invoices);
-    }*/
     @Autowired
     private InvoicesService invoicesService;
 
-    @PostMapping("")
+    // Get all invoices (DTO)
+    @GetMapping("")
     public ResponseEntity<List<InvoicesDTO>> getAllInvoices() {
         return ResponseEntity.ok(invoicesService.getAllInvoicesDTO());
     }
+
+    // Tạo invoice cho chuyển khoản tay/QR (KHÔNG cho VNPay)
     @PostMapping("/create-invoice")
     public ResponseEntity<InvoicesDTO> createInvoice(@RequestBody InvoicesDTO dto) {
         InvoicesDTO created = invoicesService.createInvoice(dto);
         return ResponseEntity.ok(created);
     }
+
+    // Cập nhật trạng thái paid (cho staff xác nhận nếu chuyển khoản tay)
     @PutMapping("/{invoiceId}/paid")
     public ResponseEntity<InvoicesDTO> updatePaidStatus(
             @PathVariable Long invoiceId,
@@ -49,4 +44,19 @@ public class InvoicesController {
         return ResponseEntity.ok(updated);
     }
 
+    // === VNPay: Chỉ sinh payment URL, chưa tạo invoice/appointment ===
+    @PostMapping("/vnpay-create")
+    public ResponseEntity<Map<String, String>> createVnpayPayment(@RequestBody Map<String, Object> req) {
+        Map<String, String> result = invoicesService.createVnpayPayment(req);
+        return ResponseEntity.ok(result);
+    }
+
+    // === VNPay: Xử lý callback, chỉ tạo invoice/appointment nếu thành công ===
+    @RequestMapping(value = "/vnpay-return", method = {RequestMethod.GET, RequestMethod.POST})
+    public ResponseEntity<?> handleVnpayReturn(@RequestParam Map<String, String> params) {
+        boolean updated = invoicesService.handleVnpayReturn(params);
+        if (updated)
+            return ResponseEntity.ok(Map.of("success", true, "message", "Payment Success!"));
+        return ResponseEntity.status(400).body(Map.of("success", false, "message", "Payment Not Verified"));
+    }
 }

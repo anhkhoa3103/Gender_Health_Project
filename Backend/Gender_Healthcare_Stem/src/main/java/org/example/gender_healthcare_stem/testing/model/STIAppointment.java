@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import org.example.gender_healthcare_stem.auth.model.Customer;
 import org.example.gender_healthcare_stem.auth.model.User;
 
-import java.math.BigDecimal;
-
 
 @Entity
 @Table(name = "stiappointment")
@@ -32,7 +30,7 @@ public class STIAppointment {
 
     // Getters and Setters
 
-    public Integer getAppointmentId() {
+    public int getAppointmentId() {
         return appointmentId;
     }
 

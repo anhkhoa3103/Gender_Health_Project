@@ -125,5 +125,34 @@ public class STIAppointmentService {
 
         return appointment; // <--- return the updated entity, NOT an int!
     }
+    public STIAppointment createAppointmentFromVnpay(Long customerId, double amount, List<Integer> testIds) {
+        Customer customer = customerRepository.findById(customerId)
+                .orElseThrow(() -> new RuntimeException("Customer not found"));
+
+        STIAppointment appointment = new STIAppointment();
+        appointment.setCustomer(customer);
+        appointment.setStaff(null);
+        appointment.setStatus("pending");
+        appointment.setAmount(amount);
+
+        STIAppointment savedAppointment = appointmentRepository.save(appointment);
+
+        TestResult testResult = new TestResult();
+        testResult.setCustomer(customer);
+        testResult.setAppointment(savedAppointment);
+        TestResult savedTestResult = testResultRepository.save(testResult);
+
+        for (Integer testId : testIds) {
+            TestType testType = TestTypeRepository.findById(testId)
+                    .orElseThrow(() -> new RuntimeException("Test type not found: " + testId));
+            TestResultDetail detail = new TestResultDetail();
+            detail.setTestResult(savedTestResult);
+            detail.setTestType(testType);
+            detail.setValue(null);
+            detail.setResult("negative");
+            testResultDetailRepository.save(detail);
+        }
+        return savedAppointment;
+    }
 
 }

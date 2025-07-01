@@ -70,4 +70,11 @@ public class AdminConsultationController {
             return ResponseEntity.status(500).body("Error fetching feedback: " + e.getMessage());
         }
     }
+    @GetMapping("/statistics/total-appointments")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Integer> getTotalConsultations() {
+        int total = adminConsultationService.getTotalConsultations();
+        return ResponseEntity.ok(total);
+    }
+
 }

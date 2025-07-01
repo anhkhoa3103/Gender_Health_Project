@@ -23,9 +23,16 @@ const AdminDashboard = () => {
     topPopular: [],
     monthlyTrends: []
   });
+
+  const [totalConsultations, setTotalConsultations] = useState(null);
+  const [totalUsers, setTotalUsers] = useState(null);
+  const [totalStiAppointments, setTotalStiAppointments] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const API_BASE_URL = 'http://localhost:8080/api/admin/statistics';
+  const CONSULTATION_API = 'http://localhost:8080/api/admin/consultation/statistics/total-appointments';
+  const TOTAL_USERS_API = 'http://localhost:8080/api/admin/users/total';
+  const TOTAL_APPOINTMENTS_API = 'http://localhost:8080/api/admin/staff/appointments/total';
 
   useEffect(() => {
     const fetchStatistics = async () => {
@@ -40,7 +47,10 @@ const AdminDashboard = () => {
           testPriceRes,
           topExpensiveRes,
           topPopularRes,
-          monthlyTrendsRes
+          monthlyTrendsRes,
+          consultationsRes,
+          totalUsersRes,
+          totalStiRes
         ] = await Promise.all([
           fetch(`${API_BASE_URL}/overview`),
           fetch(`${API_BASE_URL}/packages/price-distribution`),
@@ -49,7 +59,10 @@ const AdminDashboard = () => {
           fetch(`${API_BASE_URL}/tests/price-range`),
           fetch(`${API_BASE_URL}/packages/top-expensive?limit=10`),
           fetch(`${API_BASE_URL}/packages/top-popular?limit=10`),
-          fetch(`${API_BASE_URL}/monthly-trends`)
+          fetch(`${API_BASE_URL}/monthly-trends`),
+          fetch(CONSULTATION_API),
+          fetch(TOTAL_USERS_API),
+          fetch(TOTAL_APPOINTMENTS_API)
         ]);
 
         setStats({
@@ -63,10 +76,12 @@ const AdminDashboard = () => {
           monthlyTrends: await monthlyTrendsRes.json()
         });
 
+        setTotalConsultations(await consultationsRes.json());
+        setTotalUsers(await totalUsersRes.json());
+        setTotalStiAppointments(await totalStiRes.json());
         setLoading(false);
       } catch (e) {
         console.error('Error fetching statistics:', e);
-        // Set sample data for demo when API fails
         setStats({
           overview: {
             totalPackages: 156,
@@ -96,12 +111,16 @@ const AdminDashboard = () => {
             { month: 'Jun', packagesCreated: 31, testsAdded: 89 }
           ]
         });
+        setTotalConsultations(999); // fallback demo value
+        setTotalStiAppointments(350); // fallback demo value
         setLoading(false);
       }
     };
 
     fetchStatistics();
   }, []);
+
+  const { overview, priceDistribution, testUsage, monthlyTrends } = stats;
 
   if (loading) {
     return (
@@ -117,15 +136,11 @@ const AdminDashboard = () => {
     );
   }
 
-  const { overview, priceDistribution, testUsage, monthlyTrends } = stats;
-
   return (
     <div className="admin-dashboard">
       <Sidebar />
-      
       <div className="main-content">
         <Header />
-        
         <div className="dashboard-container">
           <div className="dashboard-header">
             <h2>Admin Dashboard</h2>
@@ -141,10 +156,19 @@ const AdminDashboard = () => {
               <div className="card-content">
                 <h4>Total Packages</h4>
                 <p className="stat-number">{overview?.totalPackages || 0}</p>
-                
               </div>
             </div>
-            
+
+            <div className="stat-card">
+              <div className="card-icon tests">
+                <TestTube size={24} />
+              </div>
+              <div className="card-content">
+                <h4>Total Consultations</h4>
+                <p className="stat-number">{totalConsultations ?? 'Loading...'}</p>
+              </div>
+            </div>
+
             <div className="stat-card">
               <div className="card-icon tests">
                 <TestTube size={24} />
@@ -152,10 +176,9 @@ const AdminDashboard = () => {
               <div className="card-content">
                 <h4>Total Tests</h4>
                 <p className="stat-number">{overview?.totalTests || 0}</p>
-                
               </div>
             </div>
-            
+
             <div className="stat-card">
               <div className="card-icon price">
                 <DollarSign size={24} />
@@ -163,10 +186,20 @@ const AdminDashboard = () => {
               <div className="card-content">
                 <h4>Avg. Package Price</h4>
                 <p className="stat-number">${overview?.averagePackagePrice}</p>
-               
               </div>
             </div>
-            
+
+            <div className="stat-card">
+  <div className="card-icon users">
+    <TestTube size={24} /> {/* hoặc đổi icon phù hợp, ví dụ: <Users size={24} /> nếu bạn import */}
+  </div>
+  <div className="card-content">
+    <h4>Total Users</h4>
+    <p className="stat-number">{totalUsers ?? 'Loading...'}</p>
+  </div>
+</div>
+
+
             <div className="stat-card">
               <div className="card-icon value">
                 <TrendingUp size={24} />
@@ -174,14 +207,22 @@ const AdminDashboard = () => {
               <div className="card-content">
                 <h4>Total Value</h4>
                 <p className="stat-number">${overview?.totalValue}</p>
-                
+              </div>
+            </div>
+
+            <div className="stat-card">
+              <div className="card-icon value">
+                <TrendingUp size={24} />
+              </div>
+              <div className="card-content">
+                <h4>Total STI </h4>
+                <p className="stat-number">{totalStiAppointments ?? 'Loading...'}</p>
               </div>
             </div>
           </div>
 
-          {/* Charts Grid */}
+          {/* Charts */}
           <div className="charts-grid">
-            {/* Price Distribution */}
             <div className="chart-card">
               <div className="chart-header">
                 <h3>Package Price Distribution</h3>
@@ -197,7 +238,9 @@ const AdminDashboard = () => {
                       cx="50%"
                       cy="50%"
                       outerRadius={120}
-                      label={({priceRange, percent}) => `${priceRange}: ${(percent * 100).toFixed(0)}%`}
+                      label={({ priceRange, percent }) =>
+                        `${priceRange}: ${(percent * 100).toFixed(0)}%`
+                      }
                     >
                       {priceDistribution.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -210,7 +253,6 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Test Usage */}
             <div className="chart-card">
               <div className="chart-header">
                 <h3>Test Usage Statistics</h3>
@@ -224,18 +266,12 @@ const AdminDashboard = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Bar 
-                      dataKey="usageCount" 
-                      fill="#8884d8" 
-                      name="Usage Count" 
-                      radius={[4, 4, 0, 0]} 
-                    />
+                    <Bar dataKey="usageCount" fill="#8884d8" name="Usage Count" radius={[4, 4, 0, 0]} />
                   </BarChart>
                 </ResponsiveContainer>
               </div>
             </div>
 
-            {/* Monthly Trends */}
             <div className="chart-card full-width">
               <div className="chart-header">
                 <h3>Monthly Trends</h3>
@@ -249,18 +285,18 @@ const AdminDashboard = () => {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    <Line 
-                      type="monotone" 
-                      dataKey="packagesCreated" 
-                      stroke="#8884d8" 
+                    <Line
+                      type="monotone"
+                      dataKey="packagesCreated"
+                      stroke="#8884d8"
                       name="Packages Created"
                       strokeWidth={3}
                       dot={{ fill: '#8884d8', strokeWidth: 2, r: 4 }}
                     />
-                    <Line 
-                      type="monotone" 
-                      dataKey="testsAdded" 
-                      stroke="#82ca9d" 
+                    <Line
+                      type="monotone"
+                      dataKey="testsAdded"
+                      stroke="#82ca9d"
                       name="Tests Added"
                       strokeWidth={3}
                       dot={{ fill: '#82ca9d', strokeWidth: 2, r: 4 }}
@@ -272,7 +308,6 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };

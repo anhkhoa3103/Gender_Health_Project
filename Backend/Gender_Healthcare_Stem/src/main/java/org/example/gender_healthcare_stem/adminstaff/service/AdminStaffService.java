@@ -289,4 +289,16 @@ public class AdminStaffService {
             return dto;
         }
     }
+    public int getTotalStaffCount() {
+        String sql = """
+        SELECT COUNT(*) FROM users
+        WHERE role IN ('STAFF', 'ADMIN', 'MANAGER')
+    """;
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+    public int getTotalAppointmentCount() {
+        String sql = "SELECT COUNT(*) FROM stiappointment";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
 }

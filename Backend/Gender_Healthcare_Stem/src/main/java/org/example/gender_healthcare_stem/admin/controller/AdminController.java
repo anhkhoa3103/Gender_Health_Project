@@ -83,6 +83,12 @@ public class AdminController {
             return ResponseEntity.status(500).body("Error loading feedbacks: " + e.getMessage());
         }
     }
+    @GetMapping("/users/total")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Long> getTotalUsers() {
+        long totalUsers = userRepository.count();
+        return ResponseEntity.ok(totalUsers);
+    }
 
 
 }

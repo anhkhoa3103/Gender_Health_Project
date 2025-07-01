@@ -111,4 +111,11 @@ public class AdminStaffController {
         adminStaffService.updateAppointmentAmount(appointmentId, newAmount);
         return ResponseEntity.ok("Appointment amount updated successfully");
     }
+    @GetMapping("/appointments/total")
+    public ResponseEntity<Integer> getTotalAppointments() {
+        int total = adminStaffService.getTotalAppointmentCount();
+        return ResponseEntity.ok(total);
+    }
+
+
 }

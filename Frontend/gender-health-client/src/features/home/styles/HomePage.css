@@ -18,7 +18,7 @@ body {
 }
 
 /* Main Title */
-.main-content {
+.main-content_home {
   text-align: center;
   margin-top: 40px;
 }
@@ -34,13 +34,13 @@ body {
 }
 
 /* Service Cards */
-.service-cards {
+.service-cards_home {
   display: flex;
   justify-content: space-between;
   gap: 20px;
 }
 
-.service-card {
+.service-card_home {
   background-color: #a6d2f7;
   border-radius: 20px;
   padding: 30px 20px;
@@ -55,19 +55,19 @@ body {
   transition: background 0.3s ease;
 }
 
-.service-card.sti-card {
+.service-card_home.sti-card {
   background: linear-gradient(180deg, #94a6f9 0%, #685dd7 100%);
   color: white;
 }
 
-.service-card h3 {
+.service-card_home h3 {
   margin-top: 20px;
   font-weight: 700;
   font-size: 20px;
   margin-bottom: 10px;
 }
 
-.service-card p {
+.service-card_home p {
   font-weight: 500;
   font-size: 14px;
   line-height: 1.5;

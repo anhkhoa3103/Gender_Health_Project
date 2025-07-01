@@ -262,18 +262,10 @@ export default function TestResultList() {
                   <td>{r.appointmentId}</td>
                   <td>
                     <button
-                      className={
-                        r.testDetails?.some((t) => t?.value || t?.result)
-                          ? "view-btn_staffresult"
-                          : "enter-btn_staffresult"
-                      }
+                      className={r.hasResult ? "view-btn_staffresult" : "enter-btn_staffresult"}
                       onClick={() => handleShowDetail(r.resultId)}
                     >
-                      {
-                        r.testDetails?.some((t) => t?.value || t?.result)
-                          ? "View Result"
-                          : "Enter Result"
-                      }
+                      {r.hasResult ? "View Result" : "Enter Result"}
                     </button>
                   </td>
                 </tr>

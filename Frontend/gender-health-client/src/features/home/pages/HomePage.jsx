@@ -63,15 +63,15 @@ const Homepage = () => {
           <BlogSession />
         </section>
 
-        <main className="main-content">
-          <div className="service-session" id="service">
+        <main className="main-content_home">
+          <div className="service-session_home" id="service">
             <h2 className="main-title">
               Our <span className="highlight">Main Services</span> Categories
             </h2>
 
-            <div className="service-cards">
+            <div className="service-cards_home">
               <div
-                className="service-card"
+                className="service-card_home"
                 onClick={handleClickConsultation}
                 style={{ cursor: "pointer" }}
               >
@@ -89,7 +89,7 @@ const Homepage = () => {
               </div>
 
               <div
-                className="service-card sti-card"
+                className="service-card_home sti-card"
                 onClick={handleClickSTI}
                 style={{ cursor: "pointer" }}
               >
@@ -106,7 +106,7 @@ const Homepage = () => {
               </div>
 
               <div
-                className="service-card"
+                className="service-card_home"
                 onClick={handleClickMenstrual}
                 style={{ cursor: "pointer" }}
               >

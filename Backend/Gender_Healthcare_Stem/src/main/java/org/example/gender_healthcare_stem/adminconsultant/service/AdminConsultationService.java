@@ -110,4 +110,9 @@ public class AdminConsultationService {
                 rs.getInt("rating")
         ), consultantId);
     }
+
+    public int getTotalConsultations() {
+        String sql = "SELECT COUNT(*) FROM consultationappointment";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
 }

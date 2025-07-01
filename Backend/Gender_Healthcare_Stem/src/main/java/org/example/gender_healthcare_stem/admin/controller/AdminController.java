@@ -84,5 +84,10 @@ public class AdminController {
         }
     }
 
-
+    @GetMapping("/users/total")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Long> getTotalUsers() {
+        long totalUsers = userRepository.count();
+        return ResponseEntity.ok(totalUsers);
+    }
 }

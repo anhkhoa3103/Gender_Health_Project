@@ -31,7 +31,7 @@ function InfoModal({ open, title, message, fields, onConfirm }) {
   );
 }
 
-export default function TestTypeTable() {
+export default function TestTypeTable({ selectedByPackage = [] }) {
   const [testTypes, setTestTypes] = useState([]);
   const [selectedTypes, setSelectedType] = useState([]);
   const [showNoSelectionModal, setShowNoSelectionModal] = useState(false);
@@ -44,6 +44,16 @@ export default function TestTypeTable() {
   useEffect(() => {
     getTestTypes();
   }, []);
+
+  // Whenever selectedByPackage changes, update selection
+  useEffect(() => {
+    if (
+      Array.isArray(selectedByPackage) &&
+      selectedByPackage.length > 0
+    ) {
+      setSelectedType(selectedByPackage);
+    }
+  }, [selectedByPackage]);
 
   const getTestTypes = async () => {
     try {

@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import org.example.gender_healthcare_stem.auth.model.Customer;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "test_result")
@@ -30,7 +31,18 @@ public class TestResult {
     @Column(name = "reported_at")
     private LocalDateTime reportedAt;
 
+    @OneToMany(mappedBy = "testResult", fetch = FetchType.LAZY)
+    private List<TestResultDetail> details;
+
     // Getters and Setters
+
+    public List<TestResultDetail> getDetails() {
+        return details;
+    }
+
+    public void setDetails(List<TestResultDetail> details) {
+        this.details = details;
+    }
 
     public Integer getResultId() {
         return resultId;

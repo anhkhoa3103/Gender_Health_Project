@@ -3,23 +3,34 @@ package org.example.gender_healthcare_stem.testing.dto;
 import java.time.LocalDateTime;
 
 public class TestResultDTO {
-    private Integer resultId;
-    private String customerName;       // Add this line
+    private int resultId;
+    private String customerName;
     private int appointmentId;
     private Long customerId;
-    public TestResultDTO(Integer resultId, String customerName, int appointmentId, Long customerId) {
+    private boolean hasResult;
+
+    public TestResultDTO(int resultId, String customerName, int appointmentId, Long customerId, boolean hasResult) {
+        this.resultId = resultId;
+        this.customerName = customerName;
+        this.appointmentId = appointmentId;
+        this.customerId = customerId;
+        this.hasResult = hasResult;
+    }
+
+    public TestResultDTO(int resultId, String customerName, int appointmentId, Long customerId) {
         this.resultId = resultId;
         this.customerName = customerName;
         this.appointmentId = appointmentId;
         this.customerId = customerId;
     }
-    // getters & setters...
 
-    public Integer getResultId() {
+    // getters & setters
+
+    public int getResultId() {
         return resultId;
     }
 
-    public void setResultId(Integer resultId) {
+    public void setResultId(int resultId) {
         this.resultId = resultId;
     }
 
@@ -38,11 +49,21 @@ public class TestResultDTO {
     public void setAppointmentId(int appointmentId) {
         this.appointmentId = appointmentId;
     }
+
     public Long getCustomerId() {
         return customerId;
-
     }
+
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
+
+    public boolean isHasResult() {
+        return hasResult;
+    }
+
+    public void setHasResult(boolean hasResult) {
+        this.hasResult = hasResult;
+    }
 }
+

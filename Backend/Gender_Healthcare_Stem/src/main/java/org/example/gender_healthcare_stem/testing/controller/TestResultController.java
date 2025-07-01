@@ -24,12 +24,19 @@ public class TestResultController {
     public List<TestResultDTO> getAllTestResults() {
         List<TestResult> results = testResultRepository.findAll();
         return results.stream()
-                .map(result -> new TestResultDTO(
-                        result.getResultId(),
-                        result.getCustomer().getUser().getFullName(),     // Get customer name here!
-                        result.getAppointment().getAppointmentId(),
-                        result.getCustomer().getUser().getId()
-                ))
+                .map(result -> {
+                    boolean hasResult = result.getDetails() != null &&
+                            result.getDetails().stream().anyMatch(
+                                    d -> d.getValue() != null && !d.getValue().trim().isEmpty()
+                            );
+                    return new TestResultDTO(
+                            result.getResultId(),
+                            result.getCustomer().getUser().getFullName(),
+                            result.getAppointment().getAppointmentId(),
+                            result.getCustomer().getUser().getId(),
+                            hasResult
+                    );
+                })
                 .collect(Collectors.toList());
     }
 
@@ -46,6 +53,7 @@ public class TestResultController {
                 ))
                 .collect(Collectors.toList());
     }
+
     @GetMapping("/pdf-data/customer/{customerId}")
     public List<PdfTestResultDTO> getPdfDataByCustomerId(@PathVariable Integer customerId) {
         return testResultService.getPdfTestResultsByCustomerId(customerId);

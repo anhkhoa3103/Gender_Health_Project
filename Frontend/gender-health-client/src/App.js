@@ -55,6 +55,8 @@ import Invoices from "./features/testing/pages/Invoices";
 import CustomerTestResult from "./features/testing/pages/CustomerTestResult";
 import CustomerInvoicesHistory from "./features/testing/pages/CustomerInvoicesHistory";
 import CustomerTable from "./features/testing/pages/CustomerInfo.jsx";
+import VnpayReturnPage from "./features/testing/pages/VnpayReturnPage.jsx";
+
 // Staff
 import StaffAppointmentManagement from "./features/staff/staffAppointment";
 import StafftDashboard from "./features/staff/staffDashboard";
@@ -108,6 +110,7 @@ function App() {
           <Route path="/customer-results" element={<CustomerTestResult />} />
           <Route path="/customer-invoices" element={<CustomerInvoicesHistory />} />
           <Route path="/customer-info" element={<CustomerTable />} />
+          <Route path="/vnpay-return" element={<VnpayReturnPage />} />
           {/* Staff routes */}
           <Route path="/staff/invoices" element={
             <RequireAuth allowedRoles={['staff']}>

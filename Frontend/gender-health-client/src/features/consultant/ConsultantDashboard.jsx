@@ -5,6 +5,9 @@ import {
     getFeedbacksByConsultantId,
     getConsultantById,
 } from "../../api/consultationApi";
+import {
+    BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, LineChart, Line
+} from "recharts";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/sidebar";
 import LoadingOverlay from "../components/LoadingOverlay";
@@ -79,6 +82,26 @@ export default function ConsultantDashboard() {
                 feedbacks.reduce((sum, fb) => sum + (fb.rating || 0), 0) / feedbacks.length
             ).toFixed(1)
             : "N/A";
+
+    const appointmentStatusData = [
+        { name: "Pending", count: pending },
+        { name: "Done", count: done },
+        { name: "Cancelled", count: cancelled }
+    ];
+
+    const feedbacksByDate = feedbacks.reduce((acc, fb) => {
+        const date = new Date(fb.createdAt).toISOString().slice(0, 10); // ISO date
+        acc[date] = (acc[date] || 0) + 1;
+        return acc;
+    }, {});
+
+    const feedbackData = Object.entries(feedbacksByDate)
+        .map(([date, count]) => ({ date, count }))
+        .sort((a, b) => new Date(b.date) - new Date(a.date))
+        .slice(0, 10)
+        .sort((a, b) => new Date(a.date) - new Date(b.date));
+
+
 
     return (
         <>
@@ -169,6 +192,34 @@ export default function ConsultantDashboard() {
                             }).length === 0 && <p>No upcoming appointments.</p>}
                         </ul>
                     </div>
+
+                    <div className="card_consultantdashboard chart-card">
+                        <h3 style={{ marginBottom: "10px" }}>Appointments by Status</h3>
+                        <ResponsiveContainer width="100%" height={250}>
+                            <BarChart data={appointmentStatusData} margin={{ top: 10, right: 20, bottom: 5, left: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar dataKey="count" fill="#8884d8" />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+
+                    <div className="card_consultantdashboard chart-card">
+                        <h3 style={{ marginBottom: "10px" }}>Feedback Volume Over Time</h3>
+                        <ResponsiveContainer width="100%" height={250}>
+                            <LineChart data={feedbackData} margin={{ top: 10, right: 30, bottom: 5, left: 0 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="date" />
+                                <YAxis allowDecimals={false} />
+                                <Tooltip />
+                                <Line type="monotone" dataKey="count" stroke="#82ca9d" strokeWidth={3} dot />
+                            </LineChart>
+                        </ResponsiveContainer>
+                    </div>
+
                 </div>
             </div>
         </>

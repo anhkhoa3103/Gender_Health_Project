@@ -1,8 +1,8 @@
 package org.example.gender_healthcare_stem.config;
 
 import lombok.RequiredArgsConstructor;
-import org.example.gender_healthcare_stem.auth.security.JwtAuthenticationFilter;
 import org.example.gender_healthcare_stem.auth.security.CustomUserDetailsService;
+import org.example.gender_healthcare_stem.auth.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -23,6 +24,7 @@ import java.util.List;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
+
     private final JwtAuthenticationFilter jwtAuthFilter;
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -31,33 +33,27 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .headers(headers -> headers.frameOptions().disable()) // Cho phép H2 console
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/api/auth/oauth/google").permitAll()
-                        .requestMatchers("/api/feedback/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/menstrual/cycle-history/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/consultation/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/consultants/getall").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/feedbacks/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/feedbacks/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/appointments/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/sti/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/invoice/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/invoice/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/package/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/package/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/test-results/**").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/test-results/**").permitAll()
-                        .requestMatchers("/api/test-results/**").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/sti-appointment/staff/all").permitAll()
-                        .requestMatchers(HttpMethod.PUT, "/api/sti-appointment/staff/update-status/**").permitAll()
-                        .requestMatchers("/api/consultants/**").hasAuthority("ROLE_CONSULTANT")
-                        .requestMatchers("/api/staff/**").hasAuthority("ROLE_STAFF")
-                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                        .anyRequest().authenticated()
+
+                        // ✅ Cho phép truy cập tất cả API để test (không cần đăng nhập)
+                        .requestMatchers("/**").permitAll()
+
+                        // Swagger UI và API docs
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-resources/**",
+                                "/webjars/**"
+                        ).permitAll()
+
+                        // H2 Console (nếu dùng H2 database)
+                        .requestMatchers("/h2-console/**").permitAll()
+
+                        // ❗ Đổi lại thành `.anyRequest().authenticated()` nếu muốn bật lại xác thực
+                        .anyRequest().permitAll()
                 )
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -77,14 +73,23 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration cfg = new CorsConfiguration();
-        cfg.setAllowedOrigins(List.of("http://localhost:3000")); // React frontend
-        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        cfg.setAllowedOrigins(List.of(
+                "http://localhost:3000",
+                "http://localhost:8080",
+                "http://localhost:3001",
+                "*" // ❗ CHỈ DÙNG "*" cho development/test
+        ));
+        cfg.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         cfg.setAllowedHeaders(List.of("*"));
-        cfg.setAllowCredentials(true);
+        cfg.setAllowCredentials(false); // Nếu dùng "*" thì phải để false
+        cfg.setMaxAge(3600L); // Cache preflight request for 1 hour
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", cfg);

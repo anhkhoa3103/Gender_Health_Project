@@ -17,6 +17,7 @@ import LogoutManagement from "./features/auth/pages/LogoutManagement";
 import HomePage from "./features/home/pages/HomePage";
 import BlogDetailSession from "./features/home/sessions/BlogDetailSession";
 import DoctorDetail from "./features/home/sessions/DoctorDetail";
+import ViewMoreBlogSession from "./features/home/sessions/ViewMoreBlogSession";
 
 // Menstrual
 import MenstrualTracker from "./features/menstrual/pages/MenstrualTracker";
@@ -88,6 +89,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/blog/:id" element={<BlogDetailSession />} />
           <Route path="/doctor/:id" element={<DoctorDetail />} />
+          <Route path="/blogs" element={<ViewMoreBlogSession />} />
 
           {/* Menstrual tracking */}
           <Route path="/menstrual/:userId" element={<MenstrualTracker />} />

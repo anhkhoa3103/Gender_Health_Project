@@ -28,7 +28,7 @@ import BookAppointment from './features/consultation/page/BookAppointment';
 import BookingSuccess from './features/consultation/page/BookingSuccess';
 import Feedback from './features/consultation/page/Feedback';
 import HealthcareWebsite_consultation from "./features/consultation/page/HealthcareWebsite_consultation.jsx";
-
+import ReturnPage from "./features/consultation/page/VNPayReturnPage.jsx";
 // Admin
 import RequireAuth from "./routes/RequireAuth";
 import ManagementWelcome from "./features/admin/ManagementWelcome";
@@ -100,6 +100,7 @@ function App() {
           <Route path="/bookappointment" element={<BookAppointment />} />
           <Route path="/bookingsuccess" element={<BookingSuccess />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/consultation/payment-result" element={<ReturnPage />} />
 
           {/* Testing routes */}
           <Route path="/package" element={<Packages />} />

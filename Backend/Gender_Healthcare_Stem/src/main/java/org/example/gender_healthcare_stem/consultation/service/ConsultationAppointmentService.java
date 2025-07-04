@@ -11,6 +11,7 @@ import org.example.gender_healthcare_stem.consultation.repository.SlotRepository
 import org.example.gender_healthcare_stem.consultation.repository.WorkSlotRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +88,7 @@ public class ConsultationAppointmentService {
 
         appointment.setConsultantId(request.getConsultantId());
         appointment.setCustomerId(request.getCustomerId());
-        appointment.setAppointmentDate(request.getAppointmentDate());
+        appointment.setAppointmentDate(LocalDate.parse(request.getAppointmentDate()));
         appointment.setWorkslotId(request.getWorkslotId());
         appointment.setName(request.getName());
         appointment.setPhoneNumber(request.getPhoneNumber());

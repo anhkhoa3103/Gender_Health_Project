@@ -5,7 +5,7 @@ import java.time.LocalDate;
 public class ConsultationAppointmentRequest {
     private Long consultantId;
     private Long customerId;
-    private LocalDate appointmentDate;
+    private String appointmentDate;
     private Long workslotId;
     private String name;
     private String phoneNumber;
@@ -27,11 +27,11 @@ public class ConsultationAppointmentRequest {
         this.customerId = customerId;
     }
 
-    public LocalDate getAppointmentDate() {
+    public String getAppointmentDate() {
         return appointmentDate;
     }
 
-    public void setAppointmentDate(LocalDate appointmentDate) {
+    public void setAppointmentDate(String appointmentDate) {
         this.appointmentDate = appointmentDate;
     }
 

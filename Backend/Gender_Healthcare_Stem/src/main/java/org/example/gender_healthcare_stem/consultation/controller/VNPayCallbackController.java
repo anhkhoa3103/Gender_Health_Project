@@ -6,6 +6,7 @@ import org.example.gender_healthcare_stem.consultation.model.*;
 import org.example.gender_healthcare_stem.consultation.repository.ConsultationAppointmentRepository;
 import org.example.gender_healthcare_stem.consultation.repository.ConsultationInvoiceRepository;
 import org.example.gender_healthcare_stem.auth.repository.CustomerRepository;
+import org.example.gender_healthcare_stem.consultation.repository.WorkSlotRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class VNPayCallbackController {
     private final ConsultationAppointmentRepository appointmentRepo;
     private final ConsultationInvoiceRepository invoiceRepo;
     private final CustomerRepository customerRepo;
+    private final WorkSlotRepository workslotRepository;
 
     // Injected from application.properties
     @Value("${vnpay.tmn_code}")
@@ -40,11 +42,13 @@ public class VNPayCallbackController {
     public VNPayCallbackController(
             ConsultationAppointmentRepository appointmentRepo,
             ConsultationInvoiceRepository invoiceRepo,
-            CustomerRepository customerRepo
+            CustomerRepository customerRepo,
+            WorkSlotRepository workslotRepository
     ) {
         this.appointmentRepo = appointmentRepo;
         this.invoiceRepo = invoiceRepo;
         this.customerRepo = customerRepo;
+        this.workslotRepository = workslotRepository;
     }
 
     // ---- VNPay Payment Creation Endpoint ----
@@ -113,7 +117,8 @@ public class VNPayCallbackController {
 
     // ---- VNPay Callback Endpoint ----
     @GetMapping("/vnpay-return")
-    public ResponseEntity<Map<String, Object>> vnpayReturn(@RequestParam Map<String, String> params) {
+    public ResponseEntity<Map<String, Object>> vnpayReturn(@RequestParam Map<String, String> params
+    ) {
         Map<String, Object> result = new HashMap<>();
         try {
             String responseCode = params.get("vnp_ResponseCode");
@@ -164,6 +169,11 @@ public class VNPayCallbackController {
             invoice.setPaymentResponseCode(responseCode);
             invoice.setPaymentTime(LocalDateTime.now());
             invoiceRepo.save(invoice);
+            WorkSlot slot = workslotRepository.findById(appointmentRequest.getWorkslotId())
+                    .orElseThrow(() -> new RuntimeException("Workslot not found"));
+            System.out.println(">>> Workslot ID: " + appointmentRequest.getWorkslotId());
+            slot.setIsAvailable(false);
+            workslotRepository.save(slot);
 
             result.put("success", true);
             result.put("message", "Thanh toán thành công! Đơn đã được ghi nhận.");

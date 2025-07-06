@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Edit2, Trash2, Save, X, Eye, Search } from 'lucide-react';
+import { Plus, Edit2, Trash2, Save, X, Eye, Search, DollarSign } from 'lucide-react';
 import Sidebar from '../components/sidebar'; // sidebar bên trái
 import TestTypeManagerTab from "./service-tabs/TestTypeManagerTab.jsx";
 import './styles/AdminServices.css';
@@ -20,7 +20,9 @@ const AdminServices = () => {
     // Form states
     const [formData, setFormData] = useState({
         packageName: '',
-        testIds: []
+        testIds: [],
+        totalPrice: '',
+        useManualPrice: false
     });
     const [formErrors, setFormErrors] = useState({});
 
@@ -101,6 +103,35 @@ const AdminServices = () => {
         }, 0);
     };
 
+    // Check if price is manually adjusted
+    const isPriceManuallyAdjusted = (pkg) => {
+        const calculatedPrice = calculateTotalPrice(pkg.testTypes.map(t => t.testId));
+        return pkg.totalPrice !== calculatedPrice;
+    };
+
+    // Render price with strikethrough for old price
+    const renderPriceWithStrikethrough = (currentPrice, originalPrice) => {
+        const isAdjusted = currentPrice !== originalPrice;
+        
+        return (
+            <div className="price-display">
+                {isAdjusted && (
+                    <span className="old-price strikethrough">
+                        {formatCurrency(originalPrice)}
+                    </span>
+                )}
+                <span className={`current-price ${isAdjusted ? 'adjusted-price' : ''}`}>
+                    {formatCurrency(currentPrice)}
+                </span>
+                {isAdjusted && (
+                    <span className="manual-price-indicator" title="Giá đã được điều chỉnh thủ công">
+                        
+                    </span>
+                )}
+            </div>
+        );
+    };
+
     // Filter packages
     const filteredPackages = packages.filter(pkg =>
         pkg.packageName.toLowerCase().includes(searchTerm.toLowerCase())
@@ -116,6 +147,12 @@ const AdminServices = () => {
 
         if (formData.testIds.length === 0) {
             errors.testIds = 'Phải chọn ít nhất 1 test';
+        }
+
+        if (formData.useManualPrice) {
+            if (!formData.totalPrice || formData.totalPrice <= 0) {
+                errors.totalPrice = 'Giá thủ công phải lớn hơn 0';
+            }
         }
 
         setFormErrors(errors);
@@ -135,6 +172,26 @@ const AdminServices = () => {
             setFormErrors(prev => ({
                 ...prev,
                 [name]: ''
+            }));
+        }
+    };
+
+    // Handle manual price toggle
+    const handleManualPriceToggle = () => {
+        setFormData(prev => {
+            const newUseManualPrice = !prev.useManualPrice;
+            return {
+                ...prev,
+                useManualPrice: newUseManualPrice,
+                totalPrice: newUseManualPrice ? '' : prev.totalPrice
+            };
+        });
+
+        // Clear price error when toggling
+        if (formErrors.totalPrice) {
+            setFormErrors(prev => ({
+                ...prev,
+                totalPrice: ''
             }));
         }
     };
@@ -161,7 +218,9 @@ const AdminServices = () => {
     const resetForm = () => {
         setFormData({
             packageName: '',
-            testIds: []
+            testIds: [],
+            totalPrice: '',
+            useManualPrice: false
         });
         setFormErrors({});
     };
@@ -176,7 +235,9 @@ const AdminServices = () => {
         setSelectedPackage(pkg);
         setFormData({
             packageName: pkg.packageName,
-            testIds: pkg.testTypes.map(test => test.testId)
+            testIds: pkg.testTypes.map(test => test.testId),
+            totalPrice: pkg.totalPrice,
+            useManualPrice: false
         });
         setFormErrors({});
         setIsEditModalOpen(true);
@@ -201,16 +262,23 @@ const AdminServices = () => {
         if (!validateForm()) return;
 
         try {
+            const requestBody = {
+                packageName: formData.packageName.trim(),
+                testIds: formData.testIds
+            };
+
+            // Chỉ gửi totalPrice nếu người dùng chọn giá thủ công
+            if (formData.useManualPrice) {
+                requestBody.totalPrice = parseFloat(formData.totalPrice);
+            }
+
             const response = await fetch(API_BASE_URL, {
                 method: 'POST',
                 headers: {
                     Authorization: `Bearer ${localStorage.getItem("managementToken")}`,
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({
-                    packageName: formData.packageName.trim(),
-                    testIds: formData.testIds
-                })
+                body: JSON.stringify(requestBody)
             });
 
             const result = await response.json();
@@ -233,6 +301,16 @@ const AdminServices = () => {
         if (!validateForm()) return;
 
         try {
+            const requestBody = {
+                packageName: formData.packageName.trim(),
+                testIds: formData.testIds
+            };
+
+            // Chỉ gửi totalPrice nếu người dùng chọn giá thủ công
+            if (formData.useManualPrice) {
+                requestBody.totalPrice = parseFloat(formData.totalPrice);
+            }
+
             const response = await fetch(
                 `${API_BASE_URL}/${selectedPackage.packageId}`,
                 {
@@ -241,10 +319,7 @@ const AdminServices = () => {
                         Authorization: `Bearer ${localStorage.getItem("managementToken")}`,
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        packageName: formData.packageName.trim(),
-                        testIds: formData.testIds
-                    })
+                    body: JSON.stringify(requestBody)
                 }
             );
 
@@ -292,6 +367,52 @@ const AdminServices = () => {
             console.error('Error deleting package:', error);
             alert('Có lỗi xảy ra khi xóa package');
         }
+    };
+
+    // Render Price Section
+    const renderPriceSection = () => {
+        const calculatedPrice = calculateTotalPrice(formData.testIds);
+        
+        return (
+            <div className="price-section">
+                <div className="price-toggle">
+                    <label className="toggle-label">
+                        <input
+                            type="checkbox"
+                            checked={formData.useManualPrice}
+                            onChange={handleManualPriceToggle}
+                        />
+                        <span>Đặt giá thủ công</span>
+                    </label>
+                </div>
+
+                {formData.useManualPrice ? (
+                    <div className="form-group">
+                        <label>Giá Package (VND) *</label>
+                        <input
+                            type="number"
+                            name="totalPrice"
+                            value={formData.totalPrice}
+                            onChange={handleInputChange}
+                            placeholder="Nhập giá package"
+                            className={formErrors.totalPrice ? 'error' : ''}
+                            min="0"
+                            step="1000"
+                        />
+                        {formErrors.totalPrice && (
+                            <span className="error-message">{formErrors.totalPrice}</span>
+                        )}
+                        <div className="price-info">
+                            <small>Giá tự động tính: {formatCurrency(calculatedPrice)}</small>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="auto-price">
+                        <strong>Giá tự động: {formatCurrency(calculatedPrice)}</strong>
+                    </div>
+                )}
+            </div>
+        );
     };
 
     // Render Package Management Tab
@@ -356,7 +477,10 @@ const AdminServices = () => {
 
                             <div className="package-info">
                                 <div className="price">
-                                    <strong>{formatCurrency(pkg.totalPrice)}</strong>
+                                    {renderPriceWithStrikethrough(
+                                        pkg.totalPrice, 
+                                        calculateTotalPrice(pkg.testTypes.map(t => t.testId))
+                                    )}
                                 </div>
                                 <div className="test-count">
                                     {pkg.testTypes.length} test{pkg.testTypes.length > 1 ? 's' : ''}
@@ -431,11 +555,7 @@ const AdminServices = () => {
                                 </div>
                             </div>
 
-                            {formData.testIds.length > 0 && (
-                                <div className="total-price">
-                                    <strong>Tổng giá: {formatCurrency(calculateTotalPrice(formData.testIds))}</strong>
-                                </div>
-                            )}
+                            {formData.testIds.length > 0 && renderPriceSection()}
                         </div>
 
                         <div className="modal-footer">
@@ -502,11 +622,7 @@ const AdminServices = () => {
                                 </div>
                             </div>
 
-                            {formData.testIds.length > 0 && (
-                                <div className="total-price">
-                                    <strong>Tổng giá: {formatCurrency(calculateTotalPrice(formData.testIds))}</strong>
-                                </div>
-                            )}
+                            {formData.testIds.length > 0 && renderPriceSection()}
                         </div>
 
                         <div className="modal-footer">
@@ -543,8 +659,16 @@ const AdminServices = () => {
                                 <div className="detail-row">
                                     <label>Tổng giá:</label>
                                     <span className="price-highlight">
-                                        {formatCurrency(selectedPackage.totalPrice)}
+                                        {renderPriceWithStrikethrough(
+                                            selectedPackage.totalPrice,
+                                            calculateTotalPrice(selectedPackage.testTypes.map(t => t.testId))
+                                        )}
                                     </span>
+                                </div>
+
+                                <div className="detail-row">
+                                    <label>Giá tự động tính:</label>
+                                    <span>{formatCurrency(calculateTotalPrice(selectedPackage.testTypes.map(t => t.testId)))}</span>
                                 </div>
 
                                 <div className="detail-row">

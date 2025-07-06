@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 @Service
-public class TestPackageService {
+public class    TestPackageService {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -74,7 +74,10 @@ public class TestPackageService {
             throw new IllegalArgumentException("At least one test must be selected");
         }
 
-        BigDecimal totalPrice = calculateTotalPrice(request.getTestIds());
+        // Cho phép nhập totalPrice thủ công nếu có, nếu không thì tính tự động
+        BigDecimal totalPrice = (request.getTotalPrice() != null)
+                ? request.getTotalPrice()
+                : calculateTotalPrice(request.getTestIds());
 
         String insertPackageSql = "INSERT INTO package (package_name, total_price) VALUES (?, ?) RETURNING package_id";
         Integer packageId = jdbcTemplate.queryForObject(
@@ -106,7 +109,10 @@ public class TestPackageService {
             throw new IllegalArgumentException("Package not found");
         }
 
-        BigDecimal totalPrice = calculateTotalPrice(request.getTestIds());
+        // Cho phép nhập totalPrice thủ công nếu có, nếu không thì tính tự động
+        BigDecimal totalPrice = (request.getTotalPrice() != null)
+                ? request.getTotalPrice()
+                : calculateTotalPrice(request.getTestIds());
 
         jdbcTemplate.update("UPDATE package SET package_name = ?, total_price = ? WHERE package_id = ?",
                 request.getPackageName().trim(), totalPrice, packageId);

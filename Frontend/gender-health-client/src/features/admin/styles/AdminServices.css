@@ -271,13 +271,93 @@
   z-index: 1000;
   padding: 20px;
 }
+/* CSS cho hiệu ứng hiển thị giá cũ bị gạch ngang */
 
+.price-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.old-price.strikethrough {
+    text-decoration: line-through;
+    color: #999;
+    font-size: 0.9em;
+    opacity: 0.7;
+}
+
+.current-price {
+    font-weight: bold;
+    color: #2563eb;
+}
+
+.current-price.adjusted-price {
+    color: #dc2626; /* Màu đỏ để nhấn mạnh giá đã điều chỉnh */
+}
+
+.manual-price-indicator {
+    color: #f59e0b;
+    display: inline-flex;
+    align-items: center;
+    margin-left: 4px;
+}
+
+/* Responsive design cho price display */
+@media (max-width: 768px) {
+    .price-display {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+    
+    .old-price.strikethrough {
+        font-size: 0.8em;
+    }
+    
+    .current-price {
+        font-size: 1.1em;
+    }
+}
+
+/* Styling cho price trong package card */
+.package-card .price .price-display {
+    justify-content: flex-end;
+}
+
+/* Styling cho price trong modal chi tiết */
+.price-highlight .price-display {
+    font-size: 1.1em;
+}
+
+.price-highlight .old-price.strikethrough {
+    font-size: 1em;
+}
+
+.price-highlight .current-price {
+    font-size: 1.2em;
+}
+
+/* Animation cho việc chuyển đổi giá */
+.price-display * {
+    transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.package-card:hover .current-price.adjusted-price {
+    color: #b91c1c;
+}
+
+.package-card:hover .old-price.strikethrough {
+    opacity: 0.9;
+}
 .modal {
   background: white;
   border-radius: 12px;
-  width: 100%;
-  max-width: 600px;
+  width: 95%;
+  max-width: 1000px;
   max-height: 90vh;
+  min-width: 800px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -288,7 +368,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 24px;
+  padding: 24px 32px;
   border-bottom: 1px solid #e2e8f0;
   background: #f8fafc;
 }
@@ -310,7 +390,7 @@
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  padding: 20px 24px;
+  padding: 24px 32px;
   border-top: 1px solid #e2e8f0;
   background: #f8fafc;
 }
@@ -374,15 +454,17 @@
 }
 
 .checkbox-label {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: 12px;
+    width: 100%;
 }
 
 .checkbox-label input[type="checkbox"] {
-  width: auto;
-  margin: 0;
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
 }
 
 .test-info {

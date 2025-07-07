@@ -1,0 +1,79 @@
+.invoices-history-wrapper_invoiceshistory {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 0 16px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+.invoice-list_invoiceshistory {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.invoice-card_invoiceshistory {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  padding: 16px;
+  transition: 0.3s;
+  border-left: 6px solid #5cb4ff;
+}
+
+.invoice-card_invoiceshistory:hover {
+  transform: scale(1.01);
+}
+
+.invoice-card-header_invoiceshistory {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invoice-icon_invoiceshistory {
+  font-size: 22px;
+  margin-right: 8px;
+  color: #007bff;
+}
+
+.invoice-title_invoiceshistory {
+  flex-grow: 1;
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.invoice-time_invoiceshistory {
+  font-size: 13px;
+  color: #666;
+}
+
+.invoice-card-body_invoiceshistory {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.invoice-desc_invoiceshistory {
+  font-size: 14px;
+  color: #555;
+}
+
+.invoice-status_invoiceshistory {
+  font-size: 14px;
+  color: #009e3e;
+}
+
+.invoice-amount_invoiceshistory {
+  font-weight: bold;
+  font-size: 16px;
+  color: #e53935;
+}
+
+.loading_invoiceshistory {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 18px;
+  color: #777;
+}

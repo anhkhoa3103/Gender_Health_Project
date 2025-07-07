@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from "react-router-dom";
-import { getConsultants, getAllSlot, getAvailableSlots, createAppointment } from "../../../api/consultationApi";
+import { getConsultants, getAllSlot, getAvailableSlots } from "../../../api/consultationApi";
 import HeaderSession from "../../components/Header";
 import FooterSession from "../../home/sessions/FooterSession";
-import "../style/ConsultationBooking.css"
-import "../style/Last.css"
-import { getRatingSummaryByConsultantId } from "../../../api/feedbackApi"
+import "../style/ConsultationBooking.css";
+import "../style/Last.css";
+import { getRatingSummaryByConsultantId } from "../../../api/feedbackApi";
 import { AuthContext } from '../../../context/AuthContext';
+import api from "../../../api/axios"; // <-- your axios instance
 
 const HealthcareWebsite_consultation = () => {
+    // State
     const [animatedCards, setAnimatedCards] = useState(false);
     const [consultants, setConsultants] = useState([]);
     const [allSlots, setAllSlots] = useState([]);
@@ -31,67 +33,63 @@ const HealthcareWebsite_consultation = () => {
     const [message, setMessage] = useState('');
     const [loading, setLoading] = useState(false);
 
+    // Auth redirect
     useEffect(() => {
-        if (!user) {
-            navigate('/login');
-        }
-    }, [user]);
+        if (!user) navigate('/login');
+    }, [user, navigate]);
 
-
+    // Animation effect
     useEffect(() => {
-        const timer = setTimeout(() => {
-            setAnimatedCards(true);
-        }, 500);
+        const timer = setTimeout(() => setAnimatedCards(true), 500);
         return () => clearTimeout(timer);
     }, []);
 
+    // Load consultants with ratings
     useEffect(() => {
         const fetchConsultantsWithRatings = async () => {
             try {
                 const res = await getConsultants();
                 const rawConsultants = res.data;
-
                 const enriched = await Promise.all(
                     rawConsultants.map(async (c) => {
                         try {
                             const { data } = await getRatingSummaryByConsultantId(c.userId);
                             return { ...c, avgRating: data.averageRating };
-                        } catch (e) {
-                            console.error(`Error loading rating for consultant ${c.userId}`, e);
+                        } catch {
                             return { ...c, avgRating: null };
                         }
                     })
                 );
-
                 setConsultants(enriched);
             } catch (error) {
                 console.error("Failed to load consultants", error);
             }
         };
-
         fetchConsultantsWithRatings();
     }, []);
 
+    // Load slots
     useEffect(() => {
         getAllSlot()
             .then(res => setAllSlots(res.data))
             .catch(console.error);
     }, []);
 
+    // Select first consultant by default
     useEffect(() => {
         if (consultants.length > 0 && !selectedConsultant) {
             setSelectedConsultant(consultants[0]);
         }
     }, [consultants, selectedConsultant]);
 
+    // Load available slots for consultant/date
     useEffect(() => {
         if (selectedConsultant && selectedDate !== null) {
             const isoDate = formatDateISO(currentYear, currentMonth, selectedDate);
             getAvailableSlots(selectedConsultant.userId, isoDate)
                 .then(res => {
                     const data = res.data;
-                    const availableSlotIds = data.map(ws => ws.slotId);
-                    setAvailableSlots(availableSlotIds);
+                    setAvailableSlots(data.map(ws => ws.slotId));
                     setAvailableWorkslots(data);
                     setSelectedTime(null);
                 })
@@ -102,14 +100,15 @@ const HealthcareWebsite_consultation = () => {
         }
     }, [selectedConsultant, selectedDate, currentMonth, currentYear]);
 
+    // Helper functions
     const formatDateISO = (year, month, day) => {
         const mm = (month + 1).toString().padStart(2, '0');
         const dd = day.toString().padStart(2, '0');
         return `${year}-${mm}-${dd}`;
     };
-
     const formatTime = (time) => time.slice(0, 5);
 
+    // Calendar navigation
     const handlePrevMonth = () => {
         if (currentMonth === 0) {
             setCurrentYear(currentYear - 1);
@@ -119,7 +118,6 @@ const HealthcareWebsite_consultation = () => {
         }
         setSelectedDate(null);
     };
-
     const handleNextMonth = () => {
         if (currentMonth === 11) {
             setCurrentYear(currentYear + 1);
@@ -129,19 +127,11 @@ const HealthcareWebsite_consultation = () => {
         }
         setSelectedDate(null);
     };
+    const handleDateSelect = (date) => setSelectedDate(date);
+    const handleTimeSelect = (time) => setSelectedTime(time);
+    const handleSelectConsultant = (consultant) => setSelectedConsultant(consultant);
 
-    const handleDateSelect = (date) => {
-        setSelectedDate(date);
-    };
-
-    const handleTimeSelect = (time) => {
-        setSelectedTime(time);
-    };
-
-    const handleSelectConsultant = (consultant) => {
-        setSelectedConsultant(consultant);
-    };
-
+    // Show booking modal
     const handleContinue = () => {
         if (!selectedDate || !selectedTime || !selectedConsultant) {
             alert('Please select consultant, date and time before continuing');
@@ -150,6 +140,7 @@ const HealthcareWebsite_consultation = () => {
         setShowBookingModal(true);
     };
 
+    // Submit booking and get VNPay payment URL
     const handleSubmitAppointment = async (e) => {
         e.preventDefault();
         const appointmentDate = `${currentYear}-${String(currentMonth + 1).padStart(2, '0')}-${String(selectedDate).padStart(2, '0')}`;
@@ -163,7 +154,6 @@ const HealthcareWebsite_consultation = () => {
             customerId: String(userId),
             consultantId: String(selectedConsultant.userId),
             appointmentDate,
-            status: "PENDING",
             workslotId: selectedWorkslotId,
             name: user?.fullName || '',
             phoneNumber: user?.phoneNumber || '',
@@ -173,20 +163,25 @@ const HealthcareWebsite_consultation = () => {
 
         setLoading(true);
         try {
-            await createAppointment(payload);
-            alert('Booking successful!');
-            navigate('/bookingsuccess');
+            console.log("Submitting payload to VNPay create:", payload);
+            const res = await api.post("/api/consultationpayment/vnpay-create", payload);
+            console.log("VNPay create response:", res.data);
+            if (res.data && res.data.paymentUrl) {
+                window.location.href = res.data.paymentUrl;
+            } else {
+                alert("Could not retrieve VNPay payment link.");
+            }
             setShowBookingModal(false);
         } catch (error) {
-            console.error("❌ Booking failed:", error);
-            alert('Booking failed. Please try again.');
+            console.error("❌ Redirect to VNPay failed:", error);
+            alert('Could not redirect to VNPay. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
+    // Calendar helper
     const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-
     const generateCalendar = (year, month) => {
         const days = ['Mo', 'Tu', 'W', 'Th', 'F', 'Sa', 'Su'];
         const dates = [];
@@ -194,7 +189,6 @@ const HealthcareWebsite_consultation = () => {
         for (let i = 1; i <= daysInMonth; i++) dates.push(i);
         return { days, dates };
     };
-
     const { days, dates } = generateCalendar(currentYear, currentMonth);
 
     return (
@@ -210,7 +204,6 @@ const HealthcareWebsite_consultation = () => {
                             <span className="hero-title-highlight_consultation">We Are Ready to Help Your Health Problems</span>
                         </h1>
                     </div>
-
                     <div className="hero-content_consultation">
                         {/* Left Content */}
                         <div className="left-content_consultation">
@@ -219,7 +212,6 @@ const HealthcareWebsite_consultation = () => {
                                 <div className="shape_consultation shape-2_consultation"></div>
                                 <div className="shape_consultation shape-3_consultation"></div>
                             </div>
-
                             <div>
                                 <span className="consultant-label_consultation">CONSULTANT</span>
                                 <h2 className="main-title_consultation">
@@ -230,8 +222,6 @@ const HealthcareWebsite_consultation = () => {
                                     Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
                                 </p>
                             </div>
-
-                            {/* Consultant Cards - hiển thị từ dữ liệu backend */}
                             <div className="consultants-grid_consultation">
                                 {consultants.length > 0 ? (
                                     consultants.map((consultant) => (
@@ -291,8 +281,7 @@ const HealthcareWebsite_consultation = () => {
                                                 : "No ratings yet"}
                                         </div>
                                     </div>
-
-                                    {/* Các thông tin chi tiết khác */}
+                                    {/* Other Details */}
                                     <div className="stats-grid_consultation">
                                         <div className="stat-card_consultation stat-card-pink_consultation">
                                             <div className="stat-value_consultation">{selectedConsultant.experiencedYears}+</div>
@@ -312,7 +301,6 @@ const HealthcareWebsite_consultation = () => {
                                 <p>Please select a consultant</p>
                             )}
                         </div>
-
                     </div>
                 </section>
 
@@ -354,15 +342,14 @@ const HealthcareWebsite_consultation = () => {
                                         {dates.map((date, index) => {
                                             const thisDate = new Date(currentYear, currentMonth, date);
                                             const isPast = thisDate < new Date(new Date().setHours(0, 0, 0, 0));
-
                                             return (
                                                 <button
                                                     key={index}
                                                     onClick={() => !isPast && handleDateSelect(date)}
                                                     disabled={isPast}
                                                     className={`p-2 text-sm rounded-lg transition-colors
-                ${selectedDate === date ? 'bg-blue-600 text-white' : 'hover:bg-gray-100 text-gray-700'}
-                ${isPast ? 'past-date_consultation' : ''}`}
+                                                        ${selectedDate === date ? 'bg-blue-600 text-white' : 'hover:bg-gray-100 text-gray-700'}
+                                                        ${isPast ? 'past-date_consultation' : ''}`}
                                                 >
                                                     {date}
                                                 </button>
@@ -410,7 +397,8 @@ const HealthcareWebsite_consultation = () => {
 
                             {/* Booking Buttons */}
                             <div className="flex justify-center space-x-4">
-                                <button className="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors">
+                                <button className="px-8 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                                    onClick={() => navigate(-1)}>
                                     Back
                                 </button>
                                 <button
@@ -429,7 +417,6 @@ const HealthcareWebsite_consultation = () => {
                     <div className="modal-content_consultation">
                         <button className="modal-close_consultation" onClick={() => setShowBookingModal(false)}>✖</button>
                         <h2>Book your appointment</h2>
-
                         <div className="book-appointment-info_consultation" style={{ marginBottom: 20 }}>
                             <p><strong>Customer ID:</strong> {userId || "Not logged in"}</p>
                             <p><strong>Consultant:</strong> {selectedConsultant.fullName || selectedConsultant.name}</p>
@@ -440,7 +427,6 @@ const HealthcareWebsite_consultation = () => {
                             <p><strong>Customer Name:</strong> {user?.fullName || 'N/A'}</p>
                             <p><strong>Customer Phone:</strong> {user?.phoneNumber || 'N/A'}</p>
                         </div>
-
                         <form onSubmit={handleSubmitAppointment}>
                             <div>
                                 <label>Note</label>
@@ -460,7 +446,7 @@ const HealthcareWebsite_consultation = () => {
                                 />
                             </div>
                             <button type="submit" disabled={loading}>
-                                {loading ? "Booking..." : "Book Now →"}
+                                {loading ? "Redirecting..." : "Pay and Book via VNPay →"}
                             </button>
                         </form>
                     </div>

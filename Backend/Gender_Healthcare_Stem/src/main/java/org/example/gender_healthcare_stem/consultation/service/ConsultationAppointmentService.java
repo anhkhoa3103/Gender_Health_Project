@@ -7,10 +7,12 @@ import org.example.gender_healthcare_stem.consultation.model.ConsultationAppoint
 import org.example.gender_healthcare_stem.consultation.model.Slot;
 import org.example.gender_healthcare_stem.consultation.model.WorkSlot;
 import org.example.gender_healthcare_stem.consultation.repository.ConsultationAppointmentRepository;
+import org.example.gender_healthcare_stem.consultation.repository.ConsultationInvoiceRepository;
 import org.example.gender_healthcare_stem.consultation.repository.SlotRepository;
 import org.example.gender_healthcare_stem.consultation.repository.WorkSlotRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -20,16 +22,18 @@ public class ConsultationAppointmentService {
     private final ConsultationAppointmentRepository appointmentRepository;
     private final WorkSlotRepository workslotRepository;
     private final SlotRepository slotRepository;
-
+    private final ConsultationInvoiceRepository consultationInvoiceRepository;
 
     public ConsultationAppointmentService(
             ConsultationAppointmentRepository appointmentRepository,
             WorkSlotRepository workslotRepository,
-            SlotRepository slotRepository
+            SlotRepository slotRepository,
+            ConsultationInvoiceRepository consultationInvoiceRepository
     ) {
         this.appointmentRepository = appointmentRepository;
         this.workslotRepository = workslotRepository;
         this.slotRepository = slotRepository;
+        this.consultationInvoiceRepository = consultationInvoiceRepository;
     }
 
     public ConsultationAppointment save(ConsultationAppointment appointment) {
@@ -87,7 +91,7 @@ public class ConsultationAppointmentService {
 
         appointment.setConsultantId(request.getConsultantId());
         appointment.setCustomerId(request.getCustomerId());
-        appointment.setAppointmentDate(request.getAppointmentDate());
+        appointment.setAppointmentDate(LocalDate.parse(request.getAppointmentDate()));
         appointment.setWorkslotId(request.getWorkslotId());
         appointment.setName(request.getName());
         appointment.setPhoneNumber(request.getPhoneNumber());
@@ -179,12 +183,10 @@ public class ConsultationAppointmentService {
         return appointmentRepository.findById(id)
                 .filter(appointment -> "CANCELLED".equals(appointment.getStatus()))
                 .map(appointment -> {
+                    consultationInvoiceRepository.deleteByConsultation_ConsultationId(id);
                     appointmentRepository.delete(appointment);
                     return true;
                 })
                 .orElse(false);
     }
-
-
-
 }

@@ -12,6 +12,7 @@ import org.example.gender_healthcare_stem.consultation.service.ConsultationAppoi
 import org.example.gender_healthcare_stem.consultation.service.ConsultationResultService;
 import org.example.gender_healthcare_stem.consultation.service.FeedbackService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -108,7 +109,7 @@ public class ConsultantController {
     }
 
     @DeleteMapping("/appointments/{id}")
-    public ResponseEntity<String> deleteCancelledAppointment(@PathVariable Long id) {
+    public ResponseEntity<String> deleteCancelledAppointment(@PathVariable Long id, Authentication authentication) {
         boolean deleted = consultationAppointmentService.deleteCancelledAppointment(id);
         if (deleted) {
             return ResponseEntity.ok("Xóa lịch hẹn đã hủy thành công.");

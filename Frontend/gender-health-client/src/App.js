@@ -17,6 +17,7 @@ import LogoutManagement from "./features/auth/pages/LogoutManagement";
 import HomePage from "./features/home/pages/HomePage";
 import BlogDetailSession from "./features/home/sessions/BlogDetailSession";
 import DoctorDetail from "./features/home/sessions/DoctorDetail";
+import InvoicesHistory from "./features/home/pages/InvoicesHistory.jsx";
 
 // Menstrual
 import MenstrualTracker from "./features/menstrual/pages/MenstrualTracker";
@@ -27,8 +28,8 @@ import Appointments from './features/consultation/page/Appointments';
 import BookAppointment from './features/consultation/page/BookAppointment';
 import BookingSuccess from './features/consultation/page/BookingSuccess';
 import Feedback from './features/consultation/page/Feedback';
-import HealthcareWebsite_consultation from "./features/consultation/page/HealthcareWebsite_consultation.jsx";
-
+import HealthcareWebsite_consultation from "./features/consultation/page/HealthcareWebsite_consultation.jsx" ;
+import ReturnPage from "./features/consultation/page/VnpayReturnPage.jsx";
 // Admin
 import RequireAuth from "./routes/RequireAuth";
 import ManagementWelcome from "./features/admin/ManagementWelcome";
@@ -100,6 +101,7 @@ function App() {
           <Route path="/bookappointment" element={<BookAppointment />} />
           <Route path="/bookingsuccess" element={<BookingSuccess />} />
           <Route path="/feedback" element={<Feedback />} />
+          <Route path="/consultation/payment-result" element={<ReturnPage />} />
 
           {/* Testing routes */}
           <Route path="/package" element={<Packages />} />
@@ -108,7 +110,7 @@ function App() {
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/payment-package" element={<PaymentPageForPackage />} />
           <Route path="/customer-results" element={<CustomerTestResult />} />
-          <Route path="/customer-invoices" element={<CustomerInvoicesHistory />} />
+          <Route path="/customer-invoices" element={<InvoicesHistory />} />
           <Route path="/customer-info" element={<CustomerTable />} />
           <Route path="/vnpay-return" element={<VnpayReturnPage />} />
           {/* Staff routes */}

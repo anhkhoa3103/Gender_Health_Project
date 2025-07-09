@@ -11,8 +11,12 @@ export default function Payments() {
   const { user } = useContext(AuthContext);
   const selectedTestTypes = location.state?.selectedTestTypes || [];
   const customerId = user?.id;
-  const total = selectedTestTypes.reduce((sum, item) => sum + (item.price || 0), 0);
-  const testIds = selectedTestTypes.map(item => item.testId);
+  const packageInfo = location.state?.package; // <-- This defines packageInfo!
+
+  const total = packageInfo
+    ? packageInfo.totalPrice // Use package price
+    : selectedTestTypes.reduce((sum, item) => sum + (item.price || 0), 0);
+  const testIds = selectedTestTypes.map((item) => item.testId);
 
   useEffect(() => {
     const goVnpay = async () => {
@@ -25,8 +29,11 @@ export default function Payments() {
       const res = await api.post("/api/invoice/vnpay-create", {
         amount: total,
         customerId,
-         paidItems: JSON.stringify(selectedTestTypes)
+        paidItems: JSON.stringify(
+          selectedTestTypes.map((item) => ({ testId: item.testId }))
+        ),
       });
+
       window.location.href = res.data.paymentUrl;
     };
     goVnpay();

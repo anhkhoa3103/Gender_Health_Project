@@ -40,6 +40,12 @@ public class InvoicesService {
     public List<Invoices> getInvoices() {
         return invoicesRepository.findAll();
     }
+    public List<InvoicesDTO> getInvoicesByCustomerId(Long customerId) {
+        return invoicesRepository.findByCustomerId(customerId)
+                .stream()
+                .map(this::toDTO)
+                .toList();
+    }
 
     public InvoicesDTO toDTO(Invoices invoice) {
         User user = userRepository.findById(invoice.getCustomerId()).orElse(null);
@@ -189,7 +195,7 @@ public class InvoicesService {
             invoice.setPaid(false);
             invoice.setPaymentMethod("vnpay");
             invoice.setPaymentTxnRef(orderId);
-            invoice.setTransferContent("Thanh toán gói xét nghiệm"); // description REMOVED
+            invoice.setTransferContent("Thanh toán gói xét nghiệm"); // description
             invoice.setCreatedAt(LocalDateTime.now());
             invoice.setCustomerId(customerId);
             invoice.setPaidItems(paidItems); // Store JSON here!
@@ -229,8 +235,6 @@ public class InvoicesService {
         result.put("paymentUrl", paymentUrl);
         return result;
     }
-
-
 
     // Xây dựng data để ký hash (alphabet, không có vnp_SecureHash)
     private String buildDataToSign(Map<String, String> params) {
@@ -289,7 +293,7 @@ public class InvoicesService {
         Invoices invoice = invoicesRepository.findByPaymentTxnRef(vnpTxnRef);
         if (invoice == null) return false;
 
-// Already processed by another request
+        // Already processed by another request
         if (invoice.getAppointmentId() != null) {
             return true;
         }
@@ -304,14 +308,21 @@ public class InvoicesService {
             if (paidItemsJson == null) throw new RuntimeException("No testIds found in paidItems: null");
             try {
                 ObjectMapper mapper = new ObjectMapper();
-                List<Map<String, Object>> paidItems = mapper.readValue(paidItemsJson, new TypeReference<>() {});
                 List<Integer> testIds = new ArrayList<>();
+                // Parse as array object
+                List<Map<String, Object>> paidItems = mapper.readValue(paidItemsJson, new TypeReference<>() {});
                 for (Map<String, Object> item : paidItems) {
-                    if (item.get("testId") != null) {
-                        testIds.add((Integer) item.get("testId"));
+                    Object testIdObj = item.get("testId");
+                    if (testIdObj != null) {
+                        if (testIdObj instanceof Integer) {
+                            testIds.add((Integer) testIdObj);
+                        } else if (testIdObj instanceof Long) {
+                            testIds.add(((Long) testIdObj).intValue());
+                        } else if (testIdObj instanceof String) {
+                            testIds.add(Integer.parseInt((String) testIdObj));
+                        }
                     }
                 }
-
                 // This block will run only ONCE (even with concurrent requests!)
                 STIAppointment appointment = stiAppointmentService.createAppointmentFromVnpay(
                         invoice.getCustomerId(),
@@ -319,7 +330,6 @@ public class InvoicesService {
                         testIds
                 );
                 invoice.setAppointmentId(Long.valueOf(appointment.getAppointmentId()));
-
             } catch (Exception ex) {
                 throw new RuntimeException("Error parsing paidItems: " + ex.getMessage(), ex);
             }

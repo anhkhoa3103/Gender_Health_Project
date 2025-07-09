@@ -57,46 +57,52 @@ export default function PackageList() {
   }, []);
 
   // Validate info fields and auto-select test types in table when clicking package
-  const handleBuyNow = async (pm) => {
-    if (!user?.id) {
-      alert("Please log in first.");
-      navigate("/login");
+ const handleBuyNow = async (pm) => {
+  if (!user?.id) {
+    alert("Please log in first.");
+    navigate("/login");
+    return;
+  }
+  try {
+    const res = await getCustomerById(user.id);
+    const info = res.data;
+    const requiredFields = [
+      { name: "fullName", label: "Name" },
+      { name: "email", label: "Email" },
+      { name: "phone", label: "Phone" },
+      { name: "dateOfBirth", label: "Birthdate" },
+      { name: "gender", label: "Gender" },
+      { name: "address", label: "Location" },
+    ];
+    const missingFields = requiredFields.filter(
+      (f) => !info[f.name] || info[f.name].toString().trim() === ""
+    );
+    if (missingFields.length > 0) {
+      setMissingLabels(missingFields.map((f) => f.label));
+      setMissingFieldNames(missingFields.map((f) => f.name));
+      setModalOpen(true);
       return;
     }
-    try {
-      const res = await getCustomerById(user.id);
-      const info = res.data;
-      console.log("Customer Info", info);
-      const requiredFields = [
-        { name: "fullName", label: "Name" },
-        { name: "email", label: "Email" },
-        { name: "phone", label: "Phone" },
-        { name: "dateOfBirth", label: "Birthdate" },
-        { name: "gender", label: "Gender" },
-        { name: "address", label: "Location" },
-      ];
-      const missingFields = requiredFields.filter(
-        (f) => !info[f.name] || info[f.name].toString().trim() === ""
-      );
-      if (missingFields.length > 0) {
-        setMissingLabels(missingFields.map((f) => f.label));
-        setMissingFieldNames(missingFields.map((f) => f.name));
-        setModalOpen(true);
-        return;
-      }
-      // All info is filled, auto-select test types from package in the table
-      // Fetch test types for the package
-      const resp = await axios.get(
-        "http://localhost:8080/api/package/" + pm.packageId + "/test-types"
-      );
-      const ids = resp.data.map((testType) => testType.testId);
-      setSelectedTestTypeIds(ids);
+    // All info is filled, auto-select test types from package in the table
+    // Fetch test types for the package
+    const resp = await axios.get(
+      "http://localhost:8080/api/package/" + pm.packageId + "/test-types"
+    );
+    const ids = resp.data.map((testType) => testType.testId);
+    setSelectedTestTypeIds(ids);
 
-      // **No navigation here!**
-    } catch (err) {
-      alert("Failed to validate customer info.");
-    }
-  };
+    // Navigate to /payment, passing both the package info and selected test types
+    navigate("/payment", {
+      state: {
+        selectedTestTypes: resp.data, // full list of test type objects
+        package: pm                   // the package object itself
+      }
+    });
+  } catch (err) {
+    alert("Failed to validate customer info.");
+  }
+};
+
 
   // Modal confirm: navigate to customer info
   const handleModalConfirm = () => {

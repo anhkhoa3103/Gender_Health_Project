@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from "react";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
+  import jsPDF from "jspdf";
+  import "jspdf-autotable";
 import { getAllAppointments } from "../../../api/stiAppointment";
 import {
   getTestResultsByCustomerId,

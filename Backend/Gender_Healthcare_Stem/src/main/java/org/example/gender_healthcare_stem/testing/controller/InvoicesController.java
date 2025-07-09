@@ -19,6 +19,12 @@ public class InvoicesController {
 
     @Autowired
     private InvoicesService invoicesService;
+    // Get all STI invoices by customer ID
+    @GetMapping("/customer/{customerId}")
+    public ResponseEntity<List<InvoicesDTO>> getInvoicesByCustomerId(@PathVariable Long customerId) {
+        List<InvoicesDTO> dtos = invoicesService.getInvoicesByCustomerId(customerId);
+        return ResponseEntity.ok(dtos);
+    }
 
     // Get all invoices (DTO)
     @GetMapping("")

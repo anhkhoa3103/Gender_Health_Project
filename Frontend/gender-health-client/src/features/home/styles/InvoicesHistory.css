@@ -77,3 +77,130 @@
   font-size: 18px;
   color: #777;
 }
+
+.invoice-empty {
+  color: #aaa;
+  text-align: center;
+  font-size: 15px;
+  margin: 20px 0;
+}
+
+.section-header {
+  font-weight: 500;
+  font-size: 18px;
+  margin: 30px 0 8px 0;
+}
+.section-header.sti {
+  color: #0059b2;
+}
+.section-header.consultation {
+  color: #5a8500;
+}
+
+/* Modal Overlay and Content */
+.modal-overlay {
+  position: fixed;
+  left: 0; top: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(30, 42, 77, 0.24);
+  backdrop-filter: blur(3px);
+  z-index: 1200;
+  display: block;
+  animation: modalFadeIn 0.25s;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 18px 18px 14px 18px;   /* smaller padding */
+  border-radius: 16px;
+  min-width: 260px;               /* was 340px */
+  max-width: 400px;               /* was 95vw, now more compact */
+  box-shadow: 0 12px 36px 0 rgba(60,80,140,0.12), 0 2px 8px 0 rgba(0,0,0,0.10);
+  animation: modalScaleIn 0.25s;
+  font-family: "Segoe UI", "Roboto", sans-serif;
+  margin: 48px auto 0 auto;
+  text-align: left;
+  display: block;
+}
+
+/* Modal Title */
+.modal-title {
+  font-size: 20px;
+  color: #0059b2;
+  margin-bottom: 16px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+/* Paid items label */
+.modal-paiditem-label {
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+/* Paid items list */
+.modal-paiditems {
+  margin: 8px 0 0 0;
+  padding-left: 20px;
+}
+
+.modal-paiditems li {
+  font-size: 15px;
+  margin-bottom: 4px;
+  color: #333;
+  transition: color 0.2s;
+}
+.modal-paiditems li:hover {
+  color: #1976d2;
+}
+
+.modal-nodata {
+  color: #888;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+/* Modal action button - blue, right aligned */
+.modal-content > div:last-child {
+  margin-top: 18px;
+  text-align: right;
+}
+
+.modal-btn,
+.modal-overlay button {
+  padding: 8px 28px;
+  border-radius: 10px;
+  border: none;
+  background: #2293ff;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 1px 6px 0 rgba(40,90,180,0.12);
+  margin-left: 16px;
+  margin-top: 10px;
+  transition: background 0.18s, transform 0.13s;
+}
+
+.modal-btn:hover,
+.modal-overlay button:hover {
+  background: #176fc1;
+  transform: scale(1.04);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes modalScaleIn {
+  from { transform: scale(0.95);}
+  to { transform: scale(1);}
+}
+
+@media (max-width: 500px) {
+  .modal-content {
+    min-width: unset;
+    width: 95vw;
+    padding: 10px 2vw 10px 2vw;
+  }
+}

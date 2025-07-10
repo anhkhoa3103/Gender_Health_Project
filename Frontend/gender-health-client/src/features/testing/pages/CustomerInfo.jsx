@@ -13,7 +13,6 @@ export default function UserProfile() {
   const { user } = useContext(AuthContext);
   const location = useLocation();
 
-  // Get missing fields from navigation
   const missingFields = location.state?.missingFields || [];
 
   useEffect(() => {
@@ -27,7 +26,6 @@ export default function UserProfile() {
       .catch(() => setLoading(false));
   }, [user]);
 
-  // Auto-switch to edit if has missing fields
   useEffect(() => {
     if (missingFields.length > 0) setEditMode(true);
   }, [missingFields]);

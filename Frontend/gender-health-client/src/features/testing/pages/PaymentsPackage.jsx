@@ -13,7 +13,7 @@ const createStiAppointment = async ({ customerId, amount, testIds }) => {
     amount,
     testIds,
   });
-  return res.data; // { appointmentId, ... }
+  return res.data; 
 };
 
 export default function PaymentPageForPackage() {

@@ -9,7 +9,7 @@ const FooterSession = () => {
                     <p>for SWP Project</p>
                 </div>
                 <div className="footer-right">
-                    <p>CompanyName @ 202X. All rights reserved.</p>
+                    <p>Group4_SWP Projecct @ 202X. All rights reserved.</p>
                 </div>
         </footer>
     );

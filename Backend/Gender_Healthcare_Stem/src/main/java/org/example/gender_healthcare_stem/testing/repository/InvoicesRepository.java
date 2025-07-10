@@ -21,4 +21,6 @@ public interface InvoicesRepository extends JpaRepository<Invoices, Long> {
             @Param("paidItems") String paidItems
     );
     Invoices findTop1ByCustomerIdAndPaidOrderByCreatedAtDesc(Long customerId, boolean b);
+    List<Invoices> findByCustomerId(Long customerId);
+
 }

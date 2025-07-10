@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/BlogDetailSession.css";
 import { useParams, Link } from "react-router-dom";
 import ourblog1 from "../../img/ourblog1.png";
@@ -6,6 +6,7 @@ import ourblog2 from "../../img/ourblog2.png";
 import ourblog3 from "../../img/ourblog3.png";
 import Header from "../../components/Header";
 import Footer from "../sessions/FooterSession";
+
 
 const blogs = [
     {
@@ -87,178 +88,156 @@ The vastness of the ocean can also provide perspective on life's challenges, hel
 const BlogDetailSession = () => {
     const { id } = useParams();
     const blog = blogs.find((b) => b.id === parseInt(id));
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    }, [id]);
+    if (!blog) return <div className="blog-not-found_blogdetail">Blog not found.</div>;
 
-    if (!blog) return <div className="blog-not-found">Blog not found.</div>;
-
-    // Get other blogs for "You might also like" section
     const otherBlogs = blogs.filter((b) => b.id !== parseInt(id)).slice(0, 2);
 
     return (
         <>
-            <div className="header-section">
+            <div className="header-section_blogdetail">
                 <Header />
             </div>
-            <div className="blog-detail-container">
-                {/* Main Content */}
-                <main className="main-content">
-                    {/* Breadcrumb */}
-                    <nav className="breadcrumb">
+            <div className="blog-detail-container_blogdetail">
+                <main className="main-content_blogdetail">
+                    <nav className="breadcrumb_blogdetail">
                         <Link to="/">Home</Link>
-                        <span className="breadcrumb-separator">/</span>
+                        <span className="breadcrumb-separator_blogdetail">/</span>
                         <Link to="/blogs">Blogs</Link>
-                        <span className="breadcrumb-separator">/</span>
-                        <span className="breadcrumb-current">{blog.title}</span>
+                        <span className="breadcrumb-separator_blogdetail">/</span>
+                        <span className="breadcrumb-current_blogdetail">{blog.title}</span>
                     </nav>
 
-                    {/* Blog Header */}
-                    <div className="blog-header-section">
-                        <div className="blog-category">
-                            <span className="category-tag">{blog.category}</span>
+                    <div className="blog-header-section_blogdetail">
+                        <div className="blog-category_blogdetail">
+                            <span className="category-tag_blogdetail">{blog.category}</span>
                         </div>
-                        <h1 className="blog-title">{blog.title}</h1>
+                        <h1 className="blog-title_blogdetail">{blog.title}</h1>
 
-                        <div className="blog-meta">
-                            <div className="author-info">
-                                <div className="author-avatar">
+                        <div className="blog-meta_blogdetail">
+                            <div className="author-info_blogdetail">
+                                <div className="author-avatar_blogdetail">
                                     {blog.author.split(' ').map(name => name[0]).join('')}
                                 </div>
-                                <div className="author-details">
-                                    <span className="author-name">{blog.author}</span>
-                                    <div className="post-details">
-                                        <span className="post-date">{blog.date}</span>
-                                        <span className="meta-separator">•</span>
-                                        <span className="read-time">{blog.readTime}</span>
+                                <div className="author-details_blogdetail">
+                                    <span className="author-name_blogdetail">{blog.author}</span>
+                                    <div className="post-details_blogdetail">
+                                        <span className="post-date_blogdetail">{blog.date}</span>
+                                        <span className="meta-separator_blogdetail">•</span>
+                                        <span className="read-time_blogdetail">{blog.readTime}</span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="blog-actions">
-                                <button className="action-btn share-btn">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                                        <polyline points="16,6 12,2 8,6" />
-                                        <line x1="12" y1="2" x2="12" y2="15" />
-                                    </svg>
-                                    Share
-                                </button>
-                                <button className="action-btn bookmark-btn">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
-                                    </svg>
-                                    Save
-                                </button>
+                            <div className="blog-actions_blogdetail">
+                                <button className="action-btn_blogdetail share-btn_blogdetail">Share</button>
+                                <button className="action-btn_blogdetail bookmark-btn_blogdetail">Save</button>
                             </div>
                         </div>
                     </div>
 
-                    {/* Featured Image */}
-                    <div className="featured-image-container">
+                    <div className="featured-image-container_blogdetail">
                         <img
                             src={blog.img}
                             alt={blog.title}
-                            className="featured-image"
+                            className="featured-image_blogdetail"
                         />
                     </div>
 
-                    {/* Article Content */}
-                    <article className="article-content">
-                        {/* Introduction */}
-                        <div className="article-intro">
-                            <p className="intro-text">{blog.content}</p>
+                    <article className="article-content_blogdetail">
+                        <div className="article-intro_blogdetail">
+                            <p className="intro-text_blogdetail">{blog.content}</p>
                         </div>
 
-                        {/* Table of Contents */}
-                        <div className="table-of-contents">
-                            <h3 className="toc-title">Table of Contents</h3>
-                            <ul className="toc-list">
-                                <li><a href="#understanding" className="toc-link">Understanding the Basics</a></li>
-                                <li><a href="#benefits" className="toc-link">Key Benefits</a></li>
-                                <li><a href="#implementation" className="toc-link">How to Implement</a></li>
-                                <li><a href="#conclusion" className="toc-link">Conclusion</a></li>
+                        <div className="table-of-contents_blogdetail">
+                            <h3 className="toc-title_blogdetail">Table of Contents</h3>
+                            <ul className="toc-list_blogdetail">
+                                <li><a href="#understanding" className="toc-link_blogdetail">Understanding the Basics</a></li>
+                                <li><a href="#benefits" className="toc-link_blogdetail">Key Benefits</a></li>
+                                <li><a href="#implementation" className="toc-link_blogdetail">How to Implement</a></li>
+                                <li><a href="#conclusion" className="toc-link_blogdetail">Conclusion</a></li>
                             </ul>
                         </div>
 
-                        {/* Main Content */}
-                        <div className="article-body">
+                        <div className="article-body_blogdetail">
                             {blog.fullContent.split('\n\n').map((paragraph, index) => {
                                 if (index === 0) {
                                     return (
                                         <div key={index}>
-                                            <h2 id="understanding" className="section-heading">Understanding the Basics</h2>
-                                            <p className="article-paragraph">{paragraph}</p>
+                                            <h2 id="understanding" className="section-heading_blogdetail">Understanding the Basics</h2>
+                                            <p className="article-paragraph_blogdetail">{paragraph}</p>
                                         </div>
                                     );
                                 } else if (index === 2) {
                                     return (
                                         <div key={index}>
-                                            <h2 id="benefits" className="section-heading">Key Benefits</h2>
-                                            <p className="article-paragraph">{paragraph}</p>
+                                            <h2 id="benefits" className="section-heading_blogdetail">Key Benefits</h2>
+                                            <p className="article-paragraph_blogdetail">{paragraph}</p>
                                         </div>
                                     );
                                 } else if (index === 4) {
                                     return (
                                         <div key={index}>
-                                            <h2 id="implementation" className="section-heading">How to Implement</h2>
-                                            <p className="article-paragraph">{paragraph}</p>
+                                            <h2 id="implementation" className="section-heading_blogdetail">How to Implement</h2>
+                                            <p className="article-paragraph_blogdetail">{paragraph}</p>
                                         </div>
                                     );
                                 } else if (index === blog.fullContent.split('\n\n').length - 1) {
                                     return (
                                         <div key={index}>
-                                            <h2 id="conclusion" className="section-heading">Conclusion</h2>
-                                            <p className="article-paragraph">{paragraph}</p>
+                                            <h2 id="conclusion" className="section-heading_blogdetail">Conclusion</h2>
+                                            <p className="article-paragraph_blogdetail">{paragraph}</p>
                                         </div>
                                     );
                                 } else {
-                                    return <p key={index} className="article-paragraph">{paragraph}</p>;
+                                    return <p key={index} className="article-paragraph_blogdetail">{paragraph}</p>;
                                 }
                             })}
                         </div>
 
-                        {/* Article Tags */}
-                        <div className="article-tags">
-                            <h3 className="tags-title">Tags:</h3>
-                            <div className="tags-container">
+                        <div className="article-tags_blogdetail">
+                            <h3 className="tags-title_blogdetail">Tags:</h3>
+                            <div className="tags-container_blogdetail">
                                 {blog.tags.map((tag, index) => (
-                                    <span key={index} className="tag">{tag}</span>
+                                    <span key={index} className="tag_blogdetail">{tag}</span>
                                 ))}
                             </div>
                         </div>
 
-                        {/* Social Sharing */}
-                        <div className="social-sharing">
-                            <h3 className="sharing-title">Share this article:</h3>
-                            <div className="social-buttons">
-                                <button className="social-btn facebook">Facebook</button>
-                                <button className="social-btn twitter">Twitter</button>
-                                <button className="social-btn linkedin">LinkedIn</button>
-                                <button className="social-btn email">Email</button>
+                        <div className="social-sharing_blogdetail">
+                            <h3 className="sharing-title_blogdetail">Share this article:</h3>
+                            <div className="social-buttons_blogdetail">
+                                <button className="social-btn_blogdetail">Facebook</button>
+                                <button className="social-btn_blogdetail">Twitter</button>
+                                <button className="social-btn_blogdetail">LinkedIn</button>
+                                <button className="social-btn_blogdetail">Email</button>
                             </div>
                         </div>
                     </article>
 
-                    {/* Related Articles */}
-                    <section className="related-articles">
-                        <h2 className="related-title">You might also like</h2>
-                        <div className="related-grid">
+                    <section className="related-articles_blogdetail">
+                        <h2 className="related-title_blogdetail">You might also like</h2>
+                        <div className="related-grid_blogdetail">
                             {otherBlogs.map((relatedBlog) => (
                                 <Link
                                     key={relatedBlog.id}
                                     to={`/blog/${relatedBlog.id}`}
-                                    className="related-card"
+                                    className="related-card_blogdetail"
                                 >
-                                    <div className="related-image">
+                                    <div className="related-image_blogdetail">
                                         <img src={relatedBlog.img} alt={relatedBlog.title} />
-                                        <div className="related-category">{relatedBlog.category}</div>
+                                        <div className="related-category_blogdetail">{relatedBlog.category}</div>
                                     </div>
-                                    <div className="related-content">
-                                        <h3 className="related-card-title">{relatedBlog.title}</h3>
-                                        <p className="related-excerpt">
+                                    <div className="related-content_blogdetail">
+                                        <h3 className="related-card-title_blogdetail">{relatedBlog.title}</h3>
+                                        <p className="related-excerpt_blogdetail">
                                             {relatedBlog.content.substring(0, 100)}...
                                         </p>
-                                        <div className="related-meta">
-                                            <span className="related-author">{relatedBlog.author}</span>
-                                            <span className="meta-separator">•</span>
-                                            <span className="related-date">{relatedBlog.date}</span>
+                                        <div className="related-meta_blogdetail">
+                                            <span className="related-author_blogdetail">{relatedBlog.author}</span>
+                                            <span className="meta-separator_blogdetail">•</span>
+                                            <span className="related-date_blogdetail">{relatedBlog.date}</span>
                                         </div>
                                     </div>
                                 </Link>
@@ -267,7 +246,7 @@ const BlogDetailSession = () => {
                     </section>
                 </main>
             </div>
-            <div className="footer-section">
+            <div className="footer-section_blogdetail">
                 <Footer />
             </div>
         </>

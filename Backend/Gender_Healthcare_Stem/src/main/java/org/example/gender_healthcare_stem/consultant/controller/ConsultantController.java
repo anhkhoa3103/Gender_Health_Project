@@ -14,7 +14,9 @@ import org.example.gender_healthcare_stem.consultation.service.FeedbackService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-
+import org.example.gender_healthcare_stem.consultant.dto.ConsultantUpdateRequestDTO;
+import org.example.gender_healthcare_stem.consultant.model.ConsultantUpdateRequest;
+import org.example.gender_healthcare_stem.consultant.repository.ConsultantUpdateRequestRepository;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -30,18 +32,21 @@ public class ConsultantController {
     private final FeedbackService feedbackService;
     private final ConsultationResultService consultationResultService;
     private final ConsultationResultRepository consultationResultRepository;
+    private final ConsultantUpdateRequestRepository updateRequestRepository;
 
     public ConsultantController(ConsultantService consultantService, WorkSlotRepository workSlotRepository,
                                 ConsultationAppointmentService consultationAppointmentService,
                                 FeedbackService feedbackService,
                                 ConsultationResultService consultationResultService,
-                                ConsultationResultRepository consultationResultRepository) {
+                                ConsultationResultRepository consultationResultRepository,
+                                ConsultantUpdateRequestRepository updateRequestRepository) {
         this.workSlotRepository = workSlotRepository;
         this.consultantService = consultantService;
         this.consultationAppointmentService = consultationAppointmentService;
         this.feedbackService = feedbackService;
         this.consultationResultService = consultationResultService;
         this.consultationResultRepository = consultationResultRepository;
+        this.updateRequestRepository = updateRequestRepository;
     }
 
     @GetMapping("/getall")
@@ -149,5 +154,30 @@ public class ConsultantController {
         ConsultantDTO dto = consultantService.getConsultantById(consultantId);
         return ResponseEntity.ok(dto);
     }
+
+    @PostMapping("/update-request")
+    public ResponseEntity<?> submitUpdateRequest(@RequestBody ConsultantUpdateRequestDTO dto) {
+        boolean alreadyPending = updateRequestRepository.findByConsultantId(dto.getConsultantId()).stream()
+                .anyMatch(r -> "pending".equals(r.getStatus()));
+
+        if (alreadyPending) {
+            return ResponseEntity.badRequest().body("Bạn đã có yêu cầu đang chờ duyệt.");
+        }
+
+        ConsultantUpdateRequest request = ConsultantUpdateRequest.builder()
+                .consultantId(dto.getConsultantId())
+                .specialization(dto.getSpecialization())
+                .qualification(dto.getQualification())
+                .experiencedYears(dto.getExperiencedYears())
+                .googleMeetLinks(dto.getGoogleMeetLinks())
+                .status("pending")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        updateRequestRepository.save(request);
+        return ResponseEntity.ok("Yêu cầu cập nhật đã được gửi.");
+    }
+
 }
 

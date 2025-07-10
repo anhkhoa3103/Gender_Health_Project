@@ -20,24 +20,10 @@ public class TestResultController {
     private TestResultRepository testResultRepository;
     @Autowired
     private TestResultService testResultService;
+
     @GetMapping("/")
     public List<TestResultDTO> getAllTestResults() {
-        List<TestResult> results = testResultRepository.findAll();
-        return results.stream()
-                .map(result -> {
-                    boolean hasResult = result.getDetails() != null &&
-                            result.getDetails().stream().anyMatch(
-                                    d -> d.getValue() != null && !d.getValue().trim().isEmpty()
-                            );
-                    return new TestResultDTO(
-                            result.getResultId(),
-                            result.getCustomer().getUser().getFullName(),
-                            result.getAppointment().getAppointmentId(),
-                            result.getCustomer().getUser().getId(),
-                            hasResult
-                    );
-                })
-                .collect(Collectors.toList());
+        return testResultRepository.getAllTestResultDTOs();
     }
 
     // ⭐️ Customer-only endpointMore actions

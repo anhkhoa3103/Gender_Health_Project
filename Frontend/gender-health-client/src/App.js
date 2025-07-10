@@ -18,6 +18,8 @@ import HomePage from "./features/home/pages/HomePage";
 import BlogDetailSession from "./features/home/sessions/BlogDetailSession";
 import DoctorDetail from "./features/home/sessions/DoctorDetail";
 import InvoicesHistory from "./features/home/pages/InvoicesHistory.jsx";
+import ViewMoreBlogSession from "./features/home/sessions/ViewMoreBlogSession";
+import BlogDetail1 from "./features/home/sessions/BlogDetail1";
 
 // Menstrual
 import MenstrualTracker from "./features/menstrual/pages/MenstrualTracker";
@@ -28,7 +30,7 @@ import Appointments from './features/consultation/page/Appointments';
 import BookAppointment from './features/consultation/page/BookAppointment';
 import BookingSuccess from './features/consultation/page/BookingSuccess';
 import Feedback from './features/consultation/page/Feedback';
-import HealthcareWebsite_consultation from "./features/consultation/page/HealthcareWebsite_consultation.jsx" ;
+import HealthcareWebsite_consultation from "./features/consultation/page/HealthcareWebsite_consultation.jsx";
 import ReturnPage from "./features/consultation/page/VnpayReturnPage.jsx";
 // Admin
 import RequireAuth from "./routes/RequireAuth";
@@ -45,6 +47,7 @@ import WorkSlotPicker from "./features/consultant/WorkSlotPicker";
 import ConsultantAppointmentHistory from "./features/consultant/ConsultantAppointmentHistory";
 import ConsultantFeedback from "./features/consultant/ConsultantFeedback";
 import ConsultantDashboard from "./features/consultant/ConsultantDashboard.jsx";
+import ConsultantProfile from "./features/consultant/ConsultantProfile.jsx";
 
 // Testing
 import Payments from "./features/testing/pages/Payments";
@@ -91,6 +94,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/blog/:id" element={<BlogDetailSession />} />
           <Route path="/doctor/:id" element={<DoctorDetail />} />
+          <Route path="/blogs" element={<ViewMoreBlogSession />} />
 
           {/* Menstrual tracking */}
           <Route path="/menstrual/:userId" element={<MenstrualTracker />} />
@@ -156,7 +160,12 @@ function App() {
               <ConsultantDashboard />
             </RequireAuth>
           } />
-          
+          <Route path="/consultant/profile" element={
+            <RequireAuth allowedRoles={['consultant']}>
+              <ConsultantProfile />
+            </RequireAuth>
+          } />
+
 
           {/* Admin routes */}
           <Route path="/management/welcome" element={

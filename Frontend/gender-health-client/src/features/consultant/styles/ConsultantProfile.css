@@ -1,0 +1,94 @@
+.profile-container_consultant {
+  display: flex;
+}
+
+.profile-content_consultant {
+  margin-left: 240px;
+  padding: 20px;
+  width: 100%;
+  background-color: #f8f9fa;
+  min-height: 100vh;
+}
+
+.profile-title {
+  margin-bottom: 30px;
+  font-size: 26px;
+  font-weight: bold;
+  color: #333;
+}
+
+.profile-card_consultant {
+  display: flex;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.profile-left {
+  width: 250px;
+  text-align: center;
+  padding-right: 30px;
+  border-right: 1px solid #ddd;
+}
+
+.profile-avatar {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+  border: 4px solid #e9ecef;
+}
+
+.profile-name {
+  font-size: 20px;
+  color: #2c3e50;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+.profile-right {
+  flex: 1;
+  padding-left: 30px;
+}
+
+.profile-form_consultant label {
+  display: block;
+  margin-top: 15px;
+  font-weight: 500;
+  color: #495057;
+}
+
+.profile-form_consultant input {
+  width: 100%;
+  padding: 10px;
+  margin-top: 6px;
+  border-radius: 8px;
+  border: 1px solid #ced4da;
+  background: #fff;
+  font-size: 14px;
+}
+
+.submit-btn_consultant {
+  margin-top: 25px;
+  padding: 12px 24px;
+  background-color: #007bff;
+  border: none;
+  color: white;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.submit-btn_consultant:hover {
+  background-color: #0056b3;
+}
+
+.status-message {
+  margin-top: 15px;
+  font-weight: bold;
+  color: green;
+}

@@ -17,7 +17,6 @@ const Sidebar = () => {
       { label: 'Consultant', path: '/admin/consultants', icon: '💬' },
       { label: 'Staff', path: '/admin/staffs', icon: '👨‍💼' },
       { label: 'Feedback', path: '/admin/feedbacks', icon: '📢' },
-      { label: 'Reports', path: '/admin/reports', icon: '📈' },
     ],
     STAFF: [
       { label: 'Dashboard', path: '/staff/dashboard', icon: '📊' },
@@ -27,12 +26,10 @@ const Sidebar = () => {
     ],
     CONSULTANT: [
       { label: 'Dashboard', path: '/consultant/dashboard', icon: '📊' },
-      { label: 'Information', path: '/consultant/info', icon: '📅' },
+      { label: 'Information', path: '/consultant/profile', icon: '📅' },
       { label: 'Appointments', path: '/consultant/appointments', icon: '📆' },
       { label: 'Working Slot', path: '/consultant/workslots', icon: '🕒' },
-      { label: 'Result', path: '/consultant/results', icon: '📄' },
       { label: 'Feedback', path: '/consultant/feedback', icon: '📢' },
-      { label: 'Financial Report', path: '/consultant/reports', icon: '📈' },
     ],
   };
 

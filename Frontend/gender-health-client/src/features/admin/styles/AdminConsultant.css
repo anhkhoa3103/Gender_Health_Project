@@ -101,3 +101,94 @@ h2 {
   font-size: 24px;
   font-weight: 700;
 }
+
+.overlay_updateRequest {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal_updateRequest {
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  width: 500px;
+  max-width: 90%;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-actions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.modal-actions button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.modal-actions button:nth-child(1) {
+  background-color: #28a745;
+  color: white;
+}
+
+.modal-actions button:nth-child(2) {
+  background-color: #dc3545;
+  color: white;
+}
+
+.modal-actions button:nth-child(3) {
+  background-color: #6c757d;
+  color: white;
+}
+
+.consultant-info_adminconsultant {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 10px;
+}
+
+.consultant-avatar_adminconsultant {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 180px;
+}
+
+.avatar-image_adminconsultant {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ccc;
+  margin-bottom: 10px;
+}
+
+.consultant-name_adminconsultant {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+  text-align: center;
+}
+
+.consultant-details_adminconsultant {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 15px;
+}

@@ -1,6 +1,7 @@
 package org.example.gender_healthcare_stem.testing.controller;
 
 import org.example.gender_healthcare_stem.testing.dto.InvoicesDTO;
+import org.example.gender_healthcare_stem.testing.repository.InvoicesRepository;
 import org.example.gender_healthcare_stem.testing.service.InvoicesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/invoice")
@@ -19,6 +21,33 @@ public class InvoicesController {
 
     @Autowired
     private InvoicesService invoicesService;
+    @Autowired
+    private InvoicesRepository invoicesRepository;
+    // Get all STI invoices by customer ID
+    @GetMapping("/customer/{customerId}")
+    public List<InvoicesDTO> getInvoicesByCustomerId(@PathVariable Long customerId) {
+        return invoicesRepository.findByCustomerId(customerId).stream()
+                .map(i -> {
+                    InvoicesDTO dto = new InvoicesDTO();
+                    dto.setId(i.getId());
+                    dto.setCustomerId(i.getCustomerId());
+                    dto.setAmount(i.getAmount());
+                    dto.setAppointmentId(i.getAppointmentId());
+                    dto.setPaid(i.getPaid());
+                    dto.setCreatedAt(i.getCreatedAt());
+                    dto.setPaymentProof(i.getPaymentProof());
+                    dto.setPaidItems(i.getPaidItems());
+                    dto.setPaymentMethod(i.getPaymentMethod());
+                    dto.setPaymentTxnRef(i.getPaymentTxnRef());
+                    dto.setPaymentResponseCode(i.getPaymentResponseCode());
+                    dto.setPaymentTime(i.getPaymentTime());
+                    dto.setTransferContent(i.getTransferContent());
+                    // Nếu cần tên/sdt khách → gọi sang CustomerService hoặc repository khác
+                    return dto;
+                })
+                .collect(Collectors.toList());
+    }
+
 
     // Get all invoices (DTO)
     @GetMapping("")

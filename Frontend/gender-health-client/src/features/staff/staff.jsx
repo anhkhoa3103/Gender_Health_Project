@@ -40,6 +40,9 @@ export default function InvoiceList() {
   const [toastOpen, setToastOpen] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const invoicesPerPage = 8;
+
 
   const { user } = useContext(AuthContext);
 
@@ -72,7 +75,15 @@ export default function InvoiceList() {
   }, []);
 
   // Search all fields
-  const filteredInvoices = invoices.filter(inv => {
+  // Sort by createdAt (descending)
+  const sortedInvoices = [...invoices].sort((a, b) => {
+    const dateA = new Date(a.createdAt || a.created_at);
+    const dateB = new Date(b.createdAt || b.created_at);
+    return dateB - dateA;
+  });
+
+  // Filter by search
+  const filteredInvoices = sortedInvoices.filter(inv => {
     if (!search) return true;
     const s = search.toLowerCase();
     const fields = [
@@ -88,6 +99,13 @@ export default function InvoiceList() {
       .join(" ");
     return fields.includes(s);
   });
+
+  // Pagination logic
+  const indexOfLastInvoice = currentPage * invoicesPerPage;
+  const indexOfFirstInvoice = indexOfLastInvoice - invoicesPerPage;
+  const currentInvoices = filteredInvoices.slice(indexOfFirstInvoice, indexOfLastInvoice);
+  const totalPages = Math.ceil(filteredInvoices.length / invoicesPerPage);
+
 
   // --------- PARSE PAID ITEMS ---------
   let paidItems = [];
@@ -157,61 +175,74 @@ export default function InvoiceList() {
             <div style={{ textAlign: "center", marginTop: 14, color: "#888" }}>Loading invoices...</div>
           </div>
         ) : (
-        <div className="invoice-table-wrapper_staffinvoices">
-          <table className="invoice-table_staffinvoices">
-            <thead>
-              <tr>
-                <th>Invoice #</th>
-                <th>Customer Name</th>
-                <th>Phone</th>
-                <th>Appointment ID</th>
-                <th>Amount</th>
-                <th>Paid</th>
-                <th>Created At</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filteredInvoices.length > 0 ? (
-                filteredInvoices.map((inv) => (
-                  <tr key={inv.id || inv.invoice_id}>
-                    <td>{inv.id || inv.invoice_id}</td>
-                    <td>{inv.customerName || "-"}</td>
-                    <td>{inv.customerPhone || inv.customer_phone || "-"}</td>
-                    <td>{inv.appointmentId || inv.appointment_id || "-"}</td>
-                    <td className="amount_staffinvoices">
-                      {formatNumberWithDot(inv.amount || 0)} VNĐ
-                    </td>
-                    <td>
-                      <span className={inv.paid ? "paid-yes_staffinvoices" : "paid-no_staffinvoices"}>
-                        {inv.paid ? "Yes" : "No"}
-                      </span>
-                    </td>
-                    <td>
-                      {inv.createdAt || inv.created_at
-                        ? new Date(inv.createdAt || inv.created_at).toLocaleString("vi-VN")
-                        : "-"}
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => openModal(inv)}
-                        className="view-btn_staffinvoices"
-                      >
-                        View Details
-                      </button>
+          <div className="invoice-table-wrapper_staffinvoices">
+            <table className="invoice-table_staffinvoices">
+              <thead>
+                <tr>
+                  <th>Invoice #</th>
+                  <th>Customer Name</th>
+                  <th>Phone</th>
+                  <th>Appointment ID</th>
+                  <th>Amount</th>
+                  <th>Paid</th>
+                  <th>Created At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {currentInvoices.length > 0 ? (
+                  currentInvoices.map((inv) => (
+                    <tr key={inv.id || inv.invoice_id}>
+                      <td>{inv.id || inv.invoice_id}</td>
+                      <td>{inv.customerName || "-"}</td>
+                      <td>{inv.customerPhone || inv.customer_phone || "-"}</td>
+                      <td>{inv.appointmentId || inv.appointment_id || "-"}</td>
+                      <td className="amount_staffinvoices">
+                        {formatNumberWithDot(inv.amount || 0)} VNĐ
+                      </td>
+                      <td>
+                        <span className={inv.paid ? "paid-yes_staffinvoices" : "paid-no_staffinvoices"}>
+                          {inv.paid ? "Yes" : "No"}
+                        </span>
+                      </td>
+                      <td>
+                        {inv.createdAt || inv.created_at
+                          ? new Date(inv.createdAt || inv.created_at).toLocaleString("vi-VN")
+                          : "-"}
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => openModal(inv)}
+                          className="view-btn_staffinvoices"
+                        >
+                          View Details
+                        </button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={8} className="no-invoices_staffinvoices">
+                      No invoices found.
                     </td>
                   </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan={8} className="no-invoices_staffinvoices">
-                    No invoices found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+                )}
+              </tbody>
+            </table>
+            {totalPages > 1 && (
+              <div className="pagination_staffinvoices">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`page-btn_staffinvoices ${currentPage === page ? "active" : ""}`}
+                  >
+                    {page}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         )}
 
         {modalIsOpen && selectedInvoice && (
